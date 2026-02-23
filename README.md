@@ -1,59 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 👑 Pita Queen Hub - Premium Mediterranean Cuisine
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A luxurious, modern Laravel application showcasing premium Mediterranean cuisine with a sophisticated black & gold design theme.
 
-## About Laravel
+## 🌟 About Pita Queen Hub
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Pita Queen Hub is a premium restaurant website built with Laravel 12, featuring an elegant design that perfectly captures the essence of authentic Mediterranean dining experience. The application combines modern web technologies with performance optimizations to deliver a seamless user experience.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### ✨ Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Responsive Design** - Fully responsive across all devices
+- **Performance Optimized** - Enhanced CSS with will-change hints and reduced motion support
+- **SEO Optimized** - Comprehensive meta tags and Open Graph protocol
+- **Modern UI/UX** - Smooth animations using AOS library
+- **Accessible** - Built with accessibility best practices
+- **Premium Aesthetics** - Luxurious black & gold color scheme
 
-## Learning Laravel
+## 🚀 Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Laravel 12** - Latest PHP framework with streamlined structure
+- **PHP 8.2.12** - Modern PHP version
+- **Bootstrap 5.3.2** - Responsive CSS framework
+- **Vite** - Modern frontend build tool
+- **AOS** - Animate On Scroll library
+- **Bootstrap Icons** - Icon library
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Installation
 
-## Laravel Sponsors
+1. Clone the repository:
+```bash
+git clone https://github.com/AlphaMel-2004/LemorShawarma.git
+cd LemorShawarma
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. Install PHP dependencies:
+```bash
+composer install
+```
 
-### Premium Partners
+3. Install Node dependencies:
+```bash
+npm install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. Copy environment file:
+```bash
+cp .env.example .env
+```
 
-## Contributing
+5. Generate application key:
+```bash
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. Run migrations (if using database):
+```bash
+php artisan migrate
+```
 
-## Code of Conduct
+7. Build frontend assets:
+```bash
+npm run build
+# or for development with hot reload
+npm run dev
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+8. Start the development server:
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+Visit `http://localhost:8000` in your browser.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📁 Project Structure
 
-## License
+```
+├── app/
+│   ├── Http/Controllers/     # Application controllers
+│   ├── Models/              # Eloquent models
+│   └── Providers/           # Service providers
+├── resources/
+│   ├── css/                 # Custom CSS (app.css)
+│   ├── js/                  # JavaScript files
+│   └── views/               # Blade templates
+│       ├── components/      # Reusable components (navbar, footer, etc.)
+│       ├── layouts/         # Layout templates
+│       └── home.blade.php   # Homepage
+├── routes/
+│   └── web.php             # Web routes
+└── public/                 # Public assets
+```
+
+## 🎨 Optimizations Applied
+
+### Performance Enhancements
+- Added `will-change` CSS properties for animated elements
+- Implemented `pointer-events: none` on hidden loader
+- Added `prefers-reduced-motion` media query support
+- Optimized image loading with `lazy` and `eager` attributes
+- Preconnect to external font sources
+
+### SEO Improvements
+- Enhanced meta descriptions with targeted keywords
+- Added Open Graph protocol tags
+- Implemented proper heading hierarchy
+- Added robots meta tag for indexing
+- Optimized alt text for images
+
+### Accessibility
+- ARIA labels on interactive elements
+- Proper semantic HTML structure
+- Keyboard navigation support
+- Reduced motion support for users with motion sensitivity
+
+## 🔧 Configuration
+
+The application name can be configured in `.env`:
+```env
+APP_NAME="Pita Queen Hub"
+```
+
+## 📝 License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 👨‍💻 Author
+
+Built with ❤️ by AlphaMel-2004
+
+---
+
+**Note**: This is a demonstration project showcasing Laravel 12 capabilities with modern web development practices.

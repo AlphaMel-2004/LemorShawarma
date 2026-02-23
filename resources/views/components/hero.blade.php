@@ -27,9 +27,9 @@
                     <!-- Heading -->
                     <h1 class="hero-title">
                         <span class="title-line">Experience The</span>
-                        <span class="title-highlight">Golden Taste</span>
+                        <span class="title-highlight">Royal Taste</span>
                         <span class="title-line">of Authentic</span>
-                        <span class="title-accent">Shawarma</span>
+                        <span class="title-accent">Mediterranean Cuisine</span>
                     </h1>
                     
                     <!-- Description -->
@@ -78,7 +78,7 @@
                         <!-- Main Image -->
                         <div class="main-image">
                             <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=600" 
-                                 alt="Delicious Golden Shawarma" 
+                                 alt="Delicious Mediterranean Cuisine at Pita Queen Hub" 
                                  class="img-fluid"
                                  loading="eager">
                         </div>

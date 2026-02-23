@@ -3,10 +3,10 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="#home">
-            <span class="brand-icon">🌯</span>
+            <span class="brand-icon">👑</span>
             <span class="brand-text">
-                <span class="brand-name">Golden</span>
-                <span class="brand-tagline">Shawarma</span>
+                <span class="brand-name">Pita Queen</span>
+                <span class="brand-tagline">Hub</span>
             </span>
         </a>
         

@@ -1,5 +1,5 @@
 /* ============================================
-   Golden Shawarma - Premium CSS Stylesheet
+   Pita Queen Hub - Premium CSS Stylesheet
    A luxurious black & gold theme
    ============================================ */
 
@@ -111,6 +111,31 @@ ul, ol {
     list-style: none;
 }
 
+/* Performance optimizations */
+.navbar,
+.hero-image,
+.floating-card,
+.scroll-to-top {
+    will-change: transform;
+}
+
+.loader-spinner,
+.floating-spice {
+    will-change: transform;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 /* ============================================
    Typography
    ============================================ */
@@ -148,6 +173,7 @@ h1, h2, h3, h4, h5, h6 {
 .page-loader.loaded {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
 }
 
 .loader-content {

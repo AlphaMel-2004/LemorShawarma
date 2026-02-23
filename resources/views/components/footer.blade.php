@@ -14,10 +14,10 @@
                 <div class="col-lg-4">
                     <div class="footer-brand">
                         <a href="#home" class="brand-link">
-                            <span class="brand-icon">🌯</span>
+                            <span class="brand-icon">👑</span>
                             <span class="brand-text">
-                                <span class="brand-name">Golden</span>
-                                <span class="brand-tagline">Shawarma</span>
+                                <span class="brand-name">Pita Queen</span>
+                                <span class="brand-tagline">Hub</span>
                             </span>
                         </a>
                         <p class="brand-description">
@@ -85,7 +85,7 @@
                                     <i class="bi bi-geo-alt"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <span>123 Golden Avenue</span>
+                                    <span>123 Royal Avenue</span>
                                     <span>Downtown District, NY 10001</span>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                                     <i class="bi bi-envelope"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <a href="mailto:info@goldenshawarma.com">info@goldenshawarma.com</a>
+                                    <a href="mailto:info@pitaqueenhub.com">info@pitaqueenhub.com</a>
                                 </div>
                             </div>
                             

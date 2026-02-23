@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Golden Shawarma - Premium Mediterranean Cuisine')
+@section('title', 'Pita Queen Hub - Premium Mediterranean Cuisine')
 
 @section('content')
 
@@ -13,7 +13,7 @@
             <!-- Section Header -->
             <div class="section-header text-center" data-aos="fade-up">
                 <span class="section-badge">Our Story</span>
-                <h2 class="section-title">About <span class="text-golden">Golden Shawarma</span></h2>
+                <h2 class="section-title">About <span class="text-golden">Pita Queen Hub</span></h2>
                 <p class="section-description">
                     A legacy of flavor, a tradition of excellence
                 </p>
@@ -52,7 +52,7 @@
                         </h3>
                         
                         <p class="about-text">
-                            At Golden Shawarma, we believe that exceptional food is born from passion, 
+                            At Pita Queen Hub, we believe that exceptional food is born from passion, 
                             quality ingredients, and time-honored recipes passed down through generations. 
                             Our master chefs bring the authentic taste of the Mediterranean to every dish.
                         </p>
@@ -325,7 +325,7 @@
             <div class="cta-content" data-aos="zoom-in">
                 <span class="cta-badge">Ready to Order?</span>
                 <h2 class="cta-title">
-                    Experience The <span class="text-golden">Golden Taste</span> Today
+                    Experience The <span class="text-golden">Royal Taste</span> Today
                 </h2>
                 <p class="cta-description">
                     Order online for pickup or delivery and savor the finest Mediterranean 
