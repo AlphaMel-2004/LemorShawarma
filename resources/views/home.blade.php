@@ -140,22 +140,6 @@
                     <span class="filter-icon">🍽️</span>
                     <span class="filter-text">All Items</span>
                 </button>
-                <button class="filter-btn" data-filter="signature">
-                    <span class="filter-icon">⭐</span>
-                    <span class="filter-text">Signature</span>
-                </button>
-                <button class="filter-btn" data-filter="wraps">
-                    <span class="filter-icon">🌯</span>
-                    <span class="filter-text">Wraps</span>
-                </button>
-                <button class="filter-btn" data-filter="platters">
-                    <span class="filter-icon">🍖</span>
-                    <span class="filter-text">Platters</span>
-                </button>
-                <button class="filter-btn" data-filter="bowls">
-                    <span class="filter-icon">🥗</span>
-                    <span class="filter-text">Bowls</span>
-                </button>
             </div>
             
             <!-- Menu Grid -->
@@ -221,21 +205,18 @@
                 <!-- Cards Column -->
                 <div class="col-lg-7" data-aos="fade-left" data-aos-delay="100">
                     <div class="bestseller-showcase">
-                        @foreach(array_slice($menuItems, 0, 3) as $index => $item)
+                        @foreach($menuItems->take(3) as $index => $item)
                             <div class="bestseller-card {{ $index === 0 ? 'featured' : '' }}">
                                 <div class="bs-card-image">
-                                    <img src="{{ $item['image'] }}" 
-                                         alt="{{ $item['name'] }}" 
+                                    <img src="{{ $item->image ? (str_starts_with($item->image, 'http') ? $item->image : Storage::url($item->image)) : 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400' }}"
+                                         alt="{{ $item->name }}"
                                          loading="lazy">
-                                    @if($item['badge'])
-                                        <span class="bs-badge">{{ $item['badge'] }}</span>
-                                    @endif
                                 </div>
                                 <div class="bs-card-content">
-                                    <h4 class="bs-card-title">{{ $item['name'] }}</h4>
-                                    <p class="bs-card-desc">{{ Str::limit($item['description'], 60) }}</p>
+                                    <h4 class="bs-card-title">{{ $item->name }}</h4>
+                                    <p class="bs-card-desc">{{ Str::limit($item->description, 60) }}</p>
                                     <div class="bs-card-footer">
-                                        <span class="bs-card-price">${{ number_format($item['price'], 2) }}</span>
+                                        <span class="bs-card-price">${{ number_format($item->price, 2) }}</span>
                                         <div class="bs-card-rating">
                                             <i class="bi bi-star-fill"></i>
                                             <span>4.9</span>
