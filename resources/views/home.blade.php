@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pita Queen Hub - Premium Mediterranean Cuisine')
+@section('title', 'Pita Queen - Premium Mediterranean Cuisine')
 
 @section('content')
 
@@ -13,7 +13,7 @@
             <!-- Section Header -->
             <div class="section-header text-center" data-aos="fade-up">
                 <span class="section-badge">Our Story</span>
-                <h2 class="section-title">About <span class="text-golden">Pita Queen Hub</span></h2>
+                <h2 class="section-title">About <span class="text-golden">Pita Queen</span></h2>
                 <p class="section-description">
                     A legacy of flavor, a tradition of excellence
                 </p>
@@ -52,7 +52,7 @@
                         </h3>
                         
                         <p class="about-text">
-                            At Pita Queen Hub, we believe that exceptional food is born from passion, 
+                            At Pita Queen, we believe that exceptional food is born from passion, 
                             quality ingredients, and time-honored recipes passed down through generations. 
                             Our master chefs bring the authentic taste of the Mediterranean to every dish.
                         </p>
@@ -140,22 +140,6 @@
                     <span class="filter-icon">🍽️</span>
                     <span class="filter-text">All Items</span>
                 </button>
-                <button class="filter-btn" data-filter="signature">
-                    <span class="filter-icon">⭐</span>
-                    <span class="filter-text">Signature</span>
-                </button>
-                <button class="filter-btn" data-filter="wraps">
-                    <span class="filter-icon">🌯</span>
-                    <span class="filter-text">Wraps</span>
-                </button>
-                <button class="filter-btn" data-filter="platters">
-                    <span class="filter-icon">🍖</span>
-                    <span class="filter-text">Platters</span>
-                </button>
-                <button class="filter-btn" data-filter="bowls">
-                    <span class="filter-icon">🥗</span>
-                    <span class="filter-text">Bowls</span>
-                </button>
             </div>
             
             <!-- Menu Grid -->
@@ -221,21 +205,23 @@
                 <!-- Cards Column -->
                 <div class="col-lg-7" data-aos="fade-left" data-aos-delay="100">
                     <div class="bestseller-showcase">
-                        @foreach(array_slice($menuItems, 0, 3) as $index => $item)
+                        @foreach($menuItems->take(3) as $index => $item)
                             <div class="bestseller-card {{ $index === 0 ? 'featured' : '' }}">
                                 <div class="bs-card-image">
-                                    <img src="{{ $item['image'] }}" 
-                                         alt="{{ $item['name'] }}" 
+                                    @php
+                                        $bsImageUrl = $item->image
+                                            ? (str_starts_with($item->image, 'http') ? $item->image : Storage::url($item->image))
+                                            : 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400';
+                                    @endphp
+                                    <img src="{{ $bsImageUrl }}"
+                                         alt="{{ $item->name }}"
                                          loading="lazy">
-                                    @if($item['badge'])
-                                        <span class="bs-badge">{{ $item['badge'] }}</span>
-                                    @endif
                                 </div>
                                 <div class="bs-card-content">
-                                    <h4 class="bs-card-title">{{ $item['name'] }}</h4>
-                                    <p class="bs-card-desc">{{ Str::limit($item['description'], 60) }}</p>
+                                    <h4 class="bs-card-title">{{ $item->name }}</h4>
+                                    <p class="bs-card-desc">{{ Str::limit($item->description, 60) }}</p>
                                     <div class="bs-card-footer">
-                                        <span class="bs-card-price">${{ number_format($item['price'], 2) }}</span>
+                                        <span class="bs-card-price">${{ number_format($item->price, 2) }}</span>
                                         <div class="bs-card-rating">
                                             <i class="bi bi-star-fill"></i>
                                             <span>4.9</span>
@@ -337,7 +323,7 @@
                         <i class="bi bi-phone me-2"></i>
                         <span>Order Online</span>
                     </a>
-                    <a href="tel:+15551234567" class="btn btn-outline-light btn-lg">
+                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}" class="btn btn-outline-light btn-lg">
                         <i class="bi bi-telephone me-2"></i>
                         <span>Call Us</span>
                     </a>

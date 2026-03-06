@@ -3,10 +3,9 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="#home">
-            <span class="brand-icon">👑</span>
+            <img src="/images/logo.png" alt="Pita Queen" class="brand-logo" style="height: 40px; width: auto;">
             <span class="brand-text">
                 <span class="brand-name">Pita Queen</span>
-                <span class="brand-tagline">Hub</span>
             </span>
         </a>
         

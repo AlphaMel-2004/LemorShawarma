@@ -14,10 +14,9 @@
                 <div class="col-lg-4">
                     <div class="footer-brand">
                         <a href="#home" class="brand-link">
-                            <span class="brand-icon">👑</span>
+                            <img src="/images/logo.png" alt="Pita Queen" style="height: 40px; width: auto;">
                             <span class="brand-text">
                                 <span class="brand-name">Pita Queen</span>
-                                <span class="brand-tagline">Hub</span>
                             </span>
                         </a>
                         <p class="brand-description">
@@ -85,8 +84,8 @@
                                     <i class="bi bi-geo-alt"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <span>123 Royal Avenue</span>
-                                    <span>Downtown District, NY 10001</span>
+                                    <span>{{ $contactSettings['contact_address_line1'] }}</span>
+                                    <span>{{ $contactSettings['contact_address_line2'] }}</span>
                                 </div>
                             </div>
                             
@@ -95,7 +94,7 @@
                                     <i class="bi bi-telephone"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <a href="tel:+15551234567">+1 (555) 123-4567</a>
+                                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}">{{ $contactSettings['contact_phone'] }}</a>
                                 </div>
                             </div>
                             
@@ -104,7 +103,7 @@
                                     <i class="bi bi-envelope"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <a href="mailto:info@pitaqueenhub.com">info@pitaqueenhub.com</a>
+                                    <a href="mailto:{{ $contactSettings['contact_email'] }}">{{ $contactSettings['contact_email'] }}</a>
                                 </div>
                             </div>
                             
@@ -113,7 +112,7 @@
                                     <i class="bi bi-clock"></i>
                                 </div>
                                 <div class="contact-text">
-                                    <span>Mon - Sun: 11AM - 11PM</span>
+                                    <span>{{ $contactSettings['contact_hours'] }}</span>
                                 </div>
                             </div>
                         </div>

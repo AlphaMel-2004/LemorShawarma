@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Pita Queen Hub'),
+    'name' => env('APP_NAME', 'Pita Queen'),
 
     /*
     |--------------------------------------------------------------------------

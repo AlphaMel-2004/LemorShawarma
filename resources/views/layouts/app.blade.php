@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pita Queen Hub - Your premier destination for authentic Mediterranean cuisine. Experience expertly crafted shawarma, fresh pita, and premium quality ingredients. Best Mediterranean food restaurant.">
-    <meta name="keywords" content="pita queen hub, shawarma, mediterranean cuisine, fresh pita, authentic middle eastern food, premium restaurant, mediterranean delivery, best shawarma, grill, kebab, falafel, hummus">
+    <meta name="description" content="Pita Queen - Your premier destination for authentic Mediterranean cuisine. Experience expertly crafted shawarma, fresh pita, and premium quality ingredients. Best Mediterranean food restaurant.">
+    <meta name="keywords" content="pita queen, shawarma, mediterranean cuisine, fresh pita, authentic middle eastern food, premium restaurant, mediterranean delivery, best shawarma, grill, kebab, falafel, hummus">
     <meta name="robots" content="index, follow">
-    <meta name="author" content="Pita Queen Hub">
-    <meta property="og:title" content="@yield('title', 'Pita Queen Hub - Premium Mediterranean Cuisine')">
+    <meta name="author" content="Pita Queen">
+    <meta property="og:title" content="@yield('title', 'Pita Queen - Premium Mediterranean Cuisine')">
     <meta property="og:description" content="Your premier destination for authentic Mediterranean cuisine. Experience expertly crafted dishes with premium ingredients.">
     <meta property="og:type" content="website">
-    <title>@yield('title', 'Pita Queen Hub - Premium Mediterranean Cuisine')</title>
+    <title>@yield('title', 'Pita Queen - Premium Mediterranean Cuisine')</title>
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,8 +38,8 @@
     <div class="page-loader" id="pageLoader">
         <div class="loader-content">
             <div class="loader-logo">
-                <span class="logo-icon">👑</span>
-                <span class="logo-text">Pita Queen Hub</span>
+                <img src="/images/logo.png" alt="Pita Queen" style="height: 50px; width: auto;">
+                <span class="logo-text">Pita Queen</span>
             </div>
             <div class="loader-spinner"></div>
         </div>

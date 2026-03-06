@@ -1,10 +1,10 @@
-# 👑 Pita Queen Hub - Premium Mediterranean Cuisine
+# 👑 Pita Queen - Premium Mediterranean Cuisine
 
 A luxurious, modern Laravel application showcasing premium Mediterranean cuisine with a sophisticated black & gold design theme.
 
-## 🌟 About Pita Queen Hub
+## 🌟 About Pita Queen
 
-Pita Queen Hub is a premium restaurant website built with Laravel 12, featuring an elegant design that perfectly captures the essence of authentic Mediterranean dining experience. The application combines modern web technologies with performance optimizations to deliver a seamless user experience.
+Pita Queen is a premium restaurant website built with Laravel 12, featuring an elegant design that perfectly captures the essence of authentic Mediterranean dining experience. The application combines modern web technologies with performance optimizations to deliver a seamless user experience.
 
 ### ✨ Key Features
 
@@ -116,7 +116,7 @@ Visit `http://localhost:8000` in your browser.
 
 The application name can be configured in `.env`:
 ```env
-APP_NAME="Pita Queen Hub"
+APP_NAME="Pita Queen"
 ```
 
 ## 📝 License

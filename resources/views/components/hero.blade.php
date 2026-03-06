@@ -78,7 +78,7 @@
                         <!-- Main Image -->
                         <div class="main-image">
                             <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=600" 
-                                 alt="Delicious Mediterranean Cuisine at Pita Queen Hub" 
+                                 alt="Delicious Mediterranean Cuisine at Pita Queen" 
                                  class="img-fluid"
                                  loading="eager">
                         </div>
