@@ -20,7 +20,7 @@
                 <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
                     <!-- Badge -->
                     <div class="hero-badge">
-                        <span class="badge-icon">⭐</span>
+                        <span class="badge-icon"><i class="bi bi-star-fill" aria-hidden="true"></i></span>
                         <span class="badge-text">Premium Quality Since 2010</span>
                     </div>
                     
@@ -89,7 +89,7 @@
                         
                         <!-- Floating Cards -->
                         <div class="floating-card card-rating">
-                            <div class="card-icon">⭐</div>
+                            <div class="card-icon"><i class="bi bi-star-fill" aria-hidden="true"></i></div>
                             <div class="card-content">
                                 <span class="card-value">4.9</span>
                                 <span class="card-label">Rating</span>
@@ -97,7 +97,7 @@
                         </div>
                         
                         <div class="floating-card card-delivery">
-                            <div class="card-icon">🚀</div>
+                            <div class="card-icon"><i class="bi bi-truck" aria-hidden="true"></i></div>
                             <div class="card-content">
                                 <span class="card-value">30 Min</span>
                                 <span class="card-label">Delivery</span>
@@ -105,7 +105,7 @@
                         </div>
                         
                         <div class="floating-card card-fresh">
-                            <div class="card-icon">🌿</div>
+                            <div class="card-icon"><i class="bi bi-leaf-fill" aria-hidden="true"></i></div>
                             <div class="card-content">
                                 <span class="card-value">100%</span>
                                 <span class="card-label">Fresh</span>

@@ -108,7 +108,7 @@
                             
                             <div class="feature-item">
                                 <div class="feature-icon">
-                                    <i class="bi bi-leaf"></i>
+                                    <i class="bi bi-flower1"></i>
                                 </div>
                                 <div class="feature-text">
                                     <h4>Fresh Daily</h4>
@@ -158,7 +158,7 @@
             <!-- Filter Tabs -->
             <div class="menu-filters" data-aos="fade-up" data-aos-delay="100">
                 <button class="filter-btn active" data-filter="all">
-                    <span class="filter-icon">🍽️</span>
+                    <span class="filter-icon"><i class="bi bi-grid-fill" aria-hidden="true"></i></span>
                     <span class="filter-text">All Items</span>
                 </button>
             </div>

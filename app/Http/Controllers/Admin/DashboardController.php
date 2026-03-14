@@ -14,12 +14,14 @@ class DashboardController extends Controller
     public function index(): View
     {
         $stats = Product::query()
-            ->selectRaw('COUNT(*) as total_products')
-            ->selectRaw('COALESCE(SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END), 0) as active_products')
-            ->selectRaw('COALESCE(SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END), 0) as inactive_products')
-            ->selectRaw('COALESCE(AVG(price), 0) as average_price')
-            ->selectRaw('COALESCE(MAX(price), 0) as highest_price')
-            ->selectRaw('COALESCE(MIN(CASE WHEN is_active = 1 THEN price END), 0) as lowest_active_price')
+            ->selectRaw(
+                'COUNT(*) as total_products,
+                COALESCE(SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END), 0) as active_products,
+                COALESCE(SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END), 0) as inactive_products,
+                COALESCE(AVG(price), 0) as average_price,
+                COALESCE(MAX(price), 0) as highest_price,
+                COALESCE(MIN(CASE WHEN is_active = 1 THEN price END), 0) as lowest_active_price'
+            )
             ->first();
 
         $totalProducts = (int) ($stats->total_products ?? 0);

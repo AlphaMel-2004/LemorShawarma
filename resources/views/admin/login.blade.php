@@ -434,14 +434,14 @@
         <span class="deco-circle deco-circle-2"></span>
 
         <!-- Leaf sprigs -->
-        <span class="leaf leaf-1">🌿</span>
-        <span class="leaf leaf-2">🍃</span>
-        <span class="leaf leaf-3">🌿</span>
-        <span class="leaf leaf-4">🍃</span>
+        <i class="bi bi-flower1 leaf leaf-1" aria-hidden="true"></i>
+        <i class="bi bi-flower1 leaf leaf-2" aria-hidden="true"></i>
+        <i class="bi bi-flower1 leaf leaf-3" aria-hidden="true"></i>
+        <i class="bi bi-flower1 leaf leaf-4" aria-hidden="true"></i>
 
         <!-- Brand Logo -->
         <div class="left-brand">
-            <div class="brand-icon">👑</div>
+            <div class="brand-icon"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></div>
             <div>
                 <div class="brand-name">Pita Queen</div>
                 <div class="brand-tagline">Admin Portal</div>
@@ -450,7 +450,7 @@
 
         <!-- Centre Illustration -->
         <div class="illustration-wrap">
-            <div class="illustration-avatar">🧆</div>
+            <div class="illustration-avatar"><i class="bi bi-person-workspace" aria-hidden="true"></i></div>
         </div>
 
         <!-- Bottom Caption -->
@@ -465,7 +465,7 @@
     {{-- ── RIGHT PANEL (FORM) ── --}}
     <div class="login-right">
         <!-- Welcome Badge -->
-        <div class="welcome-badge">Welcome back 👋</div>
+        <div class="welcome-badge">Welcome back</div>
 
         <h1 class="form-heading">Login your account</h1>
         <p class="form-sub">Enter your credentials to access the admin panel.</p>
