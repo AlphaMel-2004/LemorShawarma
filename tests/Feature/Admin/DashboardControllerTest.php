@@ -16,7 +16,7 @@ class DashboardControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->admin = User::factory()->create();
+        $this->admin = User::factory()->admin()->create();
     }
 
     // ── Auth Guard ──
@@ -26,6 +26,15 @@ class DashboardControllerTest extends TestCase
         $response = $this->get($this->adminUrl('/'));
 
         $response->assertRedirect(route('login'));
+    }
+
+    public function test_authenticated_non_admin_user_cannot_access_dashboard(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get($this->adminUrl('/'));
+
+        $response->assertForbidden();
     }
 
     // ── Dashboard View ──
@@ -92,7 +101,12 @@ class DashboardControllerTest extends TestCase
     public function test_dashboard_has_no_index_header(): void
     {
         $response = $this->actingAs($this->admin)->get($this->adminUrl('/'));
+        $cacheControl = (string) $response->headers->get('Cache-Control');
 
         $response->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+        $this->assertStringContainsString('no-store', $cacheControl);
+        $this->assertStringContainsString('no-cache', $cacheControl);
+        $this->assertStringContainsString('must-revalidate', $cacheControl);
+        $this->assertStringContainsString('max-age=0', $cacheControl);
     }
 }

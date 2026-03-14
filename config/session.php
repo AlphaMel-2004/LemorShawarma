@@ -156,7 +156,12 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN'),
+    'domain' => env(
+        'SESSION_DOMAIN',
+        (($host = parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)) && $host !== 'localhost')
+            ? '.'.$host
+            : null
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -169,7 +174,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE', env('APP_ENV', 'production') === 'production'),
 
     /*
     |--------------------------------------------------------------------------

@@ -11,7 +11,7 @@ Route::post('/login', [LoginController::class, 'login'])
     ->middleware('throttle:6,1')
     ->name('admin.login.submit');
 
-Route::middleware('auth')->name('admin.')->group(function (): void {
+Route::middleware(['auth', 'admin.user'])->name('admin.')->group(function (): void {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

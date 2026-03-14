@@ -20,7 +20,7 @@ class LoginControllerTest extends TestCase
 
     public function test_authenticated_user_is_redirected_from_login_page(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $response = $this->actingAs($user)->get($this->adminUrl('/login'));
 
@@ -29,7 +29,7 @@ class LoginControllerTest extends TestCase
 
     public function test_user_can_login_with_valid_credentials(): void
     {
-        $user = User::factory()->create([
+        $user = User::factory()->admin()->create([
             'password' => bcrypt('password123'),
         ]);
 
@@ -44,7 +44,7 @@ class LoginControllerTest extends TestCase
 
     public function test_user_cannot_login_with_invalid_credentials(): void
     {
-        $user = User::factory()->create([
+        $user = User::factory()->admin()->create([
             'password' => bcrypt('password123'),
         ]);
 
@@ -77,11 +77,26 @@ class LoginControllerTest extends TestCase
 
     public function test_user_can_logout(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $response = $this->actingAs($user)->post($this->adminUrl('/logout'));
 
         $this->assertGuest();
         $response->assertRedirect(route('login'));
+    }
+
+    public function test_non_admin_user_cannot_login_to_admin_portal(): void
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt('password123'),
+        ]);
+
+        $response = $this->post($this->adminUrl('/login'), [
+            'email' => $user->email,
+            'password' => 'password123',
+        ]);
+
+        $this->assertGuest();
+        $response->assertSessionHasErrors('email');
     }
 }

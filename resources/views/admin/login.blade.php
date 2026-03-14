@@ -536,7 +536,7 @@
                     <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
                     Remember me
                 </label>
-                <a href="#" class="forgot-link">Forgot Password?</a>
+                <span class="forgot-link" aria-disabled="true">Password reset unavailable</span>
             </div>
 
             {{-- Submit --}}
