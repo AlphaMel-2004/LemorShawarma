@@ -1660,7 +1660,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer-main {
-    padding: 120px 0 60px;
+    padding: 120px 0 48px;
 }
 
 .footer-brand .brand-link {
@@ -1753,6 +1753,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin: 0;
 }
 
 .contact-item {
@@ -1782,6 +1783,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 15px;
     color: var(--color-text-secondary);
     padding-top: 8px;
+    font-style: normal;
 }
 
 .contact-text a {
@@ -1790,56 +1792,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .contact-text a:hover {
     color: var(--color-gold);
-}
-
-/* Newsletter */
-.footer-newsletter {
-    margin-top: 60px;
-    padding: 40px;
-    background: var(--gradient-card);
-    border: 1px solid rgba(212, 175, 55, 0.1);
-    border-radius: var(--radius-xl);
-}
-
-.newsletter-text h4 {
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.newsletter-text p {
-    font-size: 15px;
-    color: var(--color-text-secondary);
-}
-
-.newsletter-form .input-group {
-    max-width: 500px;
-    margin-left: auto;
-}
-
-.newsletter-form .form-control {
-    padding: 16px 20px;
-    background: var(--color-black);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    border-radius: var(--radius-md) 0 0 var(--radius-md);
-    color: var(--color-text-primary);
-    font-size: 15px;
-}
-
-.newsletter-form .form-control:focus {
-    background: var(--color-black);
-    border-color: var(--color-gold);
-    box-shadow: none;
-    color: var(--color-text-primary);
-}
-
-.newsletter-form .form-control::placeholder {
-    color: var(--color-text-muted);
-}
-
-.newsletter-form .btn {
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 
 /* Footer Bottom */
@@ -2095,24 +2047,30 @@ h1, h2, h3, h4, h5, h6 {
         width: 100%;
     }
     
-    .footer-newsletter {
-        padding: 30px 20px;
+    .footer-main {
+        padding: 88px 0 36px;
     }
-    
-    .newsletter-text {
-        text-align: center;
-        margin-bottom: 24px;
+
+    .footer-title {
+        margin-bottom: 16px;
     }
-    
-    .newsletter-form .input-group {
-        flex-direction: column;
+
+    .link-list li {
+        margin-bottom: 10px;
+    }
+
+    .contact-item {
         gap: 12px;
     }
-    
-    .newsletter-form .form-control,
-    .newsletter-form .btn {
-        border-radius: var(--radius-md);
-        width: 100%;
+
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .contact-text {
+        padding-top: 6px;
     }
     
     .footer-bottom {
@@ -2148,6 +2106,28 @@ h1, h2, h3, h4, h5, h6 {
     
     .partners-logos {
         flex-wrap: wrap;
+    }
+
+    .footer-main {
+        padding: 76px 0 28px;
+    }
+
+    .footer-brand .brand-description {
+        font-size: 14px;
+    }
+
+    .social-links {
+        gap: 10px;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .footer-bottom-links {
+        gap: 14px;
     }
 }
 
