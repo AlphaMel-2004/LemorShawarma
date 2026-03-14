@@ -23,16 +23,16 @@ class DashboardControllerTest extends TestCase
 
     public function test_guest_cannot_access_dashboard(): void
     {
-        $response = $this->get('/admin');
+        $response = $this->get($this->adminUrl('/'));
 
-        $response->assertRedirect('/admin/login');
+        $response->assertRedirect(route('login'));
     }
 
     // ── Dashboard View ──
 
     public function test_authenticated_user_can_view_dashboard(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/'));
 
         $response->assertStatus(200);
         $response->assertViewIs('admin.dashboard');
@@ -43,7 +43,7 @@ class DashboardControllerTest extends TestCase
         Product::factory()->count(5)->create(['is_active' => true]);
         Product::factory()->count(2)->create(['is_active' => false]);
 
-        $response = $this->actingAs($this->admin)->get('/admin');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/'));
 
         $response->assertStatus(200);
         $response->assertViewHas('totalProducts', 7);
@@ -57,7 +57,7 @@ class DashboardControllerTest extends TestCase
         Product::factory()->create(['price' => 200.00, 'is_active' => true]);
         Product::factory()->create(['price' => 50.00, 'is_active' => false]);
 
-        $response = $this->actingAs($this->admin)->get('/admin');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/'));
 
         $response->assertStatus(200);
         $response->assertViewHas('highestPrice');
@@ -69,7 +69,7 @@ class DashboardControllerTest extends TestCase
     {
         Product::factory()->count(8)->create();
 
-        $response = $this->actingAs($this->admin)->get('/admin');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/'));
 
         $response->assertStatus(200);
         $response->assertViewHas('recentProducts');
@@ -80,7 +80,7 @@ class DashboardControllerTest extends TestCase
 
     public function test_dashboard_works_with_no_products(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/'));
 
         $response->assertStatus(200);
         $response->assertViewHas('totalProducts', 0);
@@ -91,7 +91,7 @@ class DashboardControllerTest extends TestCase
 
     public function test_dashboard_has_no_index_header(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/'));
 
         $response->assertHeader('X-Robots-Tag', 'noindex, nofollow');
     }

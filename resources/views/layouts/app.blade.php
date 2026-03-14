@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    @php
+        $seoTitle = trim($__env->yieldContent('title', 'Pita Queen - Premium Mediterranean Cuisine'));
+        $seoDescription = trim($__env->yieldContent('meta_description', 'Pita Queen serves authentic Mediterranean cuisine with premium shawarma, fresh pita, grilled favorites, and fast delivery.'));
+        $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
+        $seoImage = trim($__env->yieldContent('og_image', asset('images/logo.png')));
+    @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pita Queen - Your premier destination for authentic Mediterranean cuisine. Experience expertly crafted shawarma, fresh pita, and premium quality ingredients. Best Mediterranean food restaurant.">
+    <meta name="description" content="{{ $seoDescription }}">
     <meta name="keywords" content="pita queen, shawarma, mediterranean cuisine, fresh pita, authentic middle eastern food, premium restaurant, mediterranean delivery, best shawarma, grill, kebab, falafel, hummus">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1')">
     <meta name="author" content="Pita Queen">
-    <meta property="og:title" content="@yield('title', 'Pita Queen - Premium Mediterranean Cuisine')">
-    <meta property="og:description" content="Your premier destination for authentic Mediterranean cuisine. Experience expertly crafted dishes with premium ingredients.">
+    <link rel="canonical" href="{{ $seoCanonical }}">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
     <meta property="og:type" content="website">
-    <title>@yield('title', 'Pita Queen - Premium Mediterranean Cuisine')</title>
+    <meta property="og:url" content="{{ $seoCanonical }}">
+    <meta property="og:image" content="{{ $seoImage }}">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ $seoImage }}">
+    <title>{{ $seoTitle }}</title>
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +44,22 @@
     
     <!-- Custom CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "Restaurant",
+            "name": "{{ config('app.name') }}",
+            "url": "{{ url('/') }}",
+            "image": "{{ $seoImage }}",
+            "servesCuisine": "Mediterranean",
+            "menu": "{{ route('mobile.menu') }}"
+        }
+    </script>
+
+    @if (trim($__env->yieldContent('structured_data')) !== '')
+        @yield('structured_data')
+    @endif
     
     @stack('styles')
 </head>

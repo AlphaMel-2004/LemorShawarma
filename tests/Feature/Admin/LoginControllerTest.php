@@ -12,7 +12,7 @@ class LoginControllerTest extends TestCase
 
     public function test_login_page_is_accessible(): void
     {
-        $response = $this->get('/admin/login');
+        $response = $this->get($this->adminUrl('/login'));
 
         $response->assertStatus(200);
         $response->assertSee('Admin Login');
@@ -22,7 +22,7 @@ class LoginControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get('/admin/login');
+        $response = $this->actingAs($user)->get($this->adminUrl('/login'));
 
         $response->assertRedirect(route('admin.dashboard'));
     }
@@ -33,7 +33,7 @@ class LoginControllerTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $response = $this->post('/admin/login', [
+        $response = $this->post($this->adminUrl('/login'), [
             'email' => $user->email,
             'password' => 'password123',
         ]);
@@ -48,7 +48,7 @@ class LoginControllerTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $response = $this->post('/admin/login', [
+        $response = $this->post($this->adminUrl('/login'), [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
@@ -59,7 +59,7 @@ class LoginControllerTest extends TestCase
 
     public function test_login_requires_email(): void
     {
-        $response = $this->post('/admin/login', [
+        $response = $this->post($this->adminUrl('/login'), [
             'password' => 'password123',
         ]);
 
@@ -68,7 +68,7 @@ class LoginControllerTest extends TestCase
 
     public function test_login_requires_password(): void
     {
-        $response = $this->post('/admin/login', [
+        $response = $this->post($this->adminUrl('/login'), [
             'email' => 'admin@example.com',
         ]);
 
@@ -79,7 +79,7 @@ class LoginControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/admin/logout');
+        $response = $this->actingAs($user)->post($this->adminUrl('/logout'));
 
         $this->assertGuest();
         $response->assertRedirect(route('login'));

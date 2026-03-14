@@ -25,16 +25,16 @@ class ProductControllerTest extends TestCase
 
     public function test_guest_cannot_access_products_index(): void
     {
-        $response = $this->get('/admin/products');
+        $response = $this->get($this->adminUrl('/products'));
 
-        $response->assertRedirect('/admin/login');
+        $response->assertRedirect(route('login'));
     }
 
     public function test_authenticated_user_can_view_products_index(): void
     {
         Product::factory()->count(3)->create();
 
-        $response = $this->actingAs($this->admin)->get('/admin/products');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/products'));
 
         $response->assertStatus(200);
         $response->assertViewIs('admin.products.index');
@@ -45,7 +45,7 @@ class ProductControllerTest extends TestCase
     {
         Product::factory()->count(15)->create();
 
-        $response = $this->actingAs($this->admin)->get('/admin/products');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/products'));
 
         $response->assertStatus(200);
         $this->assertCount(10, $response->viewData('products'));
@@ -57,7 +57,7 @@ class ProductControllerTest extends TestCase
         Product::factory()->create(['name' => 'Beef Kebab']);
 
         $response = $this->actingAs($this->admin)
-            ->get('/admin/products?search=Chicken', [
+            ->get($this->adminUrl('/products?search=Chicken'), [
                 'X-Requested-With' => 'XMLHttpRequest',
                 'Accept' => 'application/json',
             ]);
@@ -72,7 +72,7 @@ class ProductControllerTest extends TestCase
         Product::factory()->count(2)->create(['is_active' => false]);
 
         $response = $this->actingAs($this->admin)
-            ->getJson('/admin/products?status=active');
+            ->getJson($this->adminUrl('/products?status=active'));
 
         $response->assertStatus(200);
     }
@@ -83,7 +83,7 @@ class ProductControllerTest extends TestCase
         Product::factory()->create(['name' => 'Apple Pie', 'price' => 200]);
 
         $response = $this->actingAs($this->admin)
-            ->getJson('/admin/products?sort=name&direction=asc');
+            ->getJson($this->adminUrl('/products?sort=name&direction=asc'));
 
         $response->assertStatus(200);
     }
@@ -94,7 +94,7 @@ class ProductControllerTest extends TestCase
     {
         Storage::fake('public');
 
-        $response = $this->actingAs($this->admin)->postJson('/admin/products', [
+        $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'New Shawarma',
             'description' => 'Delicious new item',
             'price' => 149.99,
@@ -110,7 +110,7 @@ class ProductControllerTest extends TestCase
 
     public function test_product_creation_requires_name(): void
     {
-        $response = $this->actingAs($this->admin)->postJson('/admin/products', [
+        $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'price' => 100,
             'is_active' => true,
         ]);
@@ -121,7 +121,7 @@ class ProductControllerTest extends TestCase
 
     public function test_product_creation_requires_price(): void
     {
-        $response = $this->actingAs($this->admin)->postJson('/admin/products', [
+        $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'Test Product',
             'is_active' => true,
         ]);
@@ -132,7 +132,7 @@ class ProductControllerTest extends TestCase
 
     public function test_product_creation_rejects_invalid_price(): void
     {
-        $response = $this->actingAs($this->admin)->postJson('/admin/products', [
+        $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'Test Product',
             'price' => -10,
             'is_active' => true,
@@ -146,7 +146,7 @@ class ProductControllerTest extends TestCase
     {
         Storage::fake('public');
 
-        $response = $this->actingAs($this->admin)->postJson('/admin/products', [
+        $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'Test Product',
             'price' => 100,
             'is_active' => true,
@@ -164,7 +164,7 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->actingAs($this->admin)
-            ->getJson("/admin/products/{$product->id}/edit");
+            ->getJson($this->adminUrl("/products/{$product->id}/edit"));
 
         $response->assertStatus(200);
         $response->assertJsonFragment(['id' => $product->id]);
@@ -177,7 +177,7 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create(['name' => 'Old Name']);
 
         $response = $this->actingAs($this->admin)
-            ->putJson("/admin/products/{$product->id}", [
+            ->putJson($this->adminUrl("/products/{$product->id}"), [
                 'name' => 'Updated Name',
                 'price' => 199.99,
                 'is_active' => false,
@@ -199,7 +199,7 @@ class ProductControllerTest extends TestCase
         Storage::disk('public')->put('products/old.jpg', 'old content');
 
         $response = $this->actingAs($this->admin)
-            ->putJson("/admin/products/{$product->id}", [
+            ->putJson($this->adminUrl("/products/{$product->id}"), [
                 'name' => $product->name,
                 'price' => $product->price,
                 'is_active' => true,
@@ -217,7 +217,7 @@ class ProductControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->actingAs($this->admin)
-            ->deleteJson("/admin/products/{$product->id}");
+            ->deleteJson($this->adminUrl("/products/{$product->id}"));
 
         $response->assertStatus(200);
         $response->assertJson(['success' => true]);
@@ -226,7 +226,7 @@ class ProductControllerTest extends TestCase
 
     public function test_guest_cannot_create_product(): void
     {
-        $response = $this->postJson('/admin/products', [
+        $response = $this->postJson($this->adminUrl('/products'), [
             'name' => 'Hacked Product',
             'price' => 100,
             'is_active' => true,
@@ -239,7 +239,7 @@ class ProductControllerTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->deleteJson("/admin/products/{$product->id}");
+        $response = $this->deleteJson($this->adminUrl("/products/{$product->id}"));
 
         $response->assertStatus(401);
     }

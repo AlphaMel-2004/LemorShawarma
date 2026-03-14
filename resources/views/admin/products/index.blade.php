@@ -242,7 +242,7 @@
         document.getElementById('submitText').textContent = 'Update Product';
         clearErrors();
 
-        fetch(`{{ url('/admin/products') }}/${id}/edit`, {
+        fetch(`{{ route('admin.products.index') }}/${id}/edit`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
@@ -297,7 +297,7 @@
 
         let url = '{{ route('admin.products.store') }}';
         if (isEdit) {
-            url = `{{ url('/admin/products') }}/${id}`;
+            url = `{{ route('admin.products.index') }}/${id}`;
             formData.append('_method', 'PUT');
         }
 
@@ -364,7 +364,7 @@
     function confirmDelete() {
         if (!deleteProductId) return;
 
-        fetch(`{{ url('/admin/products') }}/${deleteProductId}`, {
+        fetch(`{{ route('admin.products.index') }}/${deleteProductId}`, {
             method: 'DELETE',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',

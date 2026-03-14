@@ -23,28 +23,28 @@ class ContactControllerTest extends TestCase
 
     public function test_guest_cannot_access_contact_settings(): void
     {
-        $response = $this->get('/admin/contacts');
+        $response = $this->get($this->adminUrl('/contacts'));
 
-        $response->assertRedirect('/admin/login');
+        $response->assertRedirect(route('login'));
     }
 
     public function test_guest_cannot_update_contact_settings(): void
     {
-        $response = $this->put('/admin/contacts', [
+        $response = $this->put($this->adminUrl('/contacts'), [
             'contact_address_line1' => '999 Test Street',
             'contact_phone' => '+1 (555) 999-9999',
             'contact_email' => 'test@example.com',
             'contact_hours' => 'Mon - Fri: 9AM - 5PM',
         ]);
 
-        $response->assertRedirect('/admin/login');
+        $response->assertRedirect(route('login'));
     }
 
     // ── Edit Page ──
 
     public function test_authenticated_user_can_view_contact_settings(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin/contacts');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/contacts'));
 
         $response->assertStatus(200);
         $response->assertViewIs('admin.contacts.edit');
@@ -53,7 +53,7 @@ class ContactControllerTest extends TestCase
 
     public function test_contact_edit_page_shows_default_values_when_no_settings_exist(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin/contacts');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/contacts'));
 
         $response->assertStatus(200);
         $response->assertSee('123 Royal Avenue');
@@ -65,7 +65,7 @@ class ContactControllerTest extends TestCase
         SiteSetting::setValue('contact_address_line1', '456 Custom Street');
         SiteSetting::setValue('contact_phone', '+1 (555) 999-0000');
 
-        $response = $this->actingAs($this->admin)->get('/admin/contacts');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/contacts'));
 
         $response->assertStatus(200);
         $response->assertSee('456 Custom Street');
@@ -74,7 +74,7 @@ class ContactControllerTest extends TestCase
 
     public function test_contact_edit_page_has_noindex_header(): void
     {
-        $response = $this->actingAs($this->admin)->get('/admin/contacts');
+        $response = $this->actingAs($this->admin)->get($this->adminUrl('/contacts'));
 
         $response->assertHeader('X-Robots-Tag', 'noindex, nofollow');
     }
@@ -83,7 +83,7 @@ class ContactControllerTest extends TestCase
 
     public function test_contact_settings_can_be_updated(): void
     {
-        $response = $this->actingAs($this->admin)->put('/admin/contacts', [
+        $response = $this->actingAs($this->admin)->put($this->adminUrl('/contacts'), [
             'contact_address_line1' => '789 New Avenue',
             'contact_address_line2' => 'Uptown, CA 90001',
             'contact_phone' => '+1 (555) 777-8888',
@@ -110,7 +110,7 @@ class ContactControllerTest extends TestCase
 
     public function test_contact_update_validates_required_fields(): void
     {
-        $response = $this->actingAs($this->admin)->put('/admin/contacts', [
+        $response = $this->actingAs($this->admin)->put($this->adminUrl('/contacts'), [
             'contact_address_line1' => '',
             'contact_phone' => '',
             'contact_email' => '',
@@ -127,7 +127,7 @@ class ContactControllerTest extends TestCase
 
     public function test_contact_update_validates_email_format(): void
     {
-        $response = $this->actingAs($this->admin)->put('/admin/contacts', [
+        $response = $this->actingAs($this->admin)->put($this->adminUrl('/contacts'), [
             'contact_address_line1' => '123 Street',
             'contact_phone' => '+1 (555) 123-4567',
             'contact_email' => 'not-an-email',
@@ -139,7 +139,7 @@ class ContactControllerTest extends TestCase
 
     public function test_address_line2_is_optional(): void
     {
-        $response = $this->actingAs($this->admin)->put('/admin/contacts', [
+        $response = $this->actingAs($this->admin)->put($this->adminUrl('/contacts'), [
             'contact_address_line1' => '789 New Avenue',
             'contact_address_line2' => '',
             'contact_phone' => '+1 (555) 777-8888',
@@ -158,7 +158,7 @@ class ContactControllerTest extends TestCase
         SiteSetting::setValue('contact_phone', '+63 (999) 888-7777');
         SiteSetting::setValue('contact_email', 'custom@test.com');
 
-        $response = $this->get('/');
+        $response = $this->get($this->siteUrl('/'));
 
         $response->assertStatus(200);
         $response->assertSee('+63 (999) 888-7777');

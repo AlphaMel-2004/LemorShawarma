@@ -1,6 +1,27 @@
 @extends('layouts.app')
 
 @section('title', 'Pita Queen - Premium Mediterranean Cuisine')
+@section('meta_description', 'Discover Pita Queen, your destination for authentic Mediterranean cuisine. Enjoy signature shawarma, fresh pita, and handcrafted dishes made with premium ingredients.')
+@section('canonical', route('home'))
+
+@section('structured_data')
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "Restaurant",
+            "name": "{{ config('app.name') }}",
+            "url": "{{ route('home') }}",
+            "servesCuisine": "Mediterranean",
+            "menu": "{{ route('mobile.menu') }}",
+            "telephone": "{{ $contactSettings['contact_phone'] ?? '' }}",
+            "email": "{{ $contactSettings['contact_email'] ?? '' }}",
+            "address": {
+                "@@type": "PostalAddress",
+                "streetAddress": "{{ ($contactSettings['contact_address_line1'] ?? '').' '.($contactSettings['contact_address_line2'] ?? '') }}"
+            }
+        }
+    </script>
+@endsection
 
 @section('content')
 

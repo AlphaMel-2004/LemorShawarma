@@ -18,6 +18,10 @@ class AdminNoIndex
         $response = $next($request);
 
         $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
+        $response->headers->set('X-Frame-Options', 'DENY');
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+        $response->headers->set('Referrer-Policy', 'no-referrer');
+        $response->headers->set('Content-Security-Policy', "frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
 
         return $response;
     }
