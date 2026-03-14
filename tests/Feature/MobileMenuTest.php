@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Feedback;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -193,5 +194,136 @@ class MobileMenuTest extends TestCase
         $feedback = Feedback::first();
         $this->assertEquals('Ahmed', $feedback->customer_name);
         $this->assertEquals(3, $feedback->rating);
+    }
+
+    // ── Place Order ──
+
+    public function test_order_can_be_placed_successfully(): void
+    {
+        $data = [
+            'items' => [
+                ['name' => 'Shawarma Wrap', 'quantity' => 2, 'price' => 125.00],
+                ['name' => 'Falafel Plate', 'quantity' => 1, 'price' => 100.00],
+            ],
+        ];
+
+        $response = $this->postJson(route('mobile.order'), $data);
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'message',
+            'order' => [
+                'order_number',
+                'total_amount',
+                'items',
+            ],
+        ]);
+
+        $this->assertDatabaseCount('orders', 1);
+        $this->assertDatabaseCount('order_items', 2);
+
+        $order = Order::first();
+        $this->assertEquals(350.00, $order->total_amount);
+        $this->assertStringStartsWith('PQ-', $order->order_number);
+    }
+
+    public function test_order_requires_at_least_one_item(): void
+    {
+        $response = $this->postJson(route('mobile.order'), [
+            'items' => [],
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('items');
+    }
+
+    public function test_order_items_require_name_quantity_and_price(): void
+    {
+        $response = $this->postJson(route('mobile.order'), [
+            'items' => [
+                ['price' => 100],
+            ],
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['items.0.name', 'items.0.quantity']);
+    }
+
+    public function test_order_quantity_must_be_at_least_one(): void
+    {
+        $response = $this->postJson(route('mobile.order'), [
+            'items' => [
+                ['name' => 'Test', 'quantity' => 0, 'price' => 100],
+            ],
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('items.0.quantity');
+    }
+
+    public function test_order_calculates_total_correctly(): void
+    {
+        $data = [
+            'items' => [
+                ['name' => 'Item A', 'quantity' => 3, 'price' => 50.00],
+                ['name' => 'Item B', 'quantity' => 2, 'price' => 75.00],
+            ],
+        ];
+
+        $response = $this->postJson(route('mobile.order'), $data);
+
+        $response->assertStatus(201);
+
+        $order = Order::first();
+        $this->assertEquals(300.00, $order->total_amount);
+    }
+
+    public function test_order_items_are_stored_with_correct_subtotals(): void
+    {
+        $data = [
+            'items' => [
+                ['name' => 'Chicken Kebab', 'quantity' => 2, 'price' => 150.00],
+            ],
+        ];
+
+        $response = $this->postJson(route('mobile.order'), $data);
+
+        $response->assertStatus(201);
+
+        $this->assertDatabaseHas('order_items', [
+            'product_name' => 'Chicken Kebab',
+            'quantity' => 2,
+            'unit_price' => 150.00,
+            'subtotal' => 300.00,
+        ]);
+    }
+
+    public function test_order_returns_order_number_in_response(): void
+    {
+        $data = [
+            'items' => [
+                ['name' => 'Test Item', 'quantity' => 1, 'price' => 100.00],
+            ],
+        ];
+
+        $response = $this->postJson(route('mobile.order'), $data);
+
+        $response->assertStatus(201);
+        $response->assertJsonPath('order.order_number', Order::first()->order_number);
+    }
+
+    public function test_order_accepts_optional_customer_name(): void
+    {
+        $data = [
+            'items' => [
+                ['name' => 'Test Item', 'quantity' => 1, 'price' => 100.00],
+            ],
+            'customer_name' => 'Ali',
+        ];
+
+        $response = $this->postJson(route('mobile.order'), $data);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('orders', ['customer_name' => 'Ali']);
     }
 }

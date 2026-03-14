@@ -31,6 +31,20 @@ class SiteSetting extends Model
     ];
 
     /**
+     * The default branch location settings.
+     *
+     * @var array<string, string>
+     */
+    public const BRANCH_LOCATION_DEFAULTS = [
+        'branch_location_name' => 'Downtown Flagship',
+        'branch_location_address' => '123 Golden Avenue, Downtown District',
+        'branch_location_phone' => '+1 (555) 123-4567',
+        'branch_location_hours' => 'Mon-Sun: 11AM - 11PM',
+        'branch_location_map_url' => 'https://maps.google.com/?q=123+Golden+Avenue,+Downtown+District',
+        'branch_location_image_url' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400',
+    ];
+
+    /**
      * Get a setting value by key, with optional default.
      */
     public static function getValue(string $key, ?string $default = null): ?string
@@ -57,13 +71,17 @@ class SiteSetting extends Model
      */
     public static function getContactSettings(): array
     {
-        $settings = [];
+        return self::getSettings(self::CONTACT_DEFAULTS);
+    }
 
-        foreach (self::CONTACT_DEFAULTS as $key => $default) {
-            $settings[$key] = self::getValue($key, $default);
-        }
-
-        return $settings;
+    /**
+     * Get all branch location settings as an associative array.
+     *
+     * @return array<string, string|null>
+     */
+    public static function getBranchLocationSettings(): array
+    {
+        return self::getSettings(self::BRANCH_LOCATION_DEFAULTS);
     }
 
     /**
@@ -71,8 +89,35 @@ class SiteSetting extends Model
      */
     public static function clearCache(): void
     {
-        foreach (array_keys(self::CONTACT_DEFAULTS) as $key) {
+        foreach (self::getCacheableKeys() as $key) {
             Cache::forget("site_setting.{$key}");
         }
+    }
+
+    /**
+     * Get settings using the provided defaults.
+     *
+     * @param  array<string, string>  $defaults
+     * @return array<string, string|null>
+     */
+    private static function getSettings(array $defaults): array
+    {
+        $settings = [];
+
+        foreach ($defaults as $key => $default) {
+            $settings[$key] = self::getValue($key, $default);
+        }
+
+        return $settings;
+    }
+
+    /**
+     * Get all site setting keys that should be cached.
+     *
+     * @return list<string>
+     */
+    private static function getCacheableKeys(): array
+    {
+        return array_keys(self::CONTACT_DEFAULTS + self::BRANCH_LOCATION_DEFAULTS);
     }
 }

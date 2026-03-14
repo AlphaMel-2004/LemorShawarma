@@ -30,7 +30,7 @@
         </div>
         
         <div class="location-actions">
-            <a href="#" class="btn btn-golden btn-sm">
+            <a href="{{ $location['map_url'] }}" class="btn btn-golden btn-sm" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-map me-2"></i>Get Directions
             </a>
             <a href="tel:{{ preg_replace('/[^0-9+]/', '', $location['phone']) }}" class="btn btn-outline-golden btn-sm">

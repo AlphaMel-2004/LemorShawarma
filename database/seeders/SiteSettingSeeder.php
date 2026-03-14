@@ -12,7 +12,7 @@ class SiteSettingSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (SiteSetting::CONTACT_DEFAULTS as $key => $value) {
+        foreach (SiteSetting::CONTACT_DEFAULTS + SiteSetting::BRANCH_LOCATION_DEFAULTS as $key => $value) {
             SiteSetting::updateOrCreate(
                 ['key' => $key],
                 ['value' => $value],

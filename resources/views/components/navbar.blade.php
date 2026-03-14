@@ -28,7 +28,7 @@
                     <a class="nav-link" href="#about">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#menu">Menu</a>
+                    <a class="nav-link" href="{{ route('products') }}">Menu</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#bestseller">Best Sellers</a>

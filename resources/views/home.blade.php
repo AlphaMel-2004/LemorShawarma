@@ -151,7 +151,7 @@
             
             <!-- View More Button -->
             <div class="text-center mt-5" data-aos="fade-up">
-                <a href="#" class="btn btn-outline-golden btn-lg">
+                <a href="{{ route('products') }}" class="btn btn-outline-golden btn-lg">
                     <span>View Full Menu</span>
                     <i class="bi bi-arrow-right ms-2"></i>
                 </a>
@@ -248,9 +248,9 @@
             <!-- Section Header -->
             <div class="section-header text-center" data-aos="fade-up">
                 <span class="section-badge">Visit Us</span>
-                <h2 class="section-title">Our <span class="text-golden">Locations</span></h2>
+                <h2 class="section-title">Our <span class="text-golden">Location</span></h2>
                 <p class="section-description">
-                    Find us at these convenient locations across the city
+                    Stop by our branch and use the directions link for the fastest route.
                 </p>
             </div>
             
@@ -276,24 +276,32 @@
             </div>
             
             <!-- Testimonials Slider -->
-            <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="100">
-                <div class="slider-wrapper" id="testimonialsSlider">
-                    @foreach($testimonials as $testimonial)
-                        <x-testimonial-card :testimonial="$testimonial" />
-                    @endforeach
+            @if(count($testimonials) > 0)
+                <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="100">
+                    <div class="slider-wrapper" id="testimonialsSlider">
+                        @foreach($testimonials as $testimonial)
+                            <x-testimonial-card :testimonial="$testimonial" />
+                        @endforeach
+                    </div>
+                    
+                    <!-- Slider Controls -->
+                    <div class="slider-controls">
+                        <button class="slider-btn slider-prev" id="testimonialPrev">
+                            <i class="bi bi-arrow-left"></i>
+                        </button>
+                        <div class="slider-dots" id="testimonialDots"></div>
+                        <button class="slider-btn slider-next" id="testimonialNext">
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
-                
-                <!-- Slider Controls -->
-                <div class="slider-controls">
-                    <button class="slider-btn slider-prev" id="testimonialPrev">
-                        <i class="bi bi-arrow-left"></i>
-                    </button>
-                    <div class="slider-dots" id="testimonialDots"></div>
-                    <button class="slider-btn slider-next" id="testimonialNext">
-                        <i class="bi bi-arrow-right"></i>
-                    </button>
+            @else
+                <div class="text-center py-5" data-aos="fade-up" data-aos-delay="100">
+                    <i class="bi bi-chat-heart" style="font-size: 3rem; color: var(--golden);"></i>
+                    <h4 class="mt-3" style="color: #fff;">No Reviews Yet</h4>
+                    <p style="color: rgba(255,255,255,0.6);">Be the first to share your experience!</p>
                 </div>
-            </div>
+            @endif
         </div>
         
         <!-- Background Pattern -->

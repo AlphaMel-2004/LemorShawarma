@@ -246,6 +246,53 @@
             color: var(--bg-dark);
         }
 
+        /* Inline Qty Controls */
+        .item-qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .item-qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .item-qty-btn:active {
+            background: var(--gold);
+            color: var(--bg-dark);
+            transform: scale(0.9);
+        }
+
+        .item-qty-btn.remove {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .item-qty-btn.remove:active {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .item-qty-value {
+            min-width: 24px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -269,7 +316,16 @@
             transition: transform 0.3s ease;
         }
 
-        .cart-bar.show { transform: translateY(0); }
+        .cart-bar.show {
+            transform: translateY(0);
+            animation: cartBounce 0.35s ease;
+        }
+
+        @keyframes cartBounce {
+            0% { transform: translateY(100%); }
+            60% { transform: translateY(-6px); }
+            100% { transform: translateY(0); }
+        }
 
         .cart-bar-inner {
             display: flex;
@@ -424,6 +480,129 @@
         }
 
         .btn-place-order:hover { background: var(--gold-light); }
+
+        /* Receipt Modal */
+        .receipt-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 400;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .receipt-overlay.show { display: flex; }
+
+        .receipt-modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .receipt-header {
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px dashed var(--border);
+            margin-bottom: 1rem;
+        }
+
+        .receipt-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.25rem;
+        }
+
+        .receipt-order-number {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.15rem;
+        }
+
+        .receipt-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .receipt-items { margin-bottom: 1rem; }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .receipt-item-info { flex: 1; }
+
+        .receipt-item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .receipt-item-detail {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .receipt-item-subtotal {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+
+        .receipt-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0 0.75rem;
+            border-top: 2px dashed var(--border);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .receipt-total-row .gold { color: var(--gold); }
+
+        .receipt-status {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .receipt-status i { color: var(--gold); font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+
+        .receipt-status-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .btn-receipt-close {
+            width: 100%;
+            background: var(--gold);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 12px;
+            padding: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-receipt-close:hover { background: var(--gold-light); }
 
         /* Feedback Section */
         .feedback-header {
@@ -685,9 +864,11 @@
                                 @endif
                                 <div class="menu-item-bottom">
                                     <span class="menu-item-price">₱{{ number_format($item->price, 2) }}</span>
-                                    <button class="btn-add-order" data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-price="{{ $item->price }}">
-                                        <i class="bi bi-plus"></i>
-                                    </button>
+                                    <div id="itemAction_{{ $item->id }}">
+                                        <button class="btn-add-order" data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-price="{{ $item->price }}">
+                                            <i class="bi bi-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -827,6 +1008,29 @@
         </button>
     </div>
 
+    {{-- Receipt Modal --}}
+    <div class="receipt-overlay" id="receiptOverlay">
+        <div class="receipt-modal">
+            <div class="receipt-header">
+                <div class="receipt-logo">Pita Queen Hub</div>
+                <div class="receipt-order-number" id="receiptOrderNumber"></div>
+                <div class="receipt-date" id="receiptDate"></div>
+            </div>
+            <div class="receipt-items" id="receiptItems"></div>
+            <div class="receipt-total-row">
+                <span>Total</span>
+                <span class="gold" id="receiptTotal"></span>
+            </div>
+            <div class="receipt-status">
+                <i class="bi bi-check-circle-fill"></i>
+                <div class="receipt-status-text">Order Placed Successfully!</div>
+            </div>
+            <button class="btn-receipt-close" onclick="closeReceipt()">
+                <i class="bi bi-check2 me-1"></i> Done
+            </button>
+        </div>
+    </div>
+
     {{-- Toast --}}
     <div class="mobile-toast" id="mobileToast">
         <i class="bi bi-check-circle-fill"></i>
@@ -864,15 +1068,15 @@
             if (cart[id]) {
                 cart[id].qty++;
             } else {
-                cart[id] = { name, price: parseFloat(price), qty: 1 };
+                cart[id] = { name: name, price: parseFloat(price), qty: 1 };
             }
             updateCartUI();
             showToast(name + ' added');
         }
 
         function updateCartUI() {
-            let totalItems = 0, totalPrice = 0;
-            Object.values(cart).forEach(item => {
+            var totalItems = 0, totalPrice = 0;
+            Object.values(cart).forEach(function (item) {
                 totalItems += item.qty;
                 totalPrice += item.qty * item.price;
             });
@@ -882,32 +1086,71 @@
             document.getElementById('cartTotal').textContent = totalPrice.toFixed(2);
             document.getElementById('orderTotal').textContent = totalPrice.toFixed(2);
 
-            const bar = document.getElementById('cartBar');
+            var bar = document.getElementById('cartBar');
             if (totalItems > 0) {
                 bar.classList.add('show');
             } else {
                 bar.classList.remove('show');
             }
 
+            // Update inline qty controls on each menu item
+            document.querySelectorAll('[id^="itemAction_"]').forEach(function (wrapper) {
+                var itemId = wrapper.id.replace('itemAction_', '');
+                var btn = wrapper.querySelector('.btn-add-order');
+                if (cart[itemId] && cart[itemId].qty > 0) {
+                    wrapper.innerHTML = '<div class="item-qty-controls">' +
+                        '<button class="item-qty-btn remove" onclick="changeItemQty(\'' + itemId + '\', -1)"><i class="bi bi-dash"><\/i><\/button>' +
+                        '<span class="item-qty-value">' + cart[itemId].qty + '<\/span>' +
+                        '<button class="item-qty-btn" onclick="changeItemQty(\'' + itemId + '\', 1)"><i class="bi bi-plus"><\/i><\/button>' +
+                    '<\/div>';
+                } else if (!btn) {
+                    // Restore the + button
+                    var origBtn = wrapper.closest('.menu-item');
+                    var name = origBtn ? origBtn.dataset.name : '';
+                    var priceAttr = wrapper.closest('.menu-item-bottom') ? '' : '';
+                    // Find original data from the menu-item parent
+                    var menuItem = wrapper.closest('.menu-item');
+                    var origName = menuItem ? menuItem.querySelector('.menu-item-name').textContent : '';
+                    var origPrice = menuItem ? menuItem.querySelector('.menu-item-price').textContent.replace('₱', '').replace(/,/g, '') : '0';
+                    wrapper.innerHTML = '<button class="btn-add-order" data-id="' + itemId + '" data-name="' + origName + '" data-price="' + origPrice + '">' +
+                        '<i class="bi bi-plus"><\/i><\/button>';
+                    // Re-attach click handler
+                    wrapper.querySelector('.btn-add-order').addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        addToCart(this.dataset.id, this.dataset.name, this.dataset.price);
+                    });
+                }
+            });
+
             renderOrderItems();
         }
 
+        function changeItemQty(id, delta) {
+            if (!cart[id]) return;
+            cart[id].qty += delta;
+            if (cart[id].qty <= 0) delete cart[id];
+            updateCartUI();
+            if (Object.keys(cart).length === 0) closeOrderSheet();
+        }
+
         function renderOrderItems() {
-            const container = document.getElementById('orderItems');
+            var container = document.getElementById('orderItems');
             container.innerHTML = '';
-            Object.entries(cart).forEach(([id, item]) => {
-                container.innerHTML += `
-                    <div class="order-item">
-                        <div class="order-item-left">
-                            <div class="order-qty-controls">
-                                <button class="qty-btn" onclick="changeQty('${id}', -1)"><i class="bi bi-dash"></i></button>
-                                <span class="order-item-qty">${item.qty}</span>
-                                <button class="qty-btn" onclick="changeQty('${id}', 1)"><i class="bi bi-plus"></i></button>
-                            </div>
-                            <span class="order-item-name">${item.name}</span>
-                        </div>
-                        <span class="order-item-price">₱${(item.qty * item.price).toFixed(2)}</span>
-                    </div>`;
+            Object.keys(cart).forEach(function (id) {
+                var item = cart[id];
+                var subtotal = (item.qty * item.price).toFixed(2);
+                container.innerHTML +=
+                    '<div class="order-item">' +
+                        '<div class="order-item-left">' +
+                            '<div class="order-qty-controls">' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + id + '\', -1)"><i class="bi bi-dash"><\/i><\/button>' +
+                                '<span class="order-item-qty">' + item.qty + '<\/span>' +
+                                '<button class="qty-btn" onclick="changeQty(\'' + id + '\', 1)"><i class="bi bi-plus"><\/i><\/button>' +
+                            '<\/div>' +
+                            '<span class="order-item-name">' + item.name + '<\/span>' +
+                        '<\/div>' +
+                        '<span class="order-item-price">₱' + subtotal + '<\/span>' +
+                    '<\/div>';
             });
         }
 
@@ -930,23 +1173,73 @@
         }
 
         function placeOrder() {
-            const phone = "{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}";
-            let msg = "Hi! I'd like to place an order:\n\n";
-            let total = 0;
-            Object.values(cart).forEach(item => {
-                const sub = item.qty * item.price;
-                msg += `${item.qty}x ${item.name} - ₱${sub.toFixed(2)}\n`;
-                total += sub;
+            var items = [];
+            Object.values(cart).forEach(function (item) {
+                items.push({ name: item.name, quantity: item.qty, price: item.price });
             });
-            msg += `\nTotal: ₱${total.toFixed(2)}\n\nThank you!`;
 
-            const cleanPhone = phone.replace('+', '');
-            window.open('https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(msg), '_blank');
+            if (items.length === 0) return;
 
-            cart = {};
-            updateCartUI();
-            closeOrderSheet();
-            showToast('Order sent via WhatsApp!');
+            var btn = document.querySelector('.btn-place-order');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"><\/span> Placing Order...';
+
+            fetch("{{ route('mobile.order') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ items: items })
+            })
+            .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+            .then(function (result) {
+                if (result.ok) {
+                    showReceipt(result.data.order);
+                    cart = {};
+                    updateCartUI();
+                    closeOrderSheet();
+                } else {
+                    showToast('Failed to place order. Please try again.');
+                }
+            })
+            .catch(function () {
+                showToast('Something went wrong. Please try again.');
+            })
+            .finally(function () {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-bag-check me-1"><\/i> Place Order';
+            });
+        }
+
+        function showReceipt(order) {
+            document.getElementById('receiptOrderNumber').textContent = order.order_number;
+
+            var now = new Date();
+            var dateStr = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            var timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('receiptDate').textContent = dateStr + ' at ' + timeStr;
+
+            var itemsHtml = '';
+            order.items.forEach(function (item) {
+                itemsHtml +=
+                    '<div class="receipt-item">' +
+                        '<div class="receipt-item-info">' +
+                            '<div class="receipt-item-name">' + item.product_name + '<\/div>' +
+                            '<div class="receipt-item-detail">' + item.quantity + ' x ₱' + parseFloat(item.unit_price).toFixed(2) + '<\/div>' +
+                        '<\/div>' +
+                        '<div class="receipt-item-subtotal">₱' + parseFloat(item.subtotal).toFixed(2) + '<\/div>' +
+                    '<\/div>';
+            });
+            document.getElementById('receiptItems').innerHTML = itemsHtml;
+            document.getElementById('receiptTotal').textContent = '₱' + parseFloat(order.total_amount).toFixed(2);
+
+            document.getElementById('receiptOverlay').classList.add('show');
+        }
+
+        function closeReceipt() {
+            document.getElementById('receiptOverlay').classList.remove('show');
         }
 
         // Add-to-cart button handlers

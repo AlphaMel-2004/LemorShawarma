@@ -637,9 +637,17 @@
                 <i class="bi bi-box-seam-fill"></i>
                 <span>Products</span>
             </a>
+            <a href="{{ route('admin.branch-locations.edit') }}" class="sidebar-link {{ request()->routeIs('admin.branch-locations.*') ? 'active' : '' }}">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span>Manage Branch Location</span>
+            </a>
             <a href="{{ route('admin.contacts.edit') }}" class="sidebar-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                 <i class="bi bi-telephone-fill"></i>
                 <span>Manage Contacts</span>
+            </a>
+            <a href="{{ route('admin.orders.index') }}" class="sidebar-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                <i class="bi bi-receipt"></i>
+                <span>Manage Orders</span>
             </a>
         </nav>
 
