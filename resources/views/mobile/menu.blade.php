@@ -939,7 +939,7 @@
 
                     <div class="fb-field">
                         <label class="fb-label">Your Feedback</label>
-                        <textarea name="message" class="fb-textarea" placeholder="Tell us about your experience..." required></textarea>
+                        <textarea name="message" class="fb-textarea" placeholder="Tell us about your experience..." maxlength="500" required></textarea>
                         <div class="fb-error" id="err_message"></div>
                     </div>
 

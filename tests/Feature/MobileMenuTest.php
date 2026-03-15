@@ -168,7 +168,7 @@ class MobileMenuTest extends TestCase
         $data = [
             'customer_name' => 'John',
             'rating' => 5,
-            'message' => str_repeat('a', 2001),
+            'message' => str_repeat('a', 501),
         ];
 
         $response = $this->postJson(route('mobile.feedback'), $data);

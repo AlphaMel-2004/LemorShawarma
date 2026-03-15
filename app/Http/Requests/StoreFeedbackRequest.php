@@ -25,7 +25,7 @@ class StoreFeedbackRequest extends FormRequest
             'customer_name' => ['required', 'string', 'max:255'],
             'customer_email' => ['nullable', 'email', 'max:255'],
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
-            'message' => ['required', 'string', 'max:2000'],
+            'message' => ['required', 'string', 'max:500'],
         ];
     }
 
@@ -42,7 +42,7 @@ class StoreFeedbackRequest extends FormRequest
             'rating.min' => 'Rating must be between 1 and 5.',
             'rating.max' => 'Rating must be between 1 and 5.',
             'message.required' => 'Please enter your feedback.',
-            'message.max' => 'Feedback must not exceed 2000 characters.',
+            'message.max' => 'Feedback must not exceed 500 characters.',
         ];
     }
 }

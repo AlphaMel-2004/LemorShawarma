@@ -417,7 +417,7 @@
 
                                 <div class="col-12">
                                     <label for="message" class="feedback-label">Your Feedback</label>
-                                    <textarea id="message" name="message" class="feedback-input feedback-textarea @error('message') is-invalid @enderror" placeholder="Tell us about your experience..." required>{{ old('message') }}</textarea>
+                                    <textarea id="message" name="message" class="feedback-input feedback-textarea @error('message') is-invalid @enderror" placeholder="Tell us about your experience..." maxlength="500" required>{{ old('message') }}</textarea>
                                     @error('message')
                                         <p class="feedback-error">{{ $message }}</p>
                                     @enderror

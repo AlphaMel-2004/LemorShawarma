@@ -6,7 +6,9 @@
 @push('styles')
 <style>
     .testimonial-message-preview {
+        display: block;
         max-width: 360px;
+        min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
