@@ -660,9 +660,15 @@
                     <div class="sidebar-user-name">{{ auth()->user()->name ?? 'Admin' }}</div>
                     <div class="sidebar-user-role">Administrator</div>
                 </div>
-                <form method="POST" action="{{ route('admin.logout') }}">
+                <form method="POST" action="{{ route('admin.logout') }}" id="logoutForm">
                     @csrf
-                    <button type="submit" class="btn-action ms-1" title="Logout">
+                    <button
+                        type="button"
+                        class="btn-action ms-1"
+                        title="Logout"
+                        data-bs-toggle="modal"
+                        data-bs-target="#logoutConfirmModal"
+                    >
                         <i class="bi bi-box-arrow-right"></i>
                     </button>
                 </form>
@@ -688,6 +694,24 @@
 
         <div class="admin-content">
             @yield('content')
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div class="confirm-icon">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </div>
+                    <h5 class="mb-2" id="logoutConfirmModalLabel">Sign out now?</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.9rem;">Your current admin session will be closed.</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmLogoutBtn">Logout</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -745,6 +769,10 @@
 
         // CSRF setup for AJAX
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        document.getElementById('confirmLogoutBtn')?.addEventListener('click', function () {
+            document.getElementById('logoutForm')?.submit();
+        });
     </script>
 
     <style>
