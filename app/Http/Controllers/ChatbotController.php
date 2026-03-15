@@ -32,7 +32,7 @@ class ChatbotController extends Controller
             );
         } catch (\Throwable $exception) {
             Log::warning('Chatbot response failed.', [
-                'error' => $exception->getMessage(),
+                'exception' => $exception::class,
             ]);
 
             $reply = 'I am having trouble answering right now. Please try again in a moment.';

@@ -257,13 +257,13 @@
 
                         <div>
                             <div class="quick-actions">
-                                <a class="quick-action-link" href="{{ route('legal.privacy') }}" target="_blank">
+                                <a class="quick-action-link" href="{{ route('legal.privacy') }}" target="_blank" rel="noopener noreferrer">
                                     <i class="bi bi-box-arrow-up-right"></i> Preview Privacy
                                 </a>
-                                <a class="quick-action-link" href="{{ route('legal.terms') }}" target="_blank">
+                                <a class="quick-action-link" href="{{ route('legal.terms') }}" target="_blank" rel="noopener noreferrer">
                                     <i class="bi bi-box-arrow-up-right"></i> Preview Terms
                                 </a>
-                                <a class="quick-action-link" href="{{ route('legal.cookies') }}" target="_blank">
+                                <a class="quick-action-link" href="{{ route('legal.cookies') }}" target="_blank" rel="noopener noreferrer">
                                     <i class="bi bi-box-arrow-up-right"></i> Preview Cookies
                                 </a>
                             </div>

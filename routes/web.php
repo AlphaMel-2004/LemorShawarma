@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::domain((string) config('app.root_domain'))->group(function (): void {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::post('/feedback', [HomeController::class, 'storeFeedback'])->name('home.feedback');
+    Route::post('/feedback', [HomeController::class, 'storeFeedback'])
+        ->middleware('throttle:10,1')
+        ->name('home.feedback');
     Route::get('/privacy-policy', [LegalPageController::class, 'privacy'])->name('legal.privacy');
     Route::get('/terms-of-service', [LegalPageController::class, 'terms'])->name('legal.terms');
     Route::get('/cookie-policy', [LegalPageController::class, 'cookies'])->name('legal.cookies');
@@ -18,7 +20,9 @@ Route::domain((string) config('app.root_domain'))->group(function (): void {
         ->name('chatbot.reply');
 
     Route::get('/menu', [MobileMenuController::class, 'index'])->name('mobile.menu');
-    Route::post('/menu/feedback', [MobileMenuController::class, 'storeFeedback'])->name('mobile.feedback');
+    Route::post('/menu/feedback', [MobileMenuController::class, 'storeFeedback'])
+        ->middleware('throttle:10,1')
+        ->name('mobile.feedback');
 
     Route::get('/sitemap.xml', function () {
         $lastModified = now()->toDateString();

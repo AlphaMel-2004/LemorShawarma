@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Location;
 use App\Models\Product;
 use App\Models\SiteSetting;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -14,6 +15,12 @@ class HuggingFaceChatService
     private const ROUTER_CHAT_COMPLETIONS_URL = 'https://router.huggingface.co/v1/chat/completions';
 
     private const DEFAULT_CHAT_MODEL = 'meta-llama/Llama-3.1-8B-Instruct:fastest';
+
+    private const REQUEST_TIMEOUT_SECONDS = 12;
+
+    private const RETRY_ATTEMPTS = 1;
+
+    private const LIVE_CONTEXT_CACHE_SECONDS = 60;
 
     /**
      * Generate an assistant response via Hugging Face inference.
@@ -82,8 +89,8 @@ class HuggingFaceChatService
         $payload['model'] = $model;
 
         $response = Http::withToken($token)
-            ->timeout(25)
-            ->retry(2, 400, throw: false)
+            ->timeout(self::REQUEST_TIMEOUT_SECONDS)
+            ->retry(self::RETRY_ATTEMPTS, 250, throw: false)
             ->post(self::ROUTER_CHAT_COMPLETIONS_URL, $payload);
 
         if ($response->status() === 401 || $response->status() === 403) {
@@ -198,52 +205,54 @@ class HuggingFaceChatService
 
     private function buildLiveBusinessContext(): string
     {
-        $contactSettings = SiteSetting::getContactSettings();
+        return Cache::remember('chatbot.live_business_context', self::LIVE_CONTEXT_CACHE_SECONDS, function (): string {
+            $contactSettings = SiteSetting::getContactSettings();
 
-        $contactSummary = implode(' | ', array_filter([
-            'Phone: '.trim((string) ($contactSettings['contact_phone'] ?? '')),
-            'Email: '.trim((string) ($contactSettings['contact_email'] ?? '')),
-            'Hours: '.trim((string) ($contactSettings['contact_hours'] ?? '')),
-            'Address: '.trim((string) ($contactSettings['contact_address_line1'] ?? '')).' '.trim((string) ($contactSettings['contact_address_line2'] ?? '')),
-        ], static fn (string $item): bool => ! str_ends_with($item, ': ') && trim($item) !== ''));
+            $contactSummary = implode(' | ', array_filter([
+                'Phone: '.trim((string) ($contactSettings['contact_phone'] ?? '')),
+                'Email: '.trim((string) ($contactSettings['contact_email'] ?? '')),
+                'Hours: '.trim((string) ($contactSettings['contact_hours'] ?? '')),
+                'Address: '.trim((string) ($contactSettings['contact_address_line1'] ?? '')).' '.trim((string) ($contactSettings['contact_address_line2'] ?? '')),
+            ], static fn (string $item): bool => ! str_ends_with($item, ': ') && trim($item) !== ''));
 
-        $products = Product::query()
-            ->where('is_active', true)
-            ->orderBy('name')
-            ->limit(20)
-            ->get(['name', 'price'])
-            ->map(static function (Product $product): string {
-                $name = trim((string) $product->name);
-                $price = (float) $product->price;
+            $products = Product::query()
+                ->where('is_active', true)
+                ->orderBy('name')
+                ->limit(20)
+                ->get(['name', 'price'])
+                ->map(static function (Product $product): string {
+                    $name = trim((string) $product->name);
+                    $price = (float) $product->price;
 
-                return $name !== '' ? sprintf('%s ($%.2f)', $name, $price) : '';
-            })
-            ->filter()
-            ->values()
-            ->implode('; ');
+                    return $name !== '' ? sprintf('%s ($%.2f)', $name, $price) : '';
+                })
+                ->filter()
+                ->values()
+                ->implode('; ');
 
-        $locations = Location::query()
-            ->where('is_active', true)
-            ->orderBy('name')
-            ->limit(10)
-            ->get(['name', 'address', 'phone', 'hours'])
-            ->map(static function (Location $location): string {
-                $name = trim((string) $location->name);
-                $address = trim((string) $location->address);
-                $phone = trim((string) $location->phone);
-                $hours = trim((string) $location->hours);
+            $locations = Location::query()
+                ->where('is_active', true)
+                ->orderBy('name')
+                ->limit(10)
+                ->get(['name', 'address', 'phone', 'hours'])
+                ->map(static function (Location $location): string {
+                    $name = trim((string) $location->name);
+                    $address = trim((string) $location->address);
+                    $phone = trim((string) $location->phone);
+                    $hours = trim((string) $location->hours);
 
-                return trim("{$name} - {$address} - {$phone} - {$hours}", ' -');
-            })
-            ->filter()
-            ->values()
-            ->implode('; ');
+                    return trim("{$name} - {$address} - {$phone} - {$hours}", ' -');
+                })
+                ->filter()
+                ->values()
+                ->implode('; ');
 
-        return implode(' || ', array_filter([
-            $contactSummary !== '' ? "Contacts: {$contactSummary}" : null,
-            $products !== '' ? "Active products: {$products}" : null,
-            $locations !== '' ? "Active locations: {$locations}" : null,
-        ])) ?: 'No live business data available.';
+            return implode(' || ', array_filter([
+                $contactSummary !== '' ? "Contacts: {$contactSummary}" : null,
+                $products !== '' ? "Active products: {$products}" : null,
+                $locations !== '' ? "Active locations: {$locations}" : null,
+            ])) ?: 'No live business data available.';
+        });
     }
 
     private function fallbackResponse(): string

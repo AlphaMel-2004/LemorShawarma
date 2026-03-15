@@ -822,7 +822,7 @@
                     <i class="bi bi-clock-history"></i>
                     <span id="adminLiveDateTime">--</span>
                 </span>
-                <a href="{{ route('home') }}" class="btn btn-sm topbar-action-btn" target="_blank">
+                <a href="{{ route('home') }}" class="btn btn-sm topbar-action-btn" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-box-arrow-up-right me-1"></i> View Site
                 </a>
             </div>
