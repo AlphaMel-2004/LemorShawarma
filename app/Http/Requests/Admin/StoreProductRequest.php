@@ -23,6 +23,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:5000'],
             'price' => ['required', 'numeric', 'min:0', 'max:99999.99'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
@@ -39,6 +40,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name.required' => 'The product name is required.',
+            'category.required' => 'The product category is required.',
             'price.required' => 'The product price is required.',
             'price.numeric' => 'The price must be a valid number.',
             'price.min' => 'The price cannot be negative.',

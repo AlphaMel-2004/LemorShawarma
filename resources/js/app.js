@@ -44,8 +44,35 @@ function initPageLoader() {
 function initNavbar() {
     const navbar = document.getElementById('mainNavbar');
     const navLinks = document.querySelectorAll('.nav-link');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
     
     if (!navbar) return;
+
+    if (navbarCollapse) {
+        navbarCollapse.addEventListener('shown.bs.collapse', function() {
+            document.body.classList.add('mobile-nav-open');
+        });
+
+        navbarCollapse.addEventListener('hidden.bs.collapse', function() {
+            document.body.classList.remove('mobile-nav-open');
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!document.body.classList.contains('mobile-nav-open')) {
+                return;
+            }
+
+            const clickedInsideDrawer = navbarCollapse.contains(event.target);
+            const clickedToggler = event.target.closest('.navbar-toggler');
+
+            if (!clickedInsideDrawer && !clickedToggler) {
+                const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                if (bsCollapse) {
+                    bsCollapse.hide();
+                }
+            }
+        });
+    }
     
     // Scroll effect
     function handleScroll() {
@@ -86,7 +113,6 @@ function initNavbar() {
     // Close mobile menu on link click
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
-            const navbarCollapse = document.querySelector('.navbar-collapse');
             if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                 const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
                 if (bsCollapse) {

@@ -11,6 +11,7 @@
             @endif
         </td>
         <td class="fw-semibold">{{ $product->name }}</td>
+        <td>{{ $product->category }}</td>
         <td>
             <span class="text-description-preview d-inline-block" title="{{ $product->description }}">
                 {{ $product->description ?? '—' }}
@@ -38,7 +39,7 @@
     </tr>
 @empty
     <tr>
-        <td colspan="8" class="text-center py-5">
+        <td colspan="9" class="text-center py-5">
             <div style="color: var(--admin-text-muted);">
                 <i class="bi bi-inbox" style="font-size: 2.5rem; display: block; margin-bottom: 0.75rem;"></i>
                 <p class="mb-0">No products found.</p>

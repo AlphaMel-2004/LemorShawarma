@@ -19,13 +19,22 @@ class HomeController extends Controller
      */
     public function index(): View
     {
-        $menuItems = Product::where('is_active', true)->orderBy('name')->get();
+        $menuItems = Product::query()
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+        $menuCategories = Product::query()
+            ->where('is_active', true)
+            ->whereNotNull('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
         $testimonials = $this->getTestimonials();
         $locations = $this->getLocations();
         $contactSettings = SiteSetting::getContactSettings();
         $chatbotSettings = SiteSetting::getChatbotSettings();
 
-        return view('home', compact('menuItems', 'testimonials', 'locations', 'contactSettings', 'chatbotSettings'));
+        return view('home', compact('menuItems', 'menuCategories', 'testimonials', 'locations', 'contactSettings', 'chatbotSettings'));
     }
 
     /**

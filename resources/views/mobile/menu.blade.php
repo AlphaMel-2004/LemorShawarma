@@ -8,7 +8,7 @@
         $pageImage = asset('images/logo.png');
     @endphp
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -53,6 +53,7 @@
             background-color: var(--bg-dark);
             color: var(--text-primary);
             min-height: 100vh;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -65,7 +66,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 1rem 1.25rem;
+            padding: calc(0.75rem + env(safe-area-inset-top)) 1rem 0.75rem;
         }
 
         .header-brand {
@@ -94,10 +95,15 @@
             position: sticky;
             top: 65px;
             z-index: 99;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
+        .tab-nav::-webkit-scrollbar { display: none; }
+
         .tab-btn {
-            flex: 1;
+            flex: 1 0 auto;
+            min-width: 33.33%;
             padding: 0.85rem 0.5rem;
             background: none;
             border: none;
@@ -122,6 +128,18 @@
         }
 
         .tab-btn i { font-size: 1rem; }
+
+        @media (max-width: 420px) {
+            .tab-btn {
+                min-width: 120px;
+                font-size: 0.74rem;
+                padding: 0.75rem 0.45rem;
+            }
+
+            .tab-btn i {
+                font-size: 0.9rem;
+            }
+        }
 
         /* Section containers */
         .tab-content { display: none; }
