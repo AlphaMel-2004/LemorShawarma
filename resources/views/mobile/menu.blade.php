@@ -443,6 +443,124 @@
 
         .btn-place-order:hover { background: var(--gold-light); }
 
+        .receipt-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 350;
+            display: none;
+        }
+
+        .receipt-overlay.show { display: block; }
+
+        .receipt-modal {
+            position: fixed;
+            left: 1rem;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 351;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1rem;
+            transform: translateY(120%);
+            transition: transform 0.3s ease;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .receipt-modal.show { transform: translateY(0); }
+
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .receipt-header h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .receipt-close {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-primary);
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .receipt-meta {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .receipt-order-number {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.25rem;
+        }
+
+        .receipt-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .receipt-lines {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+
+        .receipt-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .receipt-line:last-child { border-bottom: none; }
+
+        .receipt-line-name {
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .receipt-line-price {
+            color: var(--gold);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .receipt-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .receipt-note {
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
         /* Feedback Section */
         .feedback-header {
             text-align: center;
@@ -845,6 +963,29 @@
         </button>
     </div>
 
+    <div class="receipt-overlay" id="receiptOverlay" onclick="closeReceiptModal()"></div>
+    <div class="receipt-modal" id="receiptModal">
+        <div class="receipt-header">
+            <h3>Order Receipt</h3>
+            <button class="receipt-close" type="button" onclick="closeReceiptModal()" aria-label="Close receipt">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="receipt-meta">
+            <div class="receipt-order-number">Order #<span id="receiptNumber">-</span></div>
+            <div class="receipt-date" id="receiptDate">-</div>
+        </div>
+        <div class="receipt-lines" id="receiptItems"></div>
+        <div class="receipt-total">
+            <span>Total</span>
+            <span class="gold">₱<span id="receiptTotal">0.00</span></span>
+        </div>
+        <div class="receipt-note">Use this order number when following up with our staff.</div>
+        <button class="btn-place-order" type="button" onclick="sendReceiptToWhatsApp()">
+            <i class="bi bi-whatsapp me-1"></i> Send to WhatsApp
+        </button>
+    </div>
+
     {{-- Toast --}}
     <div class="mobile-toast" id="mobileToast">
         <i class="bi bi-check-circle-fill"></i>
@@ -877,6 +1018,31 @@
 
         // ── Cart ──
         let cart = {};
+        let pendingWhatsappUrl = '';
+
+        function generateOrderNumber() {
+            const now = new Date();
+            const datePart = now.toISOString().slice(0, 10).replace(/-/g, '');
+            const randomPart = Math.floor(1000 + Math.random() * 9000);
+
+            return `PQ-${datePart}-${randomPart}`;
+        }
+
+        function buildOrderDetails() {
+            const lines = [];
+            let total = 0;
+
+            Object.values(cart).forEach(item => {
+                const subtotal = item.qty * item.price;
+                total += subtotal;
+                lines.push({
+                    text: `${item.qty}x ${item.name}`,
+                    subtotal,
+                });
+            });
+
+            return { lines, total };
+        }
 
         function addToCart(id, name, price) {
             if (cart[id]) {
@@ -947,24 +1113,66 @@
             document.getElementById('orderSheet').classList.remove('show');
         }
 
+        function openReceiptModal() {
+            document.getElementById('receiptOverlay').classList.add('show');
+            document.getElementById('receiptModal').classList.add('show');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptOverlay').classList.remove('show');
+            document.getElementById('receiptModal').classList.remove('show');
+        }
+
+        function renderReceipt(orderNumber, lines, total) {
+            const receiptItems = document.getElementById('receiptItems');
+            receiptItems.innerHTML = lines.map(line => `
+                <div class="receipt-line">
+                    <span class="receipt-line-name">${line.text}</span>
+                    <span class="receipt-line-price">₱${line.subtotal.toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('receiptNumber').textContent = orderNumber;
+            document.getElementById('receiptDate').textContent = new Date().toLocaleString();
+            document.getElementById('receiptTotal').textContent = total.toFixed(2);
+        }
+
         function placeOrder() {
+            if (Object.keys(cart).length === 0) {
+                showToast('Your order is empty.');
+                return;
+            }
+
             const phone = "{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}";
-            let msg = "Hi! I'd like to place an order:\n\n";
-            let total = 0;
-            Object.values(cart).forEach(item => {
-                const sub = item.qty * item.price;
-                msg += `${item.qty}x ${item.name} - ₱${sub.toFixed(2)}\n`;
-                total += sub;
+            const orderNumber = generateOrderNumber();
+            const orderDetails = buildOrderDetails();
+            let msg = `Hi! I'd like to place an order.\nOrder Number: ${orderNumber}\n\n`;
+            orderDetails.lines.forEach(line => {
+                msg += `${line.text} - ₱${line.subtotal.toFixed(2)}\n`;
             });
-            msg += `\nTotal: ₱${total.toFixed(2)}\n\nThank you!`;
+            msg += `\nTotal: ₱${orderDetails.total.toFixed(2)}\n\nThank you!`;
 
             const cleanPhone = phone.replace('+', '');
-            window.open('https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(msg), '_blank');
+            pendingWhatsappUrl = 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(msg);
+
+            renderReceipt(orderNumber, orderDetails.lines, orderDetails.total);
+            closeOrderSheet();
+            openReceiptModal();
+        }
+
+        function sendReceiptToWhatsApp() {
+            if (!pendingWhatsappUrl) {
+                showToast('Unable to send order right now.');
+                return;
+            }
+
+            window.open(pendingWhatsappUrl, '_blank');
 
             cart = {};
+            pendingWhatsappUrl = '';
             updateCartUI();
-            closeOrderSheet();
-            showToast('Order sent via WhatsApp!');
+            closeReceiptModal();
+            showToast('Receipt ready and sent to WhatsApp!');
         }
 
         // Add-to-cart button handlers
