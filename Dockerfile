@@ -60,6 +60,4 @@ ENV PORT=8080
 
 EXPOSE 8080
 
-USER www-data
-
 CMD ["/usr/local/bin/start.sh"]
