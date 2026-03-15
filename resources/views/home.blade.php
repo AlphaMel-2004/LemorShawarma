@@ -387,14 +387,24 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="rating" class="feedback-label">Rating</label>
-                                    <select id="rating" name="rating" class="feedback-input @error('rating') is-invalid @enderror" required>
+                                    <label id="rating-label" class="feedback-label">Rating</label>
+                                    <div class="feedback-stars @error('rating') is-invalid @enderror" role="radiogroup" aria-labelledby="rating-label">
                                         @for($rating = 5; $rating >= 1; $rating--)
-                                            <option value="{{ $rating }}" @selected((int) old('rating', 5) === $rating)>
-                                                {{ $rating }} Star{{ $rating > 1 ? 's' : '' }}
-                                            </option>
+                                            <input
+                                                class="feedback-star-input"
+                                                type="radio"
+                                                id="rating-{{ $rating }}"
+                                                name="rating"
+                                                value="{{ $rating }}"
+                                                @checked((int) old('rating', 5) === $rating)
+                                                required
+                                            >
+                                            <label class="feedback-star-label" for="rating-{{ $rating }}" aria-label="{{ $rating }} Star{{ $rating > 1 ? 's' : '' }}">
+                                                <i class="bi bi-star-fill"></i>
+                                            </label>
                                         @endfor
-                                    </select>
+                                    </div>
+                                    <p class="feedback-star-hint">Tap a star to rate your experience.</p>
                                     @error('rating')
                                         <p class="feedback-error">{{ $message }}</p>
                                     @enderror
