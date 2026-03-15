@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'huggingface' => [
+        'token' => env('HUGGINGFACE_API_TOKEN'),
+        'model' => env('HUGGINGFACE_MODEL', 'meta-llama/Llama-3.1-8B-Instruct:fastest'),
+    ],
+
 ];

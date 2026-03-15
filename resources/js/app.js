@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initCounterAnimation();
     initMenuFilter();
     initTestimonialsSlider();
+    initChatbotWidget();
     initAOS();
 });
 
@@ -426,6 +427,204 @@ function initAOS() {
             delay: 0,
         });
     }
+}
+
+/**
+ * Homepage Chatbot Widget
+ */
+function initChatbotWidget() {
+    const widget = document.getElementById('chatbotWidget');
+    const panel = document.getElementById('chatbotPanel');
+    const toggleBtn = document.getElementById('chatbotToggle');
+    const closeBtn = document.getElementById('chatbotClose');
+    const form = document.getElementById('chatbotForm');
+    const input = document.getElementById('chatbotInput');
+    const messages = document.getElementById('chatbotMessages');
+    const sendBtn = document.getElementById('chatbotSendBtn');
+    const quickPrompts = document.getElementById('chatbotQuickPrompts');
+    const scrollTopBtn = document.getElementById('scrollToTop');
+    const footerMain = document.querySelector('.footer-main');
+
+    if (!widget || !panel || !toggleBtn || !closeBtn || !form || !input || !messages || !sendBtn) {
+        return;
+    }
+
+    const assistantName = widget.dataset.name || 'Assistant';
+    const welcomeMessage = widget.dataset.welcome || 'Hi! How can I help you today?';
+
+    let typingIndicator = null;
+    let hasStartedConversation = false;
+
+    const addMessage = (text, role = 'assistant') => {
+        const message = document.createElement('div');
+        message.className = `chatbot-message ${role}`;
+
+        const label = document.createElement('span');
+        label.className = 'chatbot-message-label';
+        label.textContent = role === 'assistant' ? assistantName : 'You';
+
+        const body = document.createElement('p');
+        body.className = 'chatbot-message-body';
+        body.textContent = text;
+
+        message.appendChild(label);
+        message.appendChild(body);
+        messages.appendChild(message);
+
+        messages.scrollTop = messages.scrollHeight;
+
+        if (!hasStartedConversation && role === 'user') {
+            hasStartedConversation = true;
+
+            if (quickPrompts) {
+                quickPrompts.classList.add('is-hidden');
+            }
+        }
+    };
+
+    const showTypingIndicator = () => {
+        if (typingIndicator) {
+            return;
+        }
+
+        const message = document.createElement('div');
+        message.className = 'chatbot-message assistant chatbot-thinking';
+        message.setAttribute('data-chatbot-thinking', 'true');
+
+        const label = document.createElement('span');
+        label.className = 'chatbot-message-label';
+        label.textContent = assistantName;
+
+        const body = document.createElement('p');
+        body.className = 'chatbot-message-body chatbot-thinking-body';
+        body.innerHTML = '<span class="chatbot-thinking-text">Thinking</span><span class="chatbot-thinking-dots" aria-hidden="true"><span></span><span></span><span></span></span>';
+
+        message.appendChild(label);
+        message.appendChild(body);
+        messages.appendChild(message);
+        messages.scrollTop = messages.scrollHeight;
+
+        typingIndicator = message;
+    };
+
+    const hideTypingIndicator = () => {
+        if (!typingIndicator) {
+            return;
+        }
+
+        typingIndicator.remove();
+        typingIndicator = null;
+    };
+
+    const openPanel = () => {
+        panel.classList.add('is-open');
+        panel.setAttribute('aria-hidden', 'false');
+        input.focus();
+    };
+
+    const closePanel = () => {
+        panel.classList.remove('is-open');
+        panel.setAttribute('aria-hidden', 'true');
+    };
+
+    const syncWidgetPosition = () => {
+        const hasVisibleScrollTop = scrollTopBtn ? scrollTopBtn.classList.contains('visible') : false;
+        const footerTop = footerMain ? footerMain.getBoundingClientRect().top : Number.POSITIVE_INFINITY;
+        const nearFooter = footerTop < window.innerHeight - 120;
+
+        widget.classList.toggle('with-scroll-top', hasVisibleScrollTop);
+        widget.classList.toggle('near-footer', nearFooter);
+    };
+
+    if (!messages.hasChildNodes()) {
+        addMessage(welcomeMessage, 'assistant');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        if (panel.classList.contains('is-open')) {
+            closePanel();
+            return;
+        }
+
+        openPanel();
+    });
+
+    closeBtn.addEventListener('click', closePanel);
+    window.addEventListener('scroll', syncWidgetPosition, { passive: true });
+    window.addEventListener('resize', syncWidgetPosition);
+
+    const submitChatMessage = () => {
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    };
+
+    if (quickPrompts) {
+        quickPrompts.addEventListener('click', (event) => {
+            const target = event.target;
+
+            if (!(target instanceof HTMLElement)) {
+                return;
+            }
+
+            const prompt = target.getAttribute('data-chatbot-quick');
+
+            if (!prompt || input.disabled) {
+                return;
+            }
+
+            input.value = prompt;
+            submitChatMessage();
+        });
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const message = input.value.trim();
+
+        if (message.length < 2) {
+            return;
+        }
+
+        addMessage(message, 'user');
+        input.value = '';
+        sendBtn.disabled = true;
+        input.disabled = true;
+        sendBtn.classList.add('is-loading');
+        showTypingIndicator();
+
+        try {
+            const formData = new FormData(form);
+            formData.set('message', message);
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData,
+            });
+
+            const payload = await response.json();
+            hideTypingIndicator();
+
+            if (!response.ok) {
+                addMessage(payload.message || 'The assistant is unavailable right now. Please try again later.', 'assistant');
+            } else {
+                addMessage(payload.reply || 'Sorry, I could not generate a response right now.', 'assistant');
+            }
+        } catch (error) {
+            hideTypingIndicator();
+            addMessage('Network issue detected. Please try again in a moment.', 'assistant');
+        } finally {
+            sendBtn.disabled = false;
+            input.disabled = false;
+            sendBtn.classList.remove('is-loading');
+            input.focus();
+        }
+    });
+
+    syncWidgetPosition();
 }
 
 /**

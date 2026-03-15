@@ -31,6 +31,55 @@ class SiteSetting extends Model
     ];
 
     /**
+     * The default chatbot settings.
+     *
+     * @var array<string, string>
+     */
+    public const CHATBOT_DEFAULTS = [
+        'chatbot_enabled' => '1',
+        'chatbot_name' => 'Pita Queen Assistant',
+        'chatbot_welcome_message' => 'Hi! I can help with menu suggestions, store info, and quick answers about Pita Queen.',
+        'chatbot_fab_icon' => 'chat-dots',
+        'chatbot_model' => 'meta-llama/Llama-3.1-8B-Instruct:fastest',
+        'chatbot_knowledge' => 'Pita Queen serves premium Mediterranean cuisine with shawarma, pita, and grilled favorites. For final order confirmation, always ask users to proceed to the menu or contact options.',
+        'chatbot_restrictions' => 'Never provide medical, legal, or financial advice. Avoid harmful instructions. If unsure, politely say you are not certain and suggest contacting the restaurant directly.',
+        'chatbot_temperature' => '0.4',
+        'chatbot_max_tokens' => '180',
+    ];
+
+    /**
+     * Chatbot FAB icon options.
+     *
+     * @var array<string, array{icon: string, label: string}>
+     */
+    public const CHATBOT_FAB_ICON_OPTIONS = [
+        'chat-dots' => [
+            'icon' => 'bi-chat-dots-fill',
+            'label' => 'Chat Dots',
+        ],
+        'robot' => [
+            'icon' => 'bi-robot',
+            'label' => 'Robot',
+        ],
+        'sparkles' => [
+            'icon' => 'bi-stars',
+            'label' => 'Sparkles',
+        ],
+        'chat-heart' => [
+            'icon' => 'bi-chat-heart-fill',
+            'label' => 'Chat Heart',
+        ],
+        'chat-text' => [
+            'icon' => 'bi-chat-text-fill',
+            'label' => 'Chat Text',
+        ],
+        'lightbulb' => [
+            'icon' => 'bi-lightbulb-fill',
+            'label' => 'Lightbulb',
+        ],
+    ];
+
+    /**
      * Get a setting value by key, with optional default.
      */
     public static function getValue(string $key, ?string $default = null): ?string
@@ -67,11 +116,27 @@ class SiteSetting extends Model
     }
 
     /**
+     * Get all chatbot settings as an associative array.
+     *
+     * @return array<string, string|null>
+     */
+    public static function getChatbotSettings(): array
+    {
+        $settings = [];
+
+        foreach (self::CHATBOT_DEFAULTS as $key => $default) {
+            $settings[$key] = self::getValue($key, $default);
+        }
+
+        return $settings;
+    }
+
+    /**
      * Clear all site setting caches.
      */
     public static function clearCache(): void
     {
-        foreach (array_keys(self::CONTACT_DEFAULTS) as $key) {
+        foreach (array_keys(self::CONTACT_DEFAULTS + self::CHATBOT_DEFAULTS) as $key) {
             Cache::forget("site_setting.{$key}");
         }
     }

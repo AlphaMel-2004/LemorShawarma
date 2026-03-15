@@ -1,14 +1,20 @@
 <?php
 
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MobileMenuController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain((string) config('app.root_domain'))->group(function (): void {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/feedback', [HomeController::class, 'storeFeedback'])->name('home.feedback');
 
-    Route::get('/menu', [\App\Http\Controllers\MobileMenuController::class, 'index'])->name('mobile.menu');
-    Route::post('/menu/feedback', [\App\Http\Controllers\MobileMenuController::class, 'storeFeedback'])->name('mobile.feedback');
+    Route::post('/chatbot/message', [ChatbotController::class, 'reply'])
+        ->middleware('throttle:15,1')
+        ->name('chatbot.reply');
+
+    Route::get('/menu', [MobileMenuController::class, 'index'])->name('mobile.menu');
+    Route::post('/menu/feedback', [MobileMenuController::class, 'storeFeedback'])->name('mobile.feedback');
 
     Route::get('/sitemap.xml', function () {
         $lastModified = now()->toDateString();

@@ -472,4 +472,63 @@
         </div>
     </section>
 
+    @if(($chatbotSettings['chatbot_enabled'] ?? '0') === '1')
+        @php
+            $chatbotFabIconKey = $chatbotSettings['chatbot_fab_icon'] ?? 'chat-dots';
+            $chatbotFabIcon = \App\Models\SiteSetting::CHATBOT_FAB_ICON_OPTIONS[$chatbotFabIconKey]['icon'] ?? 'bi-chat-dots-fill';
+        @endphp
+
+        <div
+            id="chatbotWidget"
+            class="chatbot-widget"
+            data-endpoint="{{ route('chatbot.reply') }}"
+            data-name="{{ $chatbotSettings['chatbot_name'] ?? 'Pita Queen Assistant' }}"
+            data-welcome="{{ $chatbotSettings['chatbot_welcome_message'] ?? 'Hi! How can I help you today?' }}"
+        >
+            <button type="button" class="chatbot-fab" id="chatbotToggle" aria-label="Open assistant chat">
+                <span class="chatbot-fab-icon" aria-hidden="true">
+                    <i class="bi {{ $chatbotFabIcon }}"></i>
+                </span>
+                <span class="chatbot-fab-text">Ask AI</span>
+            </button>
+
+            <section class="chatbot-panel" id="chatbotPanel" aria-live="polite" aria-hidden="true">
+                <header class="chatbot-header">
+                    <div>
+                        <h3>{{ $chatbotSettings['chatbot_name'] ?? 'Pita Queen Assistant' }}</h3>
+                        <p>Menu help, quick suggestions, and store info.</p>
+                    </div>
+                    <button type="button" class="chatbot-close" id="chatbotClose" aria-label="Close assistant">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </header>
+
+                <div class="chatbot-messages" id="chatbotMessages"></div>
+
+                <div class="chatbot-quick-prompts" id="chatbotQuickPrompts">
+                    <button type="button" class="chatbot-quick-btn" data-chatbot-quick="What is your best seller right now?">Best seller</button>
+                    <button type="button" class="chatbot-quick-btn" data-chatbot-quick="Can you suggest a combo meal for dinner?">Dinner combo</button>
+                    <button type="button" class="chatbot-quick-btn" data-chatbot-quick="What are your opening hours and location?">Hours and location</button>
+                </div>
+
+                <form class="chatbot-form" id="chatbotForm" action="{{ route('chatbot.reply') }}" method="POST">
+                    @csrf
+                    <label for="chatbotInput" class="visually-hidden">Message</label>
+                    <input
+                        id="chatbotInput"
+                        name="message"
+                        type="text"
+                        class="chatbot-input"
+                        placeholder="Ask about menu, locations, or recommendations..."
+                        maxlength="500"
+                        required
+                    >
+                    <button type="submit" class="chatbot-send" id="chatbotSendBtn">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </form>
+            </section>
+        </div>
+    @endif
+
 @endsection

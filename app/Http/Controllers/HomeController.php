@@ -23,8 +23,9 @@ class HomeController extends Controller
         $testimonials = $this->getTestimonials();
         $locations = $this->getLocations();
         $contactSettings = SiteSetting::getContactSettings();
+        $chatbotSettings = SiteSetting::getChatbotSettings();
 
-        return view('home', compact('menuItems', 'testimonials', 'locations', 'contactSettings'));
+        return view('home', compact('menuItems', 'testimonials', 'locations', 'contactSettings', 'chatbotSettings'));
     }
 
     /**

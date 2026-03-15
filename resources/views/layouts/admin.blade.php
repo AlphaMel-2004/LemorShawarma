@@ -769,6 +769,10 @@
                 <i class="bi bi-chat-left-quote-fill"></i>
                 <span>Testimonials</span>
             </a>
+            <a href="{{ route('admin.chatbot.edit') }}" class="sidebar-link {{ request()->routeIs('admin.chatbot.*') ? 'active' : '' }}">
+                <i class="bi bi-robot"></i>
+                <span>AI Chatbot</span>
+            </a>
             <a href="{{ route('admin.contacts.edit') }}" class="sidebar-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                 <i class="bi bi-telephone-fill"></i>
                 <span>Manage Contacts</span>

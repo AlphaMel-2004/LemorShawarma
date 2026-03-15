@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ChatbotSettingsController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LocationController;
@@ -21,6 +22,9 @@ Route::middleware(['auth', 'admin.user'])->name('admin.')->group(function (): vo
     Route::resource('products', ProductController::class)->except(['create', 'show']);
     Route::resource('locations', LocationController::class)->except(['show']);
     Route::resource('testimonials', TestimonialController::class)->only(['index', 'update', 'destroy']);
+
+    Route::get('chatbot', [ChatbotSettingsController::class, 'edit'])->name('chatbot.edit');
+    Route::put('chatbot', [ChatbotSettingsController::class, 'update'])->name('chatbot.update');
 
     Route::get('contacts', [ContactController::class, 'edit'])->name('contacts.edit');
     Route::put('contacts', [ContactController::class, 'update'])->name('contacts.update');
