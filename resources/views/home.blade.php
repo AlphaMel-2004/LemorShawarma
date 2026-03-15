@@ -242,9 +242,7 @@
                             <div class="bestseller-card {{ $index === 0 ? 'featured' : '' }}">
                                 <div class="bs-card-image">
                                     @php
-                                        $bsImageUrl = $item->image
-                                            ? (str_starts_with($item->image, 'http') ? $item->image : Storage::url($item->image))
-                                                : asset('images/lemorfood1.png');
+                                        $bsImageUrl = $item->image_url;
                                     @endphp
                                     <img src="{{ $bsImageUrl }}"
                                          alt="{{ $item->name }}"

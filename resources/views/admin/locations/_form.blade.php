@@ -119,7 +119,7 @@
         @enderror
         <div class="mt-2" id="locationImagePreview-{{ $formId }}">
             @if($location?->image)
-                <img src="{{ Storage::url($location->image) }}" alt="Current location image" style="width: 140px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--admin-border);">
+                <img src="{{ $location->image_url }}" alt="Current location image" style="width: 140px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--admin-border);">
             @endif
         </div>
     </div>

@@ -1,9 +1,7 @@
 @props(['item'])
 
 @php
-    $imageUrl = $item->image
-        ? (str_starts_with($item->image, 'http') ? $item->image : Storage::url($item->image))
-        : 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400';
+    $imageUrl = $item->image_url;
 @endphp
 
 <div class="product-card" data-aos="fade-up" data-category="{{ \Illuminate\Support\Str::slug($item->category ?? 'general') }}">

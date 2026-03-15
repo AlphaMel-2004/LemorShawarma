@@ -3,7 +3,7 @@
         <td class="fw-semibold">{{ $product->id }}</td>
         <td>
             @if($product->image)
-                <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-thumb">
+                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="product-thumb">
             @else
                 <div class="product-thumb-placeholder">
                     <i class="bi bi-image"></i>

@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateLocationRequest;
 use App\Models\Location;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -56,7 +57,7 @@ class LocationController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('locations', 'public');
+            $data['image'] = $this->storeLocationImage($request->file('image'));
         }
 
         Location::create($data);
@@ -83,9 +84,10 @@ class LocationController extends Controller
         if ($request->hasFile('image')) {
             if ($location->image) {
                 Storage::disk('public')->delete($location->image);
+                $this->deletePublicMirror($location->image);
             }
 
-            $data['image'] = $request->file('image')->store('locations', 'public');
+            $data['image'] = $this->storeLocationImage($request->file('image'));
         } else {
             unset($data['image']);
         }
@@ -105,5 +107,44 @@ class LocationController extends Controller
 
         return redirect()->route('admin.locations.index')
             ->with('status', 'Location deleted successfully.');
+    }
+
+    private function storeLocationImage(?UploadedFile $image): ?string
+    {
+        if ($image === null) {
+            return null;
+        }
+
+        $storedPath = $image->store('locations', 'public');
+
+        if (! app()->environment('testing')) {
+            $this->mirrorToPublicStorage($storedPath);
+        }
+
+        return $storedPath;
+    }
+
+    private function mirrorToPublicStorage(string $storedPath): void
+    {
+        $sourcePath = Storage::disk('public')->path($storedPath);
+        $targetPath = public_path('storage/'.ltrim($storedPath, '/'));
+        $targetDirectory = dirname($targetPath);
+
+        if (! is_dir($targetDirectory)) {
+            mkdir($targetDirectory, 0755, true);
+        }
+
+        if (is_file($sourcePath)) {
+            copy($sourcePath, $targetPath);
+        }
+    }
+
+    private function deletePublicMirror(string $storedPath): void
+    {
+        $targetPath = public_path('storage/'.ltrim($storedPath, '/'));
+
+        if (is_file($targetPath)) {
+            unlink($targetPath);
+        }
     }
 }

@@ -8,7 +8,6 @@ use App\Models\Location;
 use App\Models\Product;
 use App\Models\SiteSetting;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -102,17 +101,13 @@ class HomeController extends Controller
             ->orderBy('name')
             ->get(['id', 'name', 'address', 'phone', 'hours', 'image', 'latitude', 'longitude'])
             ->map(function (Location $location): array {
-                $imageUrl = $location->image
-                    ? (str_starts_with($location->image, 'http') ? $location->image : Storage::url($location->image))
-                    : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400';
-
                 return [
                     'id' => $location->id,
                     'name' => $location->name,
                     'address' => $location->address,
                     'phone' => $location->phone,
                     'hours' => $location->hours,
-                    'image' => $imageUrl,
+                    'image' => $location->image_url,
                     'latitude' => $location->latitude,
                     'longitude' => $location->longitude,
                 ];

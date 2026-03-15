@@ -95,7 +95,7 @@ class ProductController extends Controller
     {
         return response()->json([
             'product' => $product,
-            'image_url' => $product->image ? Storage::url($product->image) : null,
+            'image_url' => $product->image_url,
         ]);
     }
 

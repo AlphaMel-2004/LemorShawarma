@@ -855,19 +855,11 @@
             <div id="menuList">
                 @forelse ($menuItems as $item)
                     @php
-                        $imageUrl = $item->image
-                            ? (str_starts_with($item->image, 'http') ? $item->image : asset('storage/' . $item->image))
-                            : null;
+                        $imageUrl = $item->image_url;
                     @endphp
                     <div class="menu-item" data-name="{{ strtolower($item->name) }}" data-id="{{ $item->id }}">
                         <div class="menu-item-inner">
-                            @if ($imageUrl)
-                                <img src="{{ $imageUrl }}" alt="{{ $item->name }}" class="menu-item-img" loading="lazy">
-                            @else
-                                <div class="menu-item-img-placeholder">
-                                    <i class="bi bi-egg-fried"></i>
-                                </div>
-                            @endif
+                            <img src="{{ $imageUrl }}" alt="{{ $item->name }}" class="menu-item-img" loading="lazy">
 
                             <div class="menu-item-info">
                                 <div class="menu-item-name">{{ $item->name }}</div>

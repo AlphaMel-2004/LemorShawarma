@@ -83,7 +83,7 @@
                                     data-latitude="{{ $location->latitude }}"
                                     data-longitude="{{ $location->longitude }}"
                                     data-is-active="{{ $location->is_active ? 1 : 0 }}"
-                                    data-image-url="{{ $location->image ? Storage::url($location->image) : '' }}"
+                                    data-image-url="{{ $location->image ? $location->image_url : '' }}"
                                 >
                                     <i class="bi bi-pencil-square"></i>
                                 </button>

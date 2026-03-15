@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Location extends Model
 {
@@ -35,5 +36,25 @@ class Location extends Model
             'longitude' => 'float',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        if (! $this->image) {
+            return asset('images/lemorfood3.png');
+        }
+
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+
+        $storageUrl = Storage::url($this->image);
+        $publicPath = public_path(ltrim($storageUrl, '/'));
+
+        if (is_file($publicPath)) {
+            return $storageUrl;
+        }
+
+        return asset('images/lemorfood3.png');
     }
 }

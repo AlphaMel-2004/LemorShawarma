@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -35,5 +36,25 @@ class Product extends Model
             'price' => 'decimal:2',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        if (! $this->image) {
+            return asset('images/lemorfood1.png');
+        }
+
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+
+        $storageUrl = Storage::url($this->image);
+        $publicPath = public_path(ltrim($storageUrl, '/'));
+
+        if (is_file($publicPath)) {
+            return $storageUrl;
+        }
+
+        return asset('images/lemorfood1.png');
     }
 }

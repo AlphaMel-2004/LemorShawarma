@@ -751,7 +751,7 @@
                         @forelse ($recentProducts as $product)
                             <div class="activity-item">
                                 @if ($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="activity-thumb">
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="activity-thumb">
                                 @else
                                     <div class="activity-avatar"><i class="bi bi-image"></i></div>
                                 @endif
