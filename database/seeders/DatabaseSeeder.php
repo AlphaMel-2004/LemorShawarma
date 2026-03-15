@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,20 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SiteSettingSeeder::class,
-            LocationSeeder::class,
-            ProductSeeder::class,
-        ]);
-
-        User::factory()->admin()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => 'password',
-        ]);
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
+            UserSeeder::class,
         ]);
     }
 }
