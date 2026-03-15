@@ -29,7 +29,7 @@
                         <span class="title-line">Experience The</span>
                         <span class="title-highlight">Royal Taste</span>
                         <span class="title-line">of Authentic</span>
-                        <span class="title-accent">Mediterranean Cuisine</span>
+                        <span class="title-accent">Canadian Cuisine</span>
                     </h1>
                     
                     <!-- Description -->
@@ -77,7 +77,7 @@
                     <div class="image-wrapper">
                         <!-- Main Image -->
                         <div class="main-image">
-                            <img src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=600" 
+                            <img src="{{ asset('images/lemorfood3.png') }}" 
                                  alt="Delicious Mediterranean Cuisine at Pita Queen" 
                                  class="img-fluid"
                                  loading="eager">

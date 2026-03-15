@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pita Queen - Premium Mediterranean Cuisine')
+@section('title', 'Pita Queen - Premium Canadian Cuisine')
 @section('meta_description', 'Discover Pita Queen, your destination for authentic Mediterranean cuisine. Enjoy signature shawarma, fresh pita, and handcrafted dishes made with premium ingredients.')
 @section('canonical', route('home'))
 
@@ -45,13 +45,13 @@
                 <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
                     <div class="about-image-wrapper">
                         <div class="about-image about-image-main">
-                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500" 
+                            <img src="{{ asset('images/lemorfood1.png') }}" 
                                  alt="Our Kitchen" 
                                  loading="lazy"
                                  class="img-fluid">
                         </div>
                         <div class="about-image about-image-secondary">
-                            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=300" 
+                            <img src="{{ asset('images/lemorfood4.png') }}" 
                                  alt="Our Chef" 
                                  loading="lazy"
                                  class="img-fluid">
@@ -59,7 +59,7 @@
                         
                         <!-- Experience Badge -->
                         <div class="experience-badge">
-                            <span class="badge-number">15+</span>
+                            <span class="badge-number">10+</span>
                             <span class="badge-text">Years of Excellence</span>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
                     <div class="about-content">
                         <h3 class="about-subtitle">
-                            Crafting Authentic Mediterranean Flavors Since 2010
+                            Crafting Authentic Canadian Flavors Since 2020
                         </h3>
                         
                         <p class="about-text">
@@ -151,7 +151,7 @@
                 <span class="section-badge">Explore</span>
                 <h2 class="section-title">Our <span class="text-golden">Premium Menu</span></h2>
                 <p class="section-description">
-                    Discover our carefully crafted selection of Mediterranean delights
+                    Discover our carefully crafted selection of Canadian delights
                 </p>
             </div>
             
@@ -239,7 +239,7 @@
                                     @php
                                         $bsImageUrl = $item->image
                                             ? (str_starts_with($item->image, 'http') ? $item->image : Storage::url($item->image))
-                                            : 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400';
+                                            : asset('images/lemorfood3.png');
                                     @endphp
                                     <img src="{{ $bsImageUrl }}"
                                          alt="{{ $item->name }}"
@@ -444,7 +444,7 @@
                     Visit Your Nearest <span class="text-golden">Pita Queen</span> Today
                 </h2>
                 <p class="cta-description">
-                    Discover our locations and enjoy premium Mediterranean cuisine 
+                    Discover our locations and enjoy premium Canadian cuisine 
                     served fresh daily in-store.
                 </p>
                 

@@ -133,7 +133,7 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <p class="copyright">
-                        © {{ date('Y') }} Golden Shawarma. All Rights Reserved.
+                        Pita Queen. All Rights Reserved 2026.
                     </p>
                 </div>
                 <div class="col-md-6">
