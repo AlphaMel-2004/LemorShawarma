@@ -16,9 +16,11 @@
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div class="d-flex flex-wrap align-items-center gap-3">
             <div class="search-wrapper">
+                <label for="searchInput" class="visually-hidden">Search products</label>
                 <i class="bi bi-search"></i>
                 <input type="text" class="admin-search" id="searchInput" placeholder="Search products..." value="{{ request('search') }}">
             </div>
+            <label for="statusFilter" class="visually-hidden">Filter products by status</label>
             <select class="admin-form-select" id="statusFilter" style="width: auto; min-width: 140px;">
                 <option value="">All Status</option>
                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>

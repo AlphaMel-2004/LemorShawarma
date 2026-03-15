@@ -44,18 +44,21 @@
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
     <form method="GET" action="{{ route('admin.testimonials.index') }}" class="d-flex flex-wrap align-items-center gap-2">
         <div class="search-wrapper">
+            <label for="testimonialSearch" class="visually-hidden">Search testimonials</label>
             <i class="bi bi-search"></i>
-            <input type="text" class="admin-search" name="search" placeholder="Search testimonials..." value="{{ request('search') }}">
+            <input type="text" class="admin-search" id="testimonialSearch" name="search" placeholder="Search testimonials..." value="{{ request('search') }}">
         </div>
 
-        <select class="admin-form-select" name="rating" style="width: auto; min-width: 140px;">
+        <label for="testimonialRatingFilter" class="visually-hidden">Filter testimonials by rating</label>
+        <select class="admin-form-select" id="testimonialRatingFilter" name="rating" style="width: auto; min-width: 140px;">
             <option value="">All Ratings</option>
             @for($rating = 5; $rating >= 1; $rating--)
                 <option value="{{ $rating }}" @selected((string) request('rating') === (string) $rating)>{{ $rating }} Stars</option>
             @endfor
         </select>
 
-        <select class="admin-form-select" name="visibility" style="width: auto; min-width: 150px;">
+        <label for="testimonialVisibilityFilter" class="visually-hidden">Filter testimonials by visibility</label>
+        <select class="admin-form-select" id="testimonialVisibilityFilter" name="visibility" style="width: auto; min-width: 150px;">
             <option value="">All Visibility</option>
             <option value="visible" @selected(request('visibility') === 'visible')>Visible</option>
             <option value="hidden" @selected(request('visibility') === 'hidden')>Hidden</option>

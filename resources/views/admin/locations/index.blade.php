@@ -7,11 +7,13 @@
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
     <form method="GET" action="{{ route('admin.locations.index') }}" class="d-flex flex-wrap align-items-center gap-2">
         <div class="search-wrapper">
+            <label for="locationSearchInput" class="visually-hidden">Search locations</label>
             <i class="bi bi-search"></i>
-            <input type="text" class="admin-search" name="search" placeholder="Search locations..." value="{{ request('search') }}">
+            <input type="text" class="admin-search" id="locationSearchInput" name="search" placeholder="Search locations..." value="{{ request('search') }}">
         </div>
 
-        <select class="admin-form-select" name="status" style="width: auto; min-width: 140px;">
+        <label for="locationStatusFilter" class="visually-hidden">Filter locations by status</label>
+        <select class="admin-form-select" id="locationStatusFilter" name="status" style="width: auto; min-width: 140px;">
             <option value="">All Status</option>
             <option value="active" @selected(request('status') === 'active')>Active</option>
             <option value="inactive" @selected(request('status') === 'inactive')>Inactive</option>
@@ -67,7 +69,22 @@
                                 <a href="https://www.google.com/maps/search/?api=1&query={{ $location->latitude }},{{ $location->longitude }}" class="btn-action" title="Open in Maps" target="_blank" rel="noopener noreferrer">
                                     <i class="bi bi-map"></i>
                                 </a>
-                                <button type="button" class="btn-action" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal-{{ $location->id }}">
+                                <button
+                                    type="button"
+                                    class="btn-action"
+                                    title="Edit"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editLocationModal"
+                                    data-update-url="{{ route('admin.locations.update', $location) }}"
+                                    data-name="{{ $location->name }}"
+                                    data-address="{{ $location->address }}"
+                                    data-phone="{{ $location->phone }}"
+                                    data-hours="{{ $location->hours }}"
+                                    data-latitude="{{ $location->latitude }}"
+                                    data-longitude="{{ $location->longitude }}"
+                                    data-is-active="{{ $location->is_active ? 1 : 0 }}"
+                                    data-image-url="{{ $location->image ? Storage::url($location->image) : '' }}"
+                                >
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <button
@@ -105,25 +122,23 @@
     </div>
 @endif
 
-@foreach($locations as $location)
-    <div class="modal fade" id="editLocationModal-{{ $location->id }}" tabindex="-1" aria-labelledby="editLocationModalLabel-{{ $location->id }}" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editLocationModalLabel-{{ $location->id }}">Edit Location</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('admin.locations.update', $location) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        @include('admin.locations._form', ['location' => $location, 'isModal' => true, 'formId' => 'edit-location-'.$location->id])
-                    </form>
-                </div>
+<div class="modal fade" id="editLocationModal" tabindex="-1" aria-labelledby="editLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLocationModalLabel">Edit Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="editLocationForm" action="{{ route('admin.locations.index') }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    @include('admin.locations._form', ['location' => null, 'isModal' => true, 'formId' => 'edit-location'])
+                </form>
             </div>
         </div>
     </div>
-@endforeach
+</div>
 
 <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
@@ -167,6 +182,33 @@
 
 @push('scripts')
 <script>
+    const editLocationModal = document.getElementById('editLocationModal');
+    if (editLocationModal) {
+        editLocationModal.addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget;
+            const form = document.getElementById('editLocationForm');
+            const updateUrl = trigger?.getAttribute('data-update-url') || '';
+            const controller = window.locationFormControllers?.['edit-location'];
+
+            if (form && updateUrl) {
+                form.setAttribute('action', updateUrl);
+            }
+
+            if (controller) {
+                controller.setFormData({
+                    name: trigger?.getAttribute('data-name') || '',
+                    address: trigger?.getAttribute('data-address') || '',
+                    phone: trigger?.getAttribute('data-phone') || '',
+                    hours: trigger?.getAttribute('data-hours') || '',
+                    latitude: trigger?.getAttribute('data-latitude') || '',
+                    longitude: trigger?.getAttribute('data-longitude') || '',
+                    isActive: trigger?.getAttribute('data-is-active') || '1',
+                    imageUrl: trigger?.getAttribute('data-image-url') || '',
+                });
+            }
+        });
+    }
+
     const deleteLocationModal = document.getElementById('deleteLocationModal');
     if (deleteLocationModal) {
         deleteLocationModal.addEventListener('show.bs.modal', function (event) {
