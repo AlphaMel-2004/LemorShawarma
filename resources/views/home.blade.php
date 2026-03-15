@@ -289,9 +289,14 @@
             
             <!-- Locations Grid -->
             <div class="locations-grid">
-                @foreach($locations as $index => $location)
+                @forelse($locations as $index => $location)
                     <x-location-card :location="$location" data-aos-delay="{{ $index * 100 }}" />
-                @endforeach
+                @empty
+                    <div class="locations-empty-state" role="status" aria-live="polite">
+                        <h3>No locations available yet.</h3>
+                        <p>Please check back soon!</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -426,17 +431,17 @@
             <div class="cta-content" data-aos="zoom-in">
                 <span class="cta-badge">Ready to Order?</span>
                 <h2 class="cta-title">
-                    Experience The <span class="text-golden">Royal Taste</span> Today
+                    Visit Your Nearest <span class="text-golden">Pita Queen</span> Today
                 </h2>
                 <p class="cta-description">
-                    Order online for pickup or delivery and savor the finest Mediterranean 
-                    cuisine from the comfort of your home.
+                    Discover our locations and enjoy premium Mediterranean cuisine 
+                    served fresh daily in-store.
                 </p>
                 
                 <div class="cta-buttons">
-                    <a href="#" class="btn btn-golden btn-lg">
-                        <i class="bi bi-phone me-2"></i>
-                        <span>Order Online</span>
+                    <a href="#locations" class="btn btn-golden btn-lg">
+                        <i class="bi bi-geo-alt me-2"></i>
+                        <span>View Locations</span>
                     </a>
                     <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}" class="btn btn-outline-light btn-lg">
                         <i class="bi bi-telephone me-2"></i>

@@ -15,6 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            SiteSettingSeeder::class,
+            LocationSeeder::class,
+            ProductSeeder::class,
+        ]);
+
         User::factory()->admin()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\TestimonialController;
@@ -18,6 +19,7 @@ Route::middleware(['auth', 'admin.user'])->name('admin.')->group(function (): vo
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('products', ProductController::class)->except(['create', 'show']);
+    Route::resource('locations', LocationController::class)->except(['show']);
     Route::resource('testimonials', TestimonialController::class)->only(['index', 'update', 'destroy']);
 
     Route::get('contacts', [ContactController::class, 'edit'])->name('contacts.edit');

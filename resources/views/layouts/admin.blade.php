@@ -637,6 +637,10 @@
                 <i class="bi bi-box-seam-fill"></i>
                 <span>Products</span>
             </a>
+            <a href="{{ route('admin.locations.index') }}" class="sidebar-link {{ request()->routeIs('admin.locations.*') ? 'active' : '' }}">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span>Manage Locations</span>
+            </a>
             <a href="{{ route('admin.testimonials.index') }}" class="sidebar-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
                 <i class="bi bi-chat-left-quote-fill"></i>
                 <span>Testimonials</span>

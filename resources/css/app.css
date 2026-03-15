@@ -1319,6 +1319,27 @@ h1, h2, h3, h4, h5, h6 {
     gap: 30px;
 }
 
+.locations-empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 44px 24px;
+    background: var(--gradient-card);
+    border: 1px solid rgba(212, 175, 55, 0.16);
+    border-radius: var(--radius-xl);
+}
+
+.locations-empty-state h3 {
+    font-family: var(--font-display);
+    font-size: 30px;
+    color: var(--color-gold);
+    margin-bottom: 8px;
+}
+
+.locations-empty-state p {
+    margin: 0;
+    color: var(--color-text-secondary);
+}
+
 .location-card {
     background: var(--gradient-card);
     border: 1px solid rgba(212, 175, 55, 0.1);
@@ -2154,6 +2175,14 @@ h1, h2, h3, h4, h5, h6 {
     
     .locations-grid {
         grid-template-columns: 1fr;
+    }
+
+    .locations-empty-state {
+        padding: 32px 16px;
+    }
+
+    .locations-empty-state h3 {
+        font-size: 24px;
     }
     
     .testimonial-card {
