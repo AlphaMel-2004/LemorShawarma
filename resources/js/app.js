@@ -49,6 +49,11 @@ function initNavbar() {
     if (!navbar) return;
 
     if (navbarCollapse) {
+        let edgeSwipeStartX = null;
+        let edgeSwipeStartY = null;
+        let drawerSwipeStartX = null;
+        let drawerSwipeStartY = null;
+
         navbarCollapse.addEventListener('shown.bs.collapse', function() {
             document.body.classList.add('mobile-nav-open');
         });
@@ -72,6 +77,98 @@ function initNavbar() {
                 }
             }
         });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 992) {
+                document.body.classList.remove('mobile-nav-open');
+
+                const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                if (bsCollapse && navbarCollapse.classList.contains('show')) {
+                    bsCollapse.hide();
+                }
+            }
+        });
+
+        document.addEventListener('touchstart', function(event) {
+            if (window.innerWidth >= 992 || document.body.classList.contains('mobile-nav-open')) {
+                return;
+            }
+
+            const touch = event.touches[0];
+            if (!touch) {
+                return;
+            }
+
+            if (touch.clientX <= 26) {
+                edgeSwipeStartX = touch.clientX;
+                edgeSwipeStartY = touch.clientY;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', function(event) {
+            if (window.innerWidth >= 992 || document.body.classList.contains('mobile-nav-open')) {
+                edgeSwipeStartX = null;
+                edgeSwipeStartY = null;
+
+                return;
+            }
+
+            const touch = event.changedTouches[0];
+            if (!touch || edgeSwipeStartX === null || edgeSwipeStartY === null) {
+                return;
+            }
+
+            const deltaX = touch.clientX - edgeSwipeStartX;
+            const deltaY = Math.abs(touch.clientY - edgeSwipeStartY);
+
+            if (deltaX > 64 && deltaY < 40) {
+                bootstrap.Collapse.getOrCreateInstance(navbarCollapse).show();
+            }
+
+            edgeSwipeStartX = null;
+            edgeSwipeStartY = null;
+        }, { passive: true });
+
+        navbarCollapse.addEventListener('touchstart', function(event) {
+            if (!document.body.classList.contains('mobile-nav-open')) {
+                return;
+            }
+
+            const touch = event.touches[0];
+            if (!touch) {
+                return;
+            }
+
+            drawerSwipeStartX = touch.clientX;
+            drawerSwipeStartY = touch.clientY;
+        }, { passive: true });
+
+        navbarCollapse.addEventListener('touchend', function(event) {
+            if (!document.body.classList.contains('mobile-nav-open')) {
+                drawerSwipeStartX = null;
+                drawerSwipeStartY = null;
+
+                return;
+            }
+
+            const touch = event.changedTouches[0];
+            if (!touch || drawerSwipeStartX === null || drawerSwipeStartY === null) {
+                return;
+            }
+
+            const deltaX = touch.clientX - drawerSwipeStartX;
+            const deltaY = Math.abs(touch.clientY - drawerSwipeStartY);
+
+            if (deltaX < -64 && deltaY < 48) {
+                const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                if (bsCollapse) {
+                    bsCollapse.hide();
+                }
+            }
+
+            drawerSwipeStartX = null;
+            drawerSwipeStartY = null;
+        }, { passive: true });
     }
     
     // Scroll effect
@@ -231,6 +328,11 @@ function initMenuFilter() {
         btn.addEventListener('click', function() {
             // Update active state
             filterBtns.forEach(b => b.classList.remove('active'));
+            let edgeSwipeStartX = null;
+            let edgeSwipeStartY = null;
+            let drawerSwipeStartX = null;
+            let drawerSwipeStartY = null;
+
             this.classList.add('active');
             
             const filter = this.getAttribute('data-filter');
@@ -266,6 +368,87 @@ function initMenuFilter() {
             }
         }
         @keyframes fadeOutDown {
+
+            document.addEventListener('touchstart', function(event) {
+                if (window.innerWidth >= 992 || document.body.classList.contains('mobile-nav-open')) {
+                    return;
+                }
+
+                const touch = event.touches[0];
+                if (!touch) {
+                    return;
+                }
+
+                if (touch.clientX <= 26) {
+                    edgeSwipeStartX = touch.clientX;
+                    edgeSwipeStartY = touch.clientY;
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchend', function(event) {
+                if (window.innerWidth >= 992 || document.body.classList.contains('mobile-nav-open')) {
+                    edgeSwipeStartX = null;
+                    edgeSwipeStartY = null;
+
+                    return;
+                }
+
+                const touch = event.changedTouches[0];
+                if (!touch || edgeSwipeStartX === null || edgeSwipeStartY === null) {
+                    return;
+                }
+
+                const deltaX = touch.clientX - edgeSwipeStartX;
+                const deltaY = Math.abs(touch.clientY - edgeSwipeStartY);
+
+                if (deltaX > 64 && deltaY < 40) {
+                    bootstrap.Collapse.getOrCreateInstance(navbarCollapse).show();
+                }
+
+                edgeSwipeStartX = null;
+                edgeSwipeStartY = null;
+            }, { passive: true });
+
+            navbarCollapse.addEventListener('touchstart', function(event) {
+                if (!document.body.classList.contains('mobile-nav-open')) {
+                    return;
+                }
+
+                const touch = event.touches[0];
+                if (!touch) {
+                    return;
+                }
+
+                drawerSwipeStartX = touch.clientX;
+                drawerSwipeStartY = touch.clientY;
+            }, { passive: true });
+
+            navbarCollapse.addEventListener('touchend', function(event) {
+                if (!document.body.classList.contains('mobile-nav-open')) {
+                    drawerSwipeStartX = null;
+                    drawerSwipeStartY = null;
+
+                    return;
+                }
+
+                const touch = event.changedTouches[0];
+                if (!touch || drawerSwipeStartX === null || drawerSwipeStartY === null) {
+                    return;
+                }
+
+                const deltaX = touch.clientX - drawerSwipeStartX;
+                const deltaY = Math.abs(touch.clientY - drawerSwipeStartY);
+
+                if (deltaX < -64 && deltaY < 48) {
+                    const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                    if (bsCollapse) {
+                        bsCollapse.hide();
+                    }
+                }
+
+                drawerSwipeStartX = null;
+                drawerSwipeStartY = null;
+            }, { passive: true });
             from {
                 opacity: 1;
                 transform: translateY(0);
@@ -542,15 +725,31 @@ function initChatbotWidget() {
         typingIndicator = null;
     };
 
+    const setPanelAccessibilityState = (isOpen) => {
+        panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+
+        if (isOpen) {
+            panel.removeAttribute('inert');
+
+            return;
+        }
+
+        panel.setAttribute('inert', '');
+    };
+
     const openPanel = () => {
         panel.classList.add('is-open');
-        panel.setAttribute('aria-hidden', 'false');
+        setPanelAccessibilityState(true);
         input.focus();
     };
 
     const closePanel = () => {
+        if (panel.contains(document.activeElement)) {
+            toggleBtn.focus();
+        }
+
         panel.classList.remove('is-open');
-        panel.setAttribute('aria-hidden', 'true');
+        setPanelAccessibilityState(false);
     };
 
     const syncWidgetPosition = () => {
@@ -565,6 +764,8 @@ function initChatbotWidget() {
     if (!messages.hasChildNodes()) {
         addMessage(welcomeMessage, 'assistant');
     }
+
+    setPanelAccessibilityState(false);
 
     toggleBtn.addEventListener('click', () => {
         if (panel.classList.contains('is-open')) {
