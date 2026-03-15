@@ -727,6 +727,22 @@
             }, 3000);
         }
 
+        @if(session('status'))
+            showToast(@json(session('status')), 'success');
+        @endif
+
+        @if(session('success'))
+            showToast(@json(session('success')), 'success');
+        @endif
+
+        @if(session('warning'))
+            showToast(@json(session('warning')), 'warning');
+        @endif
+
+        @if(session('error'))
+            showToast(@json(session('error')), 'danger');
+        @endif
+
         // CSRF setup for AJAX
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     </script>

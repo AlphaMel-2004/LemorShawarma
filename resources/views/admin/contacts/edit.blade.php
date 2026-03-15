@@ -255,18 +255,6 @@
         box-shadow: none;
     }
 
-    .success-alert {
-        background: rgba(22, 219, 170, 0.1);
-        border: 1px solid rgba(22, 219, 170, 0.3);
-        color: #0d7a5f;
-        border-radius: 10px;
-        padding: 0.85rem 1.25rem;
-        font-size: 0.85rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
     /* ── Sticky sidebar ── */
     @media (min-width: 992px) {
         .sidebar-sticky {
@@ -278,13 +266,6 @@
 @endpush
 
 @section('content')
-    @if (session('success'))
-        <div class="success-alert mb-4">
-            <i class="bi bi-check-circle-fill"></i>
-            {{ session('success') }}
-        </div>
-    @endif
-
     <div class="row g-4">
         {{-- ══ Edit Form ══ --}}
         <div class="col-lg-7">

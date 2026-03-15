@@ -101,10 +101,6 @@ class LocationController extends Controller
      */
     public function destroy(Location $location): RedirectResponse
     {
-        if ($location->image) {
-            Storage::disk('public')->delete($location->image);
-        }
-
         $location->delete();
 
         return redirect()->route('admin.locations.index')

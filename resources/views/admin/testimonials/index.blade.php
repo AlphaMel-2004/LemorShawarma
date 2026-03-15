@@ -73,13 +73,6 @@
     </form>
 </div>
 
-@if(session('status'))
-    <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
-        <i class="bi bi-check-circle-fill"></i>
-        <span>{{ session('status') }}</span>
-    </div>
-@endif
-
 <div class="admin-card">
     <div class="table-responsive">
         <table class="table admin-table">
@@ -136,13 +129,17 @@
                                     <i class="bi {{ $testimonial->is_visible ? 'bi-eye-slash' : 'bi-eye' }}"></i>
                                 </button>
                             </form>
-                            <form method="POST" action="{{ route('admin.testimonials.destroy', $testimonial) }}" onsubmit="return confirm('Delete this testimonial?');" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-action btn-action-danger" title="Delete">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-                            </form>
+                            <button
+                                type="button"
+                                class="btn-action btn-action-danger"
+                                title="Delete"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteTestimonialModal"
+                                data-delete-url="{{ route('admin.testimonials.destroy', $testimonial) }}"
+                                data-delete-label="{{ $testimonial->customer_name }}"
+                            >
+                                <i class="bi bi-trash3"></i>
+                            </button>
                         </td>
                     </tr>
                 @empty
@@ -165,4 +162,44 @@
         {{ $testimonials->links() }}
     </div>
 @endif
+
+<div class="modal fade" id="deleteTestimonialModal" tabindex="-1" aria-labelledby="deleteTestimonialModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="confirm-icon">
+                    <i class="bi bi-trash3"></i>
+                </div>
+                <h5 class="mb-2" id="deleteTestimonialModalLabel">Delete Testimonial?</h5>
+                <p class="text-muted mb-0" style="font-size: 0.9rem;" id="deleteTestimonialMessage">This will be moved to archived records.</p>
+            </div>
+            <div class="modal-footer justify-content-center border-0 pt-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" id="deleteTestimonialForm" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    const deleteTestimonialModal = document.getElementById('deleteTestimonialModal');
+    if (deleteTestimonialModal) {
+        deleteTestimonialModal.addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget;
+            const form = document.getElementById('deleteTestimonialForm');
+            const message = document.getElementById('deleteTestimonialMessage');
+            const deleteUrl = trigger?.getAttribute('data-delete-url') || '';
+            const deleteLabel = trigger?.getAttribute('data-delete-label') || 'this testimonial';
+
+            form.setAttribute('action', deleteUrl);
+            message.textContent = `Delete ${deleteLabel}? This will be moved to archived records.`;
+        });
+    }
+</script>
+@endpush

@@ -33,13 +33,6 @@
     </button>
 </div>
 
-@if(session('status'))
-    <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
-        <i class="bi bi-check-circle-fill"></i>
-        <span>{{ session('status') }}</span>
-    </div>
-@endif
-
 <div class="admin-card">
     <div class="table-responsive">
         <table class="table admin-table">
@@ -77,13 +70,17 @@
                                 <button type="button" class="btn-action" title="Edit" data-bs-toggle="modal" data-bs-target="#editLocationModal-{{ $location->id }}">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <form method="POST" action="{{ route('admin.locations.destroy', $location) }}" onsubmit="return confirm('Delete this location?');" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-action btn-action-danger" title="Delete">
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
-                                </form>
+                                <button
+                                    type="button"
+                                    class="btn-action btn-action-danger"
+                                    title="Delete"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteLocationModal"
+                                    data-delete-url="{{ route('admin.locations.destroy', $location) }}"
+                                    data-delete-label="{{ $location->name }}"
+                                >
+                                    <i class="bi bi-trash3"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -144,4 +141,44 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteLocationModal" tabindex="-1" aria-labelledby="deleteLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="confirm-icon">
+                    <i class="bi bi-trash3"></i>
+                </div>
+                <h5 class="mb-2" id="deleteLocationModalLabel">Delete Location?</h5>
+                <p class="text-muted mb-0" style="font-size: 0.9rem;" id="deleteLocationMessage">This will be moved to archived records.</p>
+            </div>
+            <div class="modal-footer justify-content-center border-0 pt-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" id="deleteLocationForm" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    const deleteLocationModal = document.getElementById('deleteLocationModal');
+    if (deleteLocationModal) {
+        deleteLocationModal.addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget;
+            const form = document.getElementById('deleteLocationForm');
+            const message = document.getElementById('deleteLocationMessage');
+            const deleteUrl = trigger?.getAttribute('data-delete-url') || '';
+            const deleteLabel = trigger?.getAttribute('data-delete-label') || 'this location';
+
+            form.setAttribute('action', deleteUrl);
+            message.textContent = `Delete ${deleteLabel}? This will be moved to archived records.`;
+        });
+    }
+</script>
+@endpush
