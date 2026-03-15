@@ -525,7 +525,7 @@
             {{-- Remember / Forgot --}}
             <div class="form-row-extras">
                 <label class="remember-label">
-                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <input type="checkbox" name="remember" value="1" {{ old('remember') ? 'checked' : '' }}>
                     Remember me
                 </label>
                 <span class="forgot-link" aria-disabled="true">Password reset unavailable</span>

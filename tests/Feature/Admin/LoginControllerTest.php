@@ -42,6 +42,22 @@ class LoginControllerTest extends TestCase
         $response->assertRedirect(route('admin.dashboard'));
     }
 
+    public function test_user_can_login_with_remember_me_checked(): void
+    {
+        $user = User::factory()->admin()->create([
+            'password' => bcrypt('password123'),
+        ]);
+
+        $response = $this->post($this->adminUrl('/login'), [
+            'email' => $user->email,
+            'password' => 'password123',
+            'remember' => '1',
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect(route('admin.dashboard'));
+    }
+
     public function test_user_cannot_login_with_invalid_credentials(): void
     {
         $user = User::factory()->admin()->create([
