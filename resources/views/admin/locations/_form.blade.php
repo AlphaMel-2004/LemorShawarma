@@ -45,7 +45,7 @@
         padding: 0.6rem 0.75rem;
         border-radius: 10px;
         border: 1px solid var(--admin-border);
-        background: #f8fafc;
+        background: rgba(18, 18, 18, 0.94);
     }
 
     .selected-address-label {
@@ -63,6 +63,25 @@
         color: var(--admin-text);
         line-height: 1.45;
         word-break: break-word;
+    }
+
+    #locationImageInput-{{ $formId }} {
+        padding: 0.4rem;
+    }
+
+    #locationImageInput-{{ $formId }}::file-selector-button {
+        background: rgba(212, 175, 55, 0.16);
+        border: 1px solid rgba(212, 175, 55, 0.34);
+        color: var(--admin-primary);
+        border-radius: 8px;
+        padding: 0.45rem 0.8rem;
+        margin-right: 0.7rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    #locationImageInput-{{ $formId }}::file-selector-button:hover {
+        background: rgba(212, 175, 55, 0.24);
     }
 </style>
 @endpush

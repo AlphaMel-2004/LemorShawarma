@@ -164,6 +164,44 @@
 
     .chatbot-range-wrap input[type='range'] {
         width: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+        accent-color: var(--admin-primary);
+    }
+
+    .chatbot-range-wrap input[type='range']::-webkit-slider-runnable-track {
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(212, 175, 55, 0.8), rgba(212, 175, 55, 0.35));
+        border: 1px solid rgba(212, 175, 55, 0.34);
+    }
+
+    .chatbot-range-wrap input[type='range']::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-top: -6px;
+        border: 2px solid #201807;
+        background: linear-gradient(135deg, #e5c158, #b8942f);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .chatbot-range-wrap input[type='range']::-moz-range-track {
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(212, 175, 55, 0.8), rgba(212, 175, 55, 0.35));
+        border: 1px solid rgba(212, 175, 55, 0.34);
+    }
+
+    .chatbot-range-wrap input[type='range']::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #201807;
+        background: linear-gradient(135deg, #e5c158, #b8942f);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
     }
 
     .chatbot-disabled-note {
@@ -533,7 +571,7 @@
                                 <span>Unsaved changes</span>
                             </span>
                             <button type="submit" class="btn btn-primary px-4">
-                                <i class="bi bi-save me-2"></i>Save Chatbot Settings
+                                <i class="bi bi-save me-2"></i>Save Settings
                             </button>
                         </div>
                     </form>

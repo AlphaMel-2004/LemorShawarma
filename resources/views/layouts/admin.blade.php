@@ -6,6 +6,9 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Panel') - Pita Queen</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -606,6 +609,13 @@
             color: var(--admin-text-muted);
         }
 
+        textarea.admin-form-control::-webkit-resizer {
+            background-color: #181818;
+            border-left: 1px solid var(--admin-border);
+            border-top: 1px solid var(--admin-border);
+            border-bottom-right-radius: 6px;
+        }
+
         .admin-form-select {
             background-color: #101010;
             border: 1px solid var(--admin-border);
@@ -900,7 +910,7 @@
 
             const toast = document.createElement('div');
             toast.className = 'alert d-flex align-items-center gap-2 shadow-lg mb-2';
-            toast.style.cssText = `background: #fff; border: 1px solid ${colors[type]}33; color: var(--admin-text); border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); animation: slideInRight 0.3s ease;`;
+            toast.style.cssText = `background: #fff; border: 1px solid ${colors[type]}33; color: #0d0d0d; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); animation: slideInRight 0.3s ease;`;
             toast.innerHTML = `<i class="bi ${icons[type]}" style="color: ${colors[type]}; font-size: 1.1rem;"></i><span style="font-size: 0.9rem;">${message}</span>`;
             container.appendChild(toast);
 

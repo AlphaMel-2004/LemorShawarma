@@ -202,13 +202,13 @@
 
     .btn-qr-primary {
         background: var(--admin-primary);
-        color: #fff;
+        color: #0d0d0d;
         border-color: var(--admin-primary);
     }
 
     .btn-qr-primary:hover {
         background: var(--admin-primary-hover);
-        color: #fff;
+        color: #0d0d0d;
     }
 
     .qr-tip {
@@ -233,7 +233,7 @@
     /* ── Buttons ── */
     .btn-save {
         background: var(--admin-primary);
-        color: #fff;
+        color: #0d0d0d;
         border: none;
         padding: 0.65rem 1.75rem;
         border-radius: 8px;
@@ -244,7 +244,7 @@
 
     .btn-save:hover {
         background: var(--admin-primary-hover);
-        color: #fff;
+        color: #0d0d0d;
         transform: translateY(-1px);
         box-shadow: 0 4px 15px rgba(57, 106, 255, 0.3);
     }

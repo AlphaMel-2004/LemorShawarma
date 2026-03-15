@@ -15,7 +15,7 @@
         <!-- Overlay -->
         <div class="card-overlay">
             <a href="#order" class="btn btn-golden btn-sm">
-                <i class="bi bi-bag-plus me-2"></i>Add to Cart
+                <i class="bi bi-bag-plus me-2"></i>Discover Flavor
             </a>
         </div>
     </div>
