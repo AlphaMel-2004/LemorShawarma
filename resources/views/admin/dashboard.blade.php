@@ -20,6 +20,10 @@
         box-shadow: 0 24px 48px rgba(36, 75, 206, 0.26);
     }
 
+    .dashboard-hero::selection {
+        background: rgba(255, 255, 255, 0.35);
+    }
+
     .dashboard-hero::before,
     .dashboard-hero::after {
         content: '';
@@ -41,6 +45,13 @@
         height: 180px;
         right: 110px;
         bottom: -95px;
+    }
+
+    .dashboard-hero-glow {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(100deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+        pointer-events: none;
     }
 
     .dashboard-hero-body {
@@ -77,6 +88,31 @@
         background: rgba(255, 255, 255, 0.13);
     }
 
+    .hero-actions {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+    }
+
+    .hero-action-btn {
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.4rem 0.85rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .hero-action-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.22);
+        transform: translateY(-1px);
+    }
+
     .metric-card {
         position: relative;
         overflow: hidden;
@@ -86,6 +122,16 @@
         background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         box-shadow: 0 8px 20px rgba(18, 45, 104, 0.06);
+    }
+
+    .metric-card::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3px;
+        background: linear-gradient(90deg, rgba(31, 87, 255, 0.2), rgba(31, 87, 255, 0));
     }
 
     .metric-card:hover {
@@ -233,6 +279,12 @@
         border-radius: 12px;
         padding: 0.65rem;
         background: #fbfcff;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .activity-item:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 24px rgba(33, 61, 126, 0.1);
     }
 
     .activity-thumb,
@@ -294,6 +346,12 @@
         white-space: nowrap;
     }
 
+    .rating-stars {
+        color: #f59e0b;
+        font-size: 0.74rem;
+        letter-spacing: 0.03em;
+    }
+
     .quick-grid {
         display: grid;
         gap: 0.7rem;
@@ -326,7 +384,42 @@
         font-size: 1rem;
     }
 
+    .panel-action-btn {
+        border-radius: 999px;
+        font-weight: 700;
+        border-color: rgba(31, 87, 255, 0.34);
+        color: var(--admin-primary);
+        background: rgba(31, 87, 255, 0.04);
+    }
+
+    .panel-action-btn:hover {
+        color: var(--admin-primary);
+        border-color: var(--admin-primary);
+        background: rgba(31, 87, 255, 0.12);
+    }
+
     @media (max-width: 991.98px) {
+        .dashboard-shell {
+            gap: 0.85rem;
+        }
+
+        .dashboard-hero {
+            padding: 1.15rem;
+        }
+
+        .metric-card {
+            min-height: 100%;
+        }
+
+        .activity-item {
+            align-items: flex-start;
+            padding: 0.68rem;
+        }
+
+        .activity-side {
+            min-width: 96px;
+        }
+
         .quick-grid {
             grid-template-columns: 1fr;
         }
@@ -345,12 +438,112 @@
             font-size: 1.3rem;
         }
 
+        .dashboard-hero p {
+            font-size: 0.88rem;
+        }
+
+        .hero-pills {
+            gap: 0.4rem;
+            margin-top: 0.8rem;
+        }
+
+        .hero-pill {
+            width: 100%;
+            text-align: center;
+        }
+
+        .hero-actions {
+            gap: 0.45rem;
+        }
+
+        .hero-action-btn {
+            width: 100%;
+            text-align: center;
+            font-size: 0.79rem;
+            padding: 0.46rem 0.75rem;
+        }
+
         .metric-value {
             font-size: 1.3rem;
         }
 
         .surface-panel {
             padding: 0.9rem;
+        }
+
+        .panel-title {
+            font-size: 0.93rem;
+        }
+
+        .panel-subtitle {
+            font-size: 0.78rem;
+        }
+
+        .activity-item {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 0.55rem 0.6rem;
+        }
+
+        .activity-side {
+            grid-column: 1 / -1;
+            margin-left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            border-top: 1px dashed var(--admin-border);
+            padding-top: 0.45rem;
+        }
+
+        .activity-title {
+            white-space: normal;
+            line-height: 1.25;
+        }
+
+        .activity-meta,
+        .activity-snippet {
+            white-space: normal;
+            max-width: none;
+        }
+
+        .activity-snippet {
+            text-align: right;
+        }
+
+        .panel-action-btn {
+            font-size: 0.73rem;
+            padding-inline: 0.58rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .dashboard-shell {
+            gap: 0.75rem;
+        }
+
+        .dashboard-hero {
+            border-radius: 14px;
+            padding: 1rem;
+        }
+
+        .dashboard-hero h2 {
+            font-size: 1.1rem;
+        }
+
+        .metric-card {
+            padding: 0.9rem;
+            border-radius: 12px;
+        }
+
+        .metric-meta {
+            font-size: 0.76rem;
+        }
+
+        .quick-link {
+            padding: 0.72rem 0.75rem;
+            border-radius: 10px;
+            font-size: 0.82rem;
         }
     }
 </style>
@@ -359,6 +552,7 @@
 @section('content')
     <div class="dashboard-shell">
         <section class="dashboard-hero">
+            <div class="dashboard-hero-glow"></div>
             <div class="dashboard-hero-body">
                 <h2>Welcome back, {{ auth()->user()->name ?? 'Admin' }}</h2>
                 <p>Monitor menu health, content visibility, and operations from one streamlined dashboard built for quick daily decisions.</p>
@@ -367,6 +561,12 @@
                     <span class="hero-pill">{{ $activeProductsRate }}% products active</span>
                     <span class="hero-pill">{{ $activeLocations }} active locations</span>
                     <span class="hero-pill">{{ number_format($averageRating, 1) }} average rating</span>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="{{ route('admin.products.index') }}" class="hero-action-btn"><i class="bi bi-plus-circle me-1"></i> Add Product</a>
+                    <a href="{{ route('admin.locations.index') }}" class="hero-action-btn"><i class="bi bi-geo-alt me-1"></i> Update Locations</a>
+                    <a href="{{ route('admin.testimonials.index') }}" class="hero-action-btn"><i class="bi bi-chat-left-text me-1"></i> Review Feedback</a>
                 </div>
             </div>
         </section>
@@ -479,7 +679,7 @@
                             <h3 class="panel-title">Recent Products</h3>
                             <p class="panel-subtitle">Latest catalog updates and status.</p>
                         </div>
-                        <a href="{{ route('admin.products.index') }}" class="btn btn-sm btn-outline-primary">View all</a>
+                        <a href="{{ route('admin.products.index') }}" class="btn btn-sm panel-action-btn">View all</a>
                     </div>
 
                     <div class="activity-list">
@@ -520,7 +720,7 @@
                             <h3 class="panel-title">Recent Feedback</h3>
                             <p class="panel-subtitle">Latest customer voice and visibility state.</p>
                         </div>
-                        <a href="{{ route('admin.testimonials.index') }}" class="btn btn-sm btn-outline-primary">Review</a>
+                        <a href="{{ route('admin.testimonials.index') }}" class="btn btn-sm panel-action-btn">Review</a>
                     </div>
 
                     <div class="activity-list">
@@ -538,6 +738,11 @@
                                 <div class="activity-side">
                                     <p class="activity-price">{{ $feedback->rating }}/5</p>
                                     <p class="activity-snippet">{{ $feedback->is_visible ? 'Visible on site' : 'Hidden from site' }}</p>
+                                    <p class="rating-stars mb-0" aria-label="{{ $feedback->rating }} stars">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="bi {{ $i <= $feedback->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                        @endfor
+                                    </p>
                                 </div>
                             </div>
                         @empty

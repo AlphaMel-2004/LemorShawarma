@@ -10,7 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,25 +20,45 @@
 
     <style>
         :root {
-            --admin-bg: #f5f7fa;
+            --admin-bg: #eff3fb;
             --admin-sidebar: #ffffff;
             --admin-card: #ffffff;
-            --admin-border: #e6e9f0;
-            --admin-text: #343c6a;
-            --admin-text-muted: #718ebf;
-            --admin-primary: #396aff;
-            --admin-primary-hover: #2d52d9;
-            --admin-success: #16dbaa;
-            --admin-danger: #fe5c73;
-            --admin-warning: #ffbb38;
+            --admin-border: #dfe7f5;
+            --admin-text: #253057;
+            --admin-text-muted: #6678a3;
+            --admin-primary: #1f57ff;
+            --admin-primary-hover: #1a43cd;
+            --admin-success: #15b78c;
+            --admin-danger: #f4526f;
+            --admin-warning: #f09a2a;
+            --admin-shadow-soft: 0 10px 28px rgba(33, 61, 126, 0.08);
+            --admin-shadow-strong: 0 24px 44px rgba(22, 44, 96, 0.12);
             --sidebar-width: 260px;
         }
 
         * { box-sizing: border-box; }
 
+        *::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: #eaf0fb;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #90a8df, #5d7fd1);
+            border-radius: 999px;
+            border: 2px solid #eaf0fb;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--admin-bg);
+            font-family: 'Manrope', sans-serif;
+            background:
+                radial-gradient(circle at 8% -14%, rgba(31, 87, 255, 0.2), transparent 38%),
+                radial-gradient(circle at 95% -10%, rgba(70, 198, 255, 0.18), transparent 34%),
+                var(--admin-bg);
             color: var(--admin-text);
             margin: 0;
             min-height: 100vh;
@@ -51,8 +71,9 @@
             left: 0;
             width: var(--sidebar-width);
             height: 100vh;
-            background-color: var(--admin-sidebar);
+            background: linear-gradient(170deg, #ffffff 0%, #f8fbff 100%);
             border-right: 1px solid var(--admin-border);
+            box-shadow: 8px 0 28px rgba(34, 61, 116, 0.06);
             z-index: 1000;
             transition: transform 0.3s ease;
             display: flex;
@@ -62,6 +83,7 @@
         .sidebar-header {
             padding: 1.5rem;
             border-bottom: 1px solid var(--admin-border);
+            background: linear-gradient(180deg, rgba(31, 87, 255, 0.06), rgba(31, 87, 255, 0));
         }
 
         .sidebar-brand {
@@ -81,6 +103,7 @@
             justify-content: center;
             font-size: 1.25rem;
             overflow: hidden;
+            box-shadow: 0 0 0 2px rgba(31, 87, 255, 0.14), 0 8px 18px rgba(31, 87, 255, 0.18);
         }
 
         .sidebar-brand-icon img {
@@ -90,6 +113,7 @@
         }
 
         .sidebar-brand-text {
+            font-family: 'Sora', sans-serif;
             font-weight: 700;
             font-size: 1.1rem;
         }
@@ -126,18 +150,22 @@
             transition: all 0.2s ease;
             font-size: 0.9rem;
             border-left: 3px solid transparent;
+            border-radius: 0 12px 12px 0;
+            margin: 0.12rem 0.8rem 0.12rem 0;
         }
 
         .sidebar-link:hover {
             color: var(--admin-primary);
-            background-color: rgba(57, 106, 255, 0.06);
+            background-color: rgba(31, 87, 255, 0.08);
+            transform: translateX(2px);
         }
 
         .sidebar-link.active {
             color: var(--admin-primary);
-            background-color: rgba(57, 106, 255, 0.1);
+            background: linear-gradient(90deg, rgba(31, 87, 255, 0.16), rgba(31, 87, 255, 0.04));
             border-left-color: var(--admin-primary);
             font-weight: 600;
+            box-shadow: inset 0 0 0 1px rgba(31, 87, 255, 0.12);
         }
 
         .sidebar-link i {
@@ -149,6 +177,7 @@
         .sidebar-footer {
             padding: 1rem 1.5rem;
             border-top: 1px solid var(--admin-border);
+            background-color: rgba(250, 252, 255, 0.8);
         }
 
         .sidebar-user {
@@ -161,13 +190,14 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--admin-primary), #6c5ce7);
+            background: linear-gradient(135deg, var(--admin-primary), #2dc1ff);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
             font-size: 0.85rem;
             color: #fff;
+            box-shadow: 0 8px 20px rgba(31, 87, 255, 0.32);
         }
 
         .sidebar-user-name {
@@ -187,8 +217,8 @@
         }
 
         .admin-topbar {
-            background-color: var(--admin-sidebar);
-            border-bottom: 1px solid var(--admin-border);
+            background: rgba(255, 255, 255, 0.78);
+            border-bottom: 1px solid rgba(223, 231, 245, 0.9);
             padding: 1rem 2rem;
             display: flex;
             align-items: center;
@@ -196,15 +226,48 @@
             position: sticky;
             top: 0;
             z-index: 999;
+            backdrop-filter: blur(10px);
         }
 
         .topbar-title {
-            font-size: 1.25rem;
+            font-family: 'Sora', sans-serif;
+            font-size: 1.18rem;
             font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
         .admin-content {
             padding: 2rem;
+            animation: contentLift 0.35s ease;
+        }
+
+        .topbar-action-btn {
+            border-radius: 999px;
+            border-color: rgba(31, 87, 255, 0.28);
+            color: var(--admin-primary);
+            font-weight: 700;
+            padding-inline: 0.95rem;
+            background: rgba(31, 87, 255, 0.03);
+        }
+
+        .topbar-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.34rem 0.72rem;
+            border-radius: 999px;
+            border: 1px solid rgba(31, 87, 255, 0.22);
+            background: rgba(31, 87, 255, 0.05);
+            color: var(--admin-primary);
+            font-size: 0.76rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .topbar-action-btn:hover {
+            background: rgba(31, 87, 255, 0.1);
+            border-color: var(--admin-primary);
+            color: var(--admin-primary);
         }
 
         /* Sidebar Toggle (mobile) */
@@ -247,7 +310,8 @@
         .admin-card {
             background-color: var(--admin-card);
             border: 1px solid var(--admin-border);
-            border-radius: 12px;
+            border-radius: 14px;
+            box-shadow: var(--admin-shadow-soft);
         }
 
         /* Table Styles */
@@ -257,7 +321,7 @@
         }
 
         .admin-table thead th {
-            background-color: rgba(57, 106, 255, 0.04);
+            background: linear-gradient(180deg, rgba(31, 87, 255, 0.08), rgba(31, 87, 255, 0.02));
             color: var(--admin-text-muted);
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -296,7 +360,7 @@
         }
 
         .admin-table tbody tr:hover {
-            background-color: rgba(57, 106, 255, 0.03);
+            background-color: rgba(31, 87, 255, 0.035);
         }
 
         .admin-table tbody tr:last-child td {
@@ -344,29 +408,30 @@
 
         /* Buttons */
         .btn-admin-primary {
-            background: var(--admin-primary);
+            background: linear-gradient(135deg, var(--admin-primary), #2cb8ff);
             color: #fff;
             border: none;
             padding: 0.6rem 1.25rem;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.2s ease;
+            box-shadow: 0 10px 24px rgba(31, 87, 255, 0.28);
         }
 
         .btn-admin-primary:hover {
-            background: var(--admin-primary-hover);
+            background: linear-gradient(135deg, var(--admin-primary-hover), #1b8fd7);
             color: #fff;
             transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(57, 106, 255, 0.3);
+            box-shadow: 0 14px 28px rgba(31, 87, 255, 0.34);
         }
 
         .btn-action {
             width: 34px;
             height: 34px;
-            border-radius: 8px;
+            border-radius: 10px;
             border: 1px solid var(--admin-border);
-            background: transparent;
+            background: #fff;
             color: var(--admin-text-muted);
             display: inline-flex;
             align-items: center;
@@ -376,9 +441,10 @@
         }
 
         .btn-action:hover {
-            background-color: rgba(57, 106, 255, 0.08);
+            background-color: rgba(31, 87, 255, 0.08);
             color: var(--admin-primary);
             border-color: var(--admin-primary);
+            transform: translateY(-1px);
         }
 
         .btn-action-danger:hover {
@@ -392,11 +458,12 @@
             background-color: #fff;
             border: 1px solid var(--admin-border);
             color: var(--admin-text);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 0.6rem 1rem 0.6rem 2.5rem;
             font-size: 0.85rem;
             width: 300px;
             transition: border-color 0.2s ease;
+            box-shadow: 0 4px 12px rgba(33, 61, 126, 0.05);
         }
 
         .admin-search:focus {
@@ -428,8 +495,9 @@
         .modal-content {
             background-color: var(--admin-card);
             border: 1px solid var(--admin-border);
-            border-radius: 12px;
+            border-radius: 14px;
             color: var(--admin-text);
+            box-shadow: var(--admin-shadow-strong);
         }
 
         .modal-header {
@@ -463,7 +531,7 @@
             background-color: #fff;
             border: 1px solid var(--admin-border);
             color: var(--admin-text);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 0.6rem 0.85rem;
             font-size: 0.9rem;
         }
@@ -483,7 +551,7 @@
             background-color: #fff;
             border: 1px solid var(--admin-border);
             color: var(--admin-text);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 0.6rem 0.85rem;
             font-size: 0.9rem;
         }
@@ -602,6 +670,8 @@
             .admin-content { padding: 1rem; }
             .admin-search { width: 100%; }
             .text-description-preview { max-width: 120px; }
+            .admin-topbar { padding: 0.85rem 1rem; }
+            .topbar-status-pill { display: none; }
         }
     </style>
 
@@ -686,7 +756,11 @@
                 <span class="topbar-title">@yield('page-title', 'Dashboard')</span>
             </div>
             <div class="d-flex align-items-center gap-3">
-                <a href="{{ route('home') }}" class="btn btn-sm btn-outline-secondary" target="_blank">
+                <span class="topbar-status-pill">
+                    <i class="bi bi-clock-history"></i>
+                    <span id="adminLiveDateTime">--</span>
+                </span>
+                <a href="{{ route('home') }}" class="btn btn-sm topbar-action-btn" target="_blank">
                     <i class="bi bi-box-arrow-up-right me-1"></i> View Site
                 </a>
             </div>
@@ -773,12 +847,34 @@
         document.getElementById('confirmLogoutBtn')?.addEventListener('click', function () {
             document.getElementById('logoutForm')?.submit();
         });
+
+        const liveDateTime = document.getElementById('adminLiveDateTime');
+        if (liveDateTime) {
+            const formatter = new Intl.DateTimeFormat(undefined, {
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+            });
+
+            const updateLiveDateTime = () => {
+                liveDateTime.textContent = formatter.format(new Date());
+            };
+
+            updateLiveDateTime();
+            setInterval(updateLiveDateTime, 30000);
+        }
     </script>
 
     <style>
         @keyframes slideInRight {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes contentLift {
+            from { transform: translateY(8px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
     </style>
 
