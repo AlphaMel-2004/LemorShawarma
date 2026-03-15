@@ -561,6 +561,43 @@
             margin-bottom: 0.75rem;
         }
 
+        .receipt-customer {
+            margin-bottom: 0.75rem;
+        }
+
+        .receipt-customer-label {
+            display: block;
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.35rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .receipt-customer-input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            padding: 0.6rem 0.7rem;
+            font-size: 0.86rem;
+        }
+
+        .receipt-customer-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.18);
+        }
+
+        .receipt-customer-error {
+            display: none;
+            margin-top: 0.35rem;
+            font-size: 0.72rem;
+            color: #ff8a9e;
+        }
+
         /* Feedback Section */
         .feedback-header {
             text-align: center;
@@ -981,6 +1018,11 @@
             <span class="gold">₱<span id="receiptTotal">0.00</span></span>
         </div>
         <div class="receipt-note">Use this order number when following up with our staff.</div>
+        <div class="receipt-customer">
+            <label class="receipt-customer-label" for="receiptCustomerNickname">Customer Nickname <span style="color:#ff8a9e;">*</span></label>
+            <input type="text" id="receiptCustomerNickname" class="receipt-customer-input" placeholder="Enter nickname (required)">
+            <div class="receipt-customer-error" id="receiptCustomerNicknameError">Please enter your nickname before sending to WhatsApp.</div>
+        </div>
         <button class="btn-place-order" type="button" onclick="sendReceiptToWhatsApp()">
             <i class="bi bi-whatsapp me-1"></i> Send to WhatsApp
         </button>
@@ -1018,7 +1060,7 @@
 
         // ── Cart ──
         let cart = {};
-        let pendingWhatsappUrl = '';
+        let pendingOrderPayload = null;
 
         function generateOrderNumber() {
             const now = new Date();
@@ -1121,6 +1163,15 @@
         function closeReceiptModal() {
             document.getElementById('receiptOverlay').classList.remove('show');
             document.getElementById('receiptModal').classList.remove('show');
+
+            const nicknameInput = document.getElementById('receiptCustomerNickname');
+            const nicknameError = document.getElementById('receiptCustomerNicknameError');
+            if (nicknameInput) {
+                nicknameInput.value = '';
+            }
+            if (nicknameError) {
+                nicknameError.style.display = 'none';
+            }
         }
 
         function renderReceipt(orderNumber, lines, total) {
@@ -1146,33 +1197,74 @@
             const phone = "{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}";
             const orderNumber = generateOrderNumber();
             const orderDetails = buildOrderDetails();
-            let msg = `Hi! I'd like to place an order.\nOrder Number: ${orderNumber}\n\n`;
-            orderDetails.lines.forEach(line => {
-                msg += `${line.text} - ₱${line.subtotal.toFixed(2)}\n`;
-            });
-            msg += `\nTotal: ₱${orderDetails.total.toFixed(2)}\n\nThank you!`;
-
-            const cleanPhone = phone.replace('+', '');
-            pendingWhatsappUrl = 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(msg);
+            pendingOrderPayload = {
+                phone,
+                orderNumber,
+                lines: orderDetails.lines,
+                total: orderDetails.total,
+                createdAt: new Date().toLocaleString(),
+            };
 
             renderReceipt(orderNumber, orderDetails.lines, orderDetails.total);
             closeOrderSheet();
             openReceiptModal();
         }
 
+        function buildWhatsAppMessage(orderPayload, nickname) {
+            const lineItems = orderPayload.lines
+                .map(line => `- ${line.text} (₱${line.subtotal.toFixed(2)})`)
+                .join('\n');
+
+            return [
+                'Hi! I would like to place an order.',
+                '',
+                `Customer: ${nickname}`,
+                `Order No: ${orderPayload.orderNumber}`,
+                `Date: ${orderPayload.createdAt}`,
+                '',
+                'Items:',
+                lineItems,
+                '',
+                `Total: ₱${orderPayload.total.toFixed(2)}`,
+                '',
+                'Thank you!',
+            ].join('\n');
+        }
+
         function sendReceiptToWhatsApp() {
-            if (!pendingWhatsappUrl) {
+            if (!pendingOrderPayload) {
                 showToast('Unable to send order right now.');
                 return;
             }
 
-            window.open(pendingWhatsappUrl, '_blank');
+            const nicknameInput = document.getElementById('receiptCustomerNickname');
+            const nicknameError = document.getElementById('receiptCustomerNicknameError');
+            const nickname = (nicknameInput?.value || '').trim();
+
+            if (!nickname) {
+                if (nicknameError) {
+                    nicknameError.style.display = 'block';
+                }
+                nicknameInput?.focus();
+                showToast('Nickname is required before sending.');
+                return;
+            }
+
+            if (nicknameError) {
+                nicknameError.style.display = 'none';
+            }
+
+            const cleanPhone = pendingOrderPayload.phone.replace('+', '');
+            const message = buildWhatsAppMessage(pendingOrderPayload, nickname);
+            const whatsappUrl = 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(message);
+
+            window.open(whatsappUrl, '_blank');
 
             cart = {};
-            pendingWhatsappUrl = '';
+            pendingOrderPayload = null;
             updateCartUI();
             closeReceiptModal();
-            showToast('Receipt ready and sent to WhatsApp!');
+            showToast('Order message sent to WhatsApp!');
         }
 
         // Add-to-cart button handlers
