@@ -2074,28 +2074,90 @@ h1, h2, h3, h4, h5, h6 {
     :root {
         --section-padding: 80px;
     }
+
+    html,
+    body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .navbar .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+
+    .navbar-brand {
+        min-width: 0;
+        max-width: calc(100% - 58px);
+        overflow: hidden;
+    }
+
+    .navbar-brand .brand-logo {
+        height: 34px !important;
+        flex-shrink: 0;
+    }
+
+    .navbar-brand .brand-text {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .navbar-brand .brand-name {
+        font-size: 1.45rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .navbar-toggler {
+        min-width: 42px;
+        min-height: 42px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        background: rgba(255, 255, 255, 0.02);
+    }
     
     .navbar-collapse {
         position: fixed;
         top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
+        right: 0;
+        left: auto;
+        width: min(86vw, 360px);
+        height: 100dvh;
         background: rgba(13, 13, 13, 0.98);
         backdrop-filter: blur(20px);
-        padding: 100px 30px 30px;
+        padding: 90px 20px 24px;
         margin: 0;
+        border-left: 1px solid rgba(212, 175, 55, 0.2);
+        box-shadow: -12px 0 36px rgba(0, 0, 0, 0.45);
+        transform: translateX(100%);
+        transition: transform 0.28s ease;
+        z-index: 1100;
+        overflow-y: auto;
+    }
+
+    .navbar-collapse.show {
+        transform: translateX(0);
     }
     
     .navbar-nav {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         gap: 0;
+        width: 100%;
     }
     
     .nav-link {
-        font-size: 20px;
-        padding: 16px !important;
+        font-size: 18px;
+        padding: 14px 10px !important;
+        width: 100%;
     }
     
     .navbar-cta {
@@ -2324,6 +2386,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 575px) {
+    .navbar-brand .brand-logo {
+        height: 30px !important;
+    }
+
+    .navbar-brand .brand-name {
+        font-size: 1.25rem;
+    }
+
     .hero-badge {
         padding: 6px 12px;
     }
