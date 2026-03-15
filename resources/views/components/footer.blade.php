@@ -138,9 +138,9 @@
                 </div>
                 <div class="col-md-6">
                     <nav class="footer-bottom-links" aria-label="Legal links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">Cookie Policy</a>
+                        <a href="{{ route('legal.privacy') }}">Privacy Policy</a>
+                        <a href="{{ route('legal.terms') }}">Terms of Service</a>
+                        <a href="{{ route('legal.cookies') }}">Cookie Policy</a>
                     </nav>
                 </div>
             </div>

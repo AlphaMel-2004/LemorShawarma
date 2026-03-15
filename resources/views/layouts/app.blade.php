@@ -77,19 +77,25 @@
 
     <!-- Main Content -->
     <div class="page-wrapper">
-        <x-navbar />
+        @if(trim($__env->yieldContent('hide_layout_chrome')) !== '1')
+            <x-navbar />
+        @endif
         
         <main>
             @yield('content')
         </main>
-        
-        <x-footer />
+
+        @if(trim($__env->yieldContent('hide_layout_chrome')) !== '1')
+            <x-footer />
+        @endif
     </div>
 
-    <!-- Scroll to Top Button -->
-    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
-        <i class="bi bi-arrow-up"></i>
-    </button>
+    @if(trim($__env->yieldContent('hide_layout_chrome')) !== '1')
+        <!-- Scroll to Top Button -->
+        <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+            <i class="bi bi-arrow-up"></i>
+        </button>
+    @endif
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

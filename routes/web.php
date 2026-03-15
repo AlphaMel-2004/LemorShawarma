@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\MobileMenuController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain((string) config('app.root_domain'))->group(function (): void {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/feedback', [HomeController::class, 'storeFeedback'])->name('home.feedback');
+    Route::get('/privacy-policy', [LegalPageController::class, 'privacy'])->name('legal.privacy');
+    Route::get('/terms-of-service', [LegalPageController::class, 'terms'])->name('legal.terms');
+    Route::get('/cookie-policy', [LegalPageController::class, 'cookies'])->name('legal.cookies');
 
     Route::post('/chatbot/message', [ChatbotController::class, 'reply'])
         ->middleware('throttle:15,1')

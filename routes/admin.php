@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ChatbotSettingsController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LegalSettingsController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\ProductController;
@@ -28,4 +29,7 @@ Route::middleware(['auth', 'admin.user'])->name('admin.')->group(function (): vo
 
     Route::get('contacts', [ContactController::class, 'edit'])->name('contacts.edit');
     Route::put('contacts', [ContactController::class, 'update'])->name('contacts.update');
+
+    Route::get('legal', [LegalSettingsController::class, 'edit'])->name('legal.edit');
+    Route::put('legal', [LegalSettingsController::class, 'update'])->name('legal.update');
 });

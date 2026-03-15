@@ -777,6 +777,10 @@
                 <i class="bi bi-telephone-fill"></i>
                 <span>Manage Contacts</span>
             </a>
+            <a href="{{ route('admin.legal.edit') }}" class="sidebar-link {{ request()->routeIs('admin.legal.*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-text-fill"></i>
+                <span>Legal Pages</span>
+            </a>
         </nav>
 
         <div class="sidebar-footer">
