@@ -1,22 +1,28 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
     <div class="container">
-        <!-- Logo -->
-        <a class="navbar-brand" href="{{ route('home') }}#home">
-            <img src="/images/logo.png" alt="Pita Queen" class="brand-logo" style="height: 40px; width: auto;">
-            <span class="brand-text">
-                <span class="brand-name">Pita Queen</span>
-            </span>
+        <div class="navbar-header-shell">
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="toggler-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="{{ route('home') }}#home">
+                <img src="/images/logo.png" alt="Pita Queen" class="brand-logo" style="height: 40px; width: auto;">
+                <span class="brand-text">
+                    <span class="brand-name">Pita Queen</span>
+                </span>
+            </a>
+        </div>
+
+        <a href="{{ route('home') }}#order" class="btn btn-sm navbar-mobile-action d-lg-none">
+            <i class="bi bi-box-arrow-up-right me-1"></i> Order
         </a>
-        
-        <!-- Mobile Toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="toggler-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-            </span>
-        </button>
         
         <!-- Navigation Links -->
         <div class="collapse navbar-collapse" id="navbarNav">
