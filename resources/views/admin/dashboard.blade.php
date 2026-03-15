@@ -7,17 +7,20 @@
     .dashboard-shell {
         display: flex;
         flex-direction: column;
-        gap: 1.1rem;
+        gap: 1.35rem;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
     .dashboard-hero {
         position: relative;
         overflow: hidden;
-        padding: 1.6rem;
-        border-radius: 18px;
-        background: linear-gradient(125deg, #1f4ae4 0%, #2f66ff 42%, #34b6ff 100%);
+        padding: 1.85rem;
+        border-radius: 20px;
+        background: linear-gradient(120deg, #1846de 0%, #2963fb 45%, #1da7f4 100%);
         color: #fff;
-        box-shadow: 0 24px 48px rgba(36, 75, 206, 0.26);
+        border: 1px solid rgba(191, 224, 255, 0.34);
+        box-shadow: 0 30px 52px rgba(24, 67, 186, 0.34);
     }
 
     .dashboard-hero::selection {
@@ -31,6 +34,7 @@
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.15);
         pointer-events: none;
+        animation: floatOrb 7s ease-in-out infinite;
     }
 
     .dashboard-hero::before {
@@ -45,12 +49,24 @@
         height: 180px;
         right: 110px;
         bottom: -95px;
+        animation-delay: 0.9s;
     }
 
     .dashboard-hero-glow {
         position: absolute;
         inset: 0;
         background: linear-gradient(100deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+        pointer-events: none;
+    }
+
+    .dashboard-hero-shine {
+        position: absolute;
+        width: 42%;
+        height: 220%;
+        left: -18%;
+        top: -58%;
+        transform: rotate(16deg);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
         pointer-events: none;
     }
 
@@ -61,14 +77,15 @@
 
     .dashboard-hero h2 {
         margin: 0;
-        font-size: 1.62rem;
+        font-size: 1.8rem;
         font-weight: 800;
         letter-spacing: -0.02em;
     }
 
     .dashboard-hero p {
         margin: 0.45rem 0 0;
-        max-width: 560px;
+        max-width: 640px;
+        font-size: 1rem;
         color: rgba(255, 255, 255, 0.88);
     }
 
@@ -83,9 +100,9 @@
         border: 1px solid rgba(255, 255, 255, 0.28);
         border-radius: 999px;
         padding: 0.3rem 0.7rem;
-        font-size: 0.77rem;
+        font-size: 0.79rem;
         color: rgba(255, 255, 255, 0.94);
-        background: rgba(255, 255, 255, 0.13);
+        background: rgba(255, 255, 255, 0.16);
     }
 
     .hero-actions {
@@ -99,10 +116,10 @@
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.3);
         color: #fff;
-        background: rgba(255, 255, 255, 0.12);
-        font-size: 0.8rem;
+        background: rgba(255, 255, 255, 0.16);
+        font-size: 0.82rem;
         font-weight: 700;
-        padding: 0.4rem 0.85rem;
+        padding: 0.46rem 0.95rem;
         text-decoration: none;
         transition: all 0.2s ease;
     }
@@ -116,12 +133,12 @@
     .metric-card {
         position: relative;
         overflow: hidden;
-        padding: 1.05rem;
-        border-radius: 14px;
+        padding: 1.18rem;
+        border-radius: 16px;
         border: 1px solid var(--admin-border);
-        background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: 0 8px 20px rgba(18, 45, 104, 0.06);
+        box-shadow: 0 14px 28px rgba(18, 45, 104, 0.1);
     }
 
     .metric-card::after {
@@ -187,7 +204,7 @@
 
     .metric-value {
         margin: 0;
-        font-size: 1.55rem;
+        font-size: 1.75rem;
         font-weight: 800;
         line-height: 1.15;
         color: var(--admin-text);
@@ -202,15 +219,15 @@
 
     .surface-panel {
         border: 1px solid var(--admin-border);
-        border-radius: 14px;
+        border-radius: 16px;
         background: #fff;
-        padding: 1rem;
-        box-shadow: 0 8px 22px rgba(18, 45, 104, 0.06);
+        padding: 1.15rem;
+        box-shadow: 0 16px 30px rgba(18, 45, 104, 0.1);
     }
 
     .panel-title {
         margin: 0;
-        font-size: 0.98rem;
+        font-size: 1.02rem;
         font-weight: 700;
         color: var(--admin-text);
     }
@@ -276,9 +293,9 @@
         align-items: center;
         gap: 0.7rem;
         border: 1px solid var(--admin-border);
-        border-radius: 12px;
-        padding: 0.65rem;
-        background: #fbfcff;
+        border-radius: 14px;
+        padding: 0.72rem;
+        background: linear-gradient(180deg, #fbfdff 0%, #f7faff 100%);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -354,20 +371,20 @@
 
     .quick-grid {
         display: grid;
-        gap: 0.7rem;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.85rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .quick-link {
         display: flex;
-        align-items: center;
-        gap: 0.65rem;
-        padding: 0.8rem 0.9rem;
-        border-radius: 11px;
+        align-items: flex-start;
+        gap: 0.72rem;
+        padding: 0.86rem 0.95rem;
+        border-radius: 13px;
         border: 1px solid var(--admin-border);
         color: var(--admin-text);
         text-decoration: none;
-        background: #fff;
+        background: linear-gradient(180deg, #fff 0%, #f7fbff 100%);
         transition: all 0.2s ease;
         font-size: 0.84rem;
         font-weight: 600;
@@ -381,7 +398,33 @@
     }
 
     .quick-link i {
-        font-size: 1rem;
+        font-size: 1.05rem;
+    }
+
+    .quick-link-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 1px solid rgba(31, 87, 255, 0.16);
+        background: rgba(31, 87, 255, 0.08);
+    }
+
+    .quick-link-title {
+        display: block;
+        font-weight: 700;
+        color: var(--admin-text);
+        margin-bottom: 0.14rem;
+    }
+
+    .quick-link-sub {
+        display: block;
+        color: var(--admin-text-muted);
+        font-size: 0.74rem;
+        line-height: 1.35;
     }
 
     .panel-action-btn {
@@ -421,7 +464,7 @@
         }
 
         .quick-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
@@ -435,7 +478,7 @@
         }
 
         .dashboard-hero h2 {
-            font-size: 1.3rem;
+            font-size: 1.35rem;
         }
 
         .dashboard-hero p {
@@ -464,7 +507,7 @@
         }
 
         .metric-value {
-            font-size: 1.3rem;
+            font-size: 1.42rem;
         }
 
         .surface-panel {
@@ -545,6 +588,20 @@
             border-radius: 10px;
             font-size: 0.82rem;
         }
+
+        .quick-link-sub {
+            font-size: 0.72rem;
+        }
+
+        .quick-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @keyframes floatOrb {
+        0%,
+        100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
     }
 </style>
 @endpush
@@ -553,8 +610,12 @@
     <div class="dashboard-shell">
         <section class="dashboard-hero">
             <div class="dashboard-hero-glow"></div>
+            <div class="dashboard-hero-shine"></div>
             <div class="dashboard-hero-body">
-                <h2>Welcome back, {{ auth()->user()->name ?? 'Admin' }}</h2>
+                <h2 id="dashboardGreetingHeading">
+                    <i class="bi bi-sunrise-fill me-2" id="dashboardGreetingIcon"></i>
+                    <span id="dashboardGreetingText">Good Morning</span>, {{ auth()->user()->name ?? 'Admin' }}
+                </h2>
                 <p>Monitor menu health, content visibility, and operations from one streamlined dashboard built for quick daily decisions.</p>
 
                 <div class="hero-pills">
@@ -571,7 +632,7 @@
             </div>
         </section>
 
-        <section class="row g-3">
+        <section class="row g-4">
             <div class="col-sm-6 col-xl-3">
                 <article class="metric-card">
                     <div class="metric-head">
@@ -617,7 +678,7 @@
             </div>
         </section>
 
-        <section class="row g-3">
+        <section class="row g-4">
             <div class="col-lg-4">
                 <article class="surface-panel h-100">
                     <h3 class="panel-title">Performance Snapshot</h3>
@@ -766,26 +827,71 @@
 
             <div class="quick-grid">
                 <a href="{{ route('admin.products.index') }}" class="quick-link">
-                    <i class="bi bi-box-seam-fill" style="color: var(--admin-primary);"></i>
-                    Manage Products
+                    <span class="quick-link-icon"><i class="bi bi-box-seam-fill" style="color: var(--admin-primary);"></i></span>
+                    <span>
+                        <span class="quick-link-title">Manage Products</span>
+                        <span class="quick-link-sub">Update menu items, pricing, and product status.</span>
+                    </span>
                 </a>
                 <a href="{{ route('admin.locations.index') }}" class="quick-link">
-                    <i class="bi bi-geo-alt-fill" style="color: var(--admin-success);"></i>
-                    Manage Locations
+                    <span class="quick-link-icon" style="border-color: rgba(21, 183, 140, 0.2); background: rgba(21, 183, 140, 0.1);"><i class="bi bi-geo-alt-fill" style="color: var(--admin-success);"></i></span>
+                    <span>
+                        <span class="quick-link-title">Manage Locations</span>
+                        <span class="quick-link-sub">Adjust pinned branches, operating hours, and visibility.</span>
+                    </span>
                 </a>
                 <a href="{{ route('admin.testimonials.index') }}" class="quick-link">
-                    <i class="bi bi-chat-left-text-fill" style="color: var(--admin-danger);"></i>
-                    Moderate Testimonials
+                    <span class="quick-link-icon" style="border-color: rgba(244, 82, 111, 0.24); background: rgba(244, 82, 111, 0.11);"><i class="bi bi-chat-left-text-fill" style="color: var(--admin-danger);"></i></span>
+                    <span>
+                        <span class="quick-link-title">Moderate Testimonials</span>
+                        <span class="quick-link-sub">Review customer feedback and control homepage visibility.</span>
+                    </span>
                 </a>
                 <a href="{{ route('admin.contacts.edit') }}" class="quick-link">
-                    <i class="bi bi-person-lines-fill" style="color: #d97706;"></i>
-                    Update Contact Info
+                    <span class="quick-link-icon" style="border-color: rgba(240, 154, 42, 0.24); background: rgba(240, 154, 42, 0.12);"><i class="bi bi-person-lines-fill" style="color: #d97706;"></i></span>
+                    <span>
+                        <span class="quick-link-title">Update Contact Info</span>
+                        <span class="quick-link-sub">Keep address, phone, and service details accurate.</span>
+                    </span>
                 </a>
                 <a href="{{ route('home') }}" target="_blank" class="quick-link">
-                    <i class="bi bi-globe2" style="color: #0ea5e9;"></i>
-                    Preview Website
+                    <span class="quick-link-icon" style="border-color: rgba(14, 165, 233, 0.24); background: rgba(14, 165, 233, 0.12);"><i class="bi bi-globe2" style="color: #0ea5e9;"></i></span>
+                    <span>
+                        <span class="quick-link-title">Preview Website</span>
+                        <span class="quick-link-sub">Open storefront in a new tab to verify changes quickly.</span>
+                    </span>
                 </a>
             </div>
         </section>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    (function () {
+        const greetingText = document.getElementById('dashboardGreetingText');
+        const greetingIcon = document.getElementById('dashboardGreetingIcon');
+
+        if (!greetingText || !greetingIcon) {
+            return;
+        }
+
+        const now = new Date();
+        const hour24 = now.getHours();
+
+        let text = 'Good Evening';
+        let icon = 'bi-moon-stars-fill';
+
+        if (hour24 >= 5 && hour24 < 12) {
+            text = 'Good Morning';
+            icon = 'bi-sunrise-fill';
+        } else if (hour24 >= 12 && hour24 < 18) {
+            text = 'Good Afternoon';
+            icon = 'bi-sun-fill';
+        }
+
+        greetingText.textContent = text;
+        greetingIcon.className = `bi ${icon} me-2`;
+    })();
+</script>
+@endpush
