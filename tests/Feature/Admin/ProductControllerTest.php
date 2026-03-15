@@ -96,6 +96,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'New Shawarma',
+            'category' => 'Wraps',
             'description' => 'Delicious new item',
             'price' => 149.99,
             'is_active' => true,
@@ -111,6 +112,7 @@ class ProductControllerTest extends TestCase
     public function test_product_creation_requires_name(): void
     {
         $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
+            'category' => 'Wraps',
             'price' => 100,
             'is_active' => true,
         ]);
@@ -123,6 +125,7 @@ class ProductControllerTest extends TestCase
     {
         $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'Test Product',
+            'category' => 'Wraps',
             'is_active' => true,
         ]);
 
@@ -134,6 +137,7 @@ class ProductControllerTest extends TestCase
     {
         $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'Test Product',
+            'category' => 'Wraps',
             'price' => -10,
             'is_active' => true,
         ]);
@@ -148,6 +152,7 @@ class ProductControllerTest extends TestCase
 
         $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
             'name' => 'Test Product',
+            'category' => 'Wraps',
             'price' => 100,
             'is_active' => true,
             'image' => UploadedFile::fake()->image('huge.jpg')->size(3000),
@@ -174,11 +179,12 @@ class ProductControllerTest extends TestCase
 
     public function test_product_can_be_updated(): void
     {
-        $product = Product::factory()->create(['name' => 'Old Name']);
+        $product = Product::factory()->create(['name' => 'Old Name', 'category' => 'Wraps']);
 
         $response = $this->actingAs($this->admin)
             ->putJson($this->adminUrl("/products/{$product->id}"), [
                 'name' => 'Updated Name',
+                'category' => 'Rice Bowls',
                 'price' => 199.99,
                 'is_active' => false,
             ]);
@@ -188,6 +194,7 @@ class ProductControllerTest extends TestCase
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
             'name' => 'Updated Name',
+            'category' => 'Rice Bowls',
         ]);
     }
 
@@ -201,6 +208,7 @@ class ProductControllerTest extends TestCase
         $response = $this->actingAs($this->admin)
             ->putJson($this->adminUrl("/products/{$product->id}"), [
                 'name' => $product->name,
+                'category' => $product->category,
                 'price' => $product->price,
                 'is_active' => true,
                 'image' => UploadedFile::fake()->image('new.jpg'),
@@ -228,6 +236,7 @@ class ProductControllerTest extends TestCase
     {
         $response = $this->postJson($this->adminUrl('/products'), [
             'name' => 'Hacked Product',
+            'category' => 'Wraps',
             'price' => 100,
             'is_active' => true,
         ]);
@@ -242,5 +251,17 @@ class ProductControllerTest extends TestCase
         $response = $this->deleteJson($this->adminUrl("/products/{$product->id}"));
 
         $response->assertStatus(401);
+    }
+
+    public function test_product_creation_requires_category(): void
+    {
+        $response = $this->actingAs($this->admin)->postJson($this->adminUrl('/products'), [
+            'name' => 'Test Product',
+            'price' => 100,
+            'is_active' => true,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('category');
     }
 }

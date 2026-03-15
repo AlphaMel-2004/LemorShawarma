@@ -68,11 +68,11 @@
                         <h4 class="footer-title">Menu</h4>
                         <nav aria-label="Menu links">
                             <ul class="link-list">
-                                <li><a href="#menu">Signature Items</a></li>
-                                <li><a href="#menu">Wraps</a></li>
-                                <li><a href="#menu">Platters</a></li>
-                                <li><a href="#menu">Bowls</a></li>
-                                <li><a href="#menu">Sides & Drinks</a></li>
+                                @forelse($footerMenuCategories as $footerMenuCategory)
+                                    <li><a href="#menu">{{ $footerMenuCategory }}</a></li>
+                                @empty
+                                    <li><a href="#menu">Menu Categories</a></li>
+                                @endforelse
                             </ul>
                         </nav>
                     </div>

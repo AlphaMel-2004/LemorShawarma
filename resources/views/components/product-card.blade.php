@@ -6,7 +6,7 @@
         : 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400';
 @endphp
 
-<div class="product-card" data-aos="fade-up">
+<div class="product-card" data-aos="fade-up" data-category="{{ \Illuminate\Support\Str::slug($item->category ?? 'general') }}">
     <!-- Card Image -->
     <div class="card-image">
         <img src="{{ $imageUrl }}"
@@ -24,6 +24,9 @@
 
     <!-- Card Content -->
     <div class="card-content">
+        @if(!empty($item->category))
+            <span class="card-category">{{ $item->category }}</span>
+        @endif
         <h3 class="card-title">{{ $item->name }}</h3>
         <p class="card-description">{{ $item->description }}</p>
 

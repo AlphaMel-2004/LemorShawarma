@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Pita Queen - Premium Canadian Cuisine')
-@section('meta_description', 'Discover Pita Queen, your destination for authentic Mediterranean cuisine. Enjoy signature shawarma, fresh pita, and handcrafted dishes made with premium ingredients.')
+@section('meta_description', 'Discover Pita Queen, your destination for authentic Canadian cuisine. Enjoy signature shawarma, fresh pita, and handcrafted dishes made with premium ingredients.')
 @section('canonical', route('home'))
 
 @section('structured_data')
@@ -11,7 +11,7 @@
             "@@type": "Restaurant",
             "name": "{{ config('app.name') }}",
             "url": "{{ route('home') }}",
-            "servesCuisine": "Mediterranean",
+            "servesCuisine": "Canadian",
             "menu": "{{ route('mobile.menu') }}",
             "telephone": "{{ $contactSettings['contact_phone'] ?? '' }}",
             "email": "{{ $contactSettings['contact_email'] ?? '' }}",
@@ -45,7 +45,7 @@
                 <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
                     <div class="about-image-wrapper">
                         <div class="about-image about-image-main">
-                            <img src="{{ asset('images/lemorfood1.png') }}" 
+                               <img src="{{ asset('images/lemorfood3.png') }}" 
                                  alt="Our Kitchen" 
                                  loading="lazy"
                                  class="img-fluid">
@@ -75,7 +75,7 @@
                         <p class="about-text">
                             At Pita Queen, we believe that exceptional food is born from passion, 
                             quality ingredients, and time-honored recipes passed down through generations. 
-                            Our master chefs bring the authentic taste of the Mediterranean to every dish.
+                            Our master chefs bring the authentic taste of Canadian to every dish.
                         </p>
                         
                         <p class="about-text">
@@ -161,6 +161,11 @@
                     <span class="filter-icon"><i class="bi bi-grid-fill" aria-hidden="true"></i></span>
                     <span class="filter-text">All Items</span>
                 </button>
+                @foreach($menuCategories as $menuCategory)
+                    <button class="filter-btn" data-filter="{{ \Illuminate\Support\Str::slug($menuCategory) }}">
+                        <span class="filter-text">{{ $menuCategory }}</span>
+                    </button>
+                @endforeach
             </div>
             
             <!-- Menu Grid -->
@@ -239,7 +244,7 @@
                                     @php
                                         $bsImageUrl = $item->image
                                             ? (str_starts_with($item->image, 'http') ? $item->image : Storage::url($item->image))
-                                            : asset('images/lemorfood3.png');
+                                                : asset('images/lemorfood1.png');
                                     @endphp
                                     <img src="{{ $bsImageUrl }}"
                                          alt="{{ $item->name }}"

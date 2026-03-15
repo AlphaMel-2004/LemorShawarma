@@ -19,12 +19,20 @@ class ProductController extends Controller
     public function index(Request $request): View|JsonResponse
     {
         $query = Product::query()
-            ->select(['id', 'name', 'description', 'price', 'image', 'is_active', 'created_at']);
+            ->select(['id', 'name', 'category', 'description', 'price', 'image', 'is_active', 'created_at']);
+
+        $availableCategories = Product::query()
+            ->select('category')
+            ->whereNotNull('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
 
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             });
         }
@@ -33,9 +41,13 @@ class ProductController extends Controller
             $query->where('is_active', $request->input('status') === 'active');
         }
 
+        if ($request->filled('category')) {
+            $query->where('category', $request->string('category')->toString());
+        }
+
         $sortField = $request->input('sort', 'created_at');
         $sortDirection = $request->input('direction', 'desc');
-        $allowedSorts = ['id', 'name', 'price', 'is_active', 'created_at'];
+        $allowedSorts = ['id', 'name', 'category', 'price', 'is_active', 'created_at'];
 
         if (in_array($sortField, $allowedSorts)) {
             $query->orderBy($sortField, $sortDirection === 'asc' ? 'asc' : 'desc');
@@ -52,7 +64,7 @@ class ProductController extends Controller
             ]);
         }
 
-        return view('admin.products.index', compact('products'));
+        return view('admin.products.index', compact('products', 'availableCategories'));
     }
 
     /**

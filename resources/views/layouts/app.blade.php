@@ -2,15 +2,15 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @php
-        $seoTitle = trim($__env->yieldContent('title', 'Pita Queen - Premium Mediterranean Cuisine'));
-        $seoDescription = trim($__env->yieldContent('meta_description', 'Pita Queen serves authentic Mediterranean cuisine with premium shawarma, fresh pita, grilled favorites, and fast delivery.'));
+        $seoTitle = trim($__env->yieldContent('title', 'Pita Queen - Premium Canadian Cuisine'));
+        $seoDescription = trim($__env->yieldContent('meta_description', 'Pita Queen serves authentic Canadian cuisine with premium shawarma, fresh pita, grilled favorites, and fast delivery.'));
         $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
         $seoImage = trim($__env->yieldContent('og_image', asset('images/logo.png')));
     @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ $seoDescription }}">
-    <meta name="keywords" content="pita queen, shawarma, mediterranean cuisine, fresh pita, authentic middle eastern food, premium restaurant, mediterranean delivery, best shawarma, grill, kebab, falafel, hummus">
+    <meta name="keywords" content="pita queen, shawarma, canadian cuisine, fresh pita, authentic middle eastern food, premium restaurant, canadian delivery, best shawarma, grill, kebab, falafel, hummus">
     <meta name="robots" content="@yield('meta_robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1')">
     <meta name="author" content="Pita Queen">
     <link rel="canonical" href="{{ $seoCanonical }}">
@@ -52,7 +52,7 @@
             "name": "{{ config('app.name') }}",
             "url": "{{ url('/') }}",
             "image": "{{ $seoImage }}",
-            "servesCuisine": "Mediterranean",
+            "servesCuisine": "Canadian",
             "menu": "{{ route('mobile.menu') }}"
         }
     </script>

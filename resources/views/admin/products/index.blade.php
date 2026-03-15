@@ -26,6 +26,15 @@
                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
                 <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
             </select>
+            <label for="categoryFilter" class="visually-hidden">Filter products by category</label>
+            <select class="admin-form-select" id="categoryFilter" style="width: auto; min-width: 160px;">
+                <option value="">All Categories</option>
+                @foreach($availableCategories as $availableCategory)
+                    <option value="{{ $availableCategory }}" {{ request('category') === $availableCategory ? 'selected' : '' }}>
+                        {{ $availableCategory }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <button class="btn-admin-primary" data-bs-toggle="modal" data-bs-target="#productModal" onclick="openCreateModal()">
             <i class="bi bi-plus-lg me-1"></i> Add Product
@@ -44,6 +53,9 @@
                         <th>Image</th>
                         <th class="sortable-header" data-sort="name">
                             Name <i class="bi bi-chevron-expand sort-icon"></i>
+                        </th>
+                        <th class="sortable-header" data-sort="category">
+                            Category <i class="bi bi-chevron-expand sort-icon"></i>
                         </th>
                         <th>Description</th>
                         <th class="sortable-header" data-sort="price">
@@ -87,6 +99,31 @@
                         <label class="admin-form-label">Product Name <span class="text-danger">*</span></label>
                         <input type="text" class="admin-form-control form-control" id="productName" name="name" required placeholder="Enter product name">
                         <div class="invalid-feedback" id="nameError"></div>
+                    </div>
+
+                    @php
+                        $predefinedCategories = ['Wraps', 'Rice Bowls', 'Platters', 'Sides', 'Beverages', 'Desserts'];
+                        $categoryOptions = collect($predefinedCategories)
+                            ->merge($availableCategories)
+                            ->unique()
+                            ->sort()
+                            ->values();
+                    @endphp
+                    <div class="mb-3">
+                        <label class="admin-form-label">Category <span class="text-danger">*</span></label>
+                        <select class="admin-form-select form-select" id="productCategorySelect" name="category" required>
+                            <option value="">Select Category</option>
+                            @foreach($categoryOptions as $categoryOption)
+                                <option value="{{ $categoryOption }}">{{ $categoryOption }}</option>
+                            @endforeach
+                            <option value="__new__">+ Add New Category</option>
+                        </select>
+                        <div class="invalid-feedback" id="categoryError"></div>
+                    </div>
+
+                    <div class="mb-3 d-none" id="newCategoryGroup">
+                        <label class="admin-form-label">New Category Name <span class="text-danger">*</span></label>
+                        <input type="text" class="admin-form-control form-control" id="newCategoryInput" placeholder="Enter new category name">
                     </div>
 
                     <div class="mb-3">
@@ -159,6 +196,10 @@
     let searchTimeout = null;
     let deleteProductId = null;
 
+    const categorySelect = document.getElementById('productCategorySelect');
+    const newCategoryGroup = document.getElementById('newCategoryGroup');
+    const newCategoryInput = document.getElementById('newCategoryInput');
+
     // Search with debounce
     document.getElementById('searchInput').addEventListener('input', function() {
         clearTimeout(searchTimeout);
@@ -167,6 +208,9 @@
 
     // Status filter
     document.getElementById('statusFilter').addEventListener('change', () => fetchProducts());
+
+    // Category filter
+    document.getElementById('categoryFilter').addEventListener('change', () => fetchProducts());
 
     // Sortable headers
     document.querySelectorAll('.sortable-header').forEach(header => {
@@ -185,9 +229,10 @@
     function fetchProducts(page = 1) {
         const search = document.getElementById('searchInput').value;
         const status = document.getElementById('statusFilter').value;
+        const category = document.getElementById('categoryFilter').value;
 
         const params = new URLSearchParams({
-            search, status,
+            search, status, category,
             sort: currentSort,
             direction: currentDirection,
             page
@@ -235,9 +280,43 @@
         document.getElementById('submitText').textContent = 'Save Product';
         document.getElementById('productForm').reset();
         document.getElementById('productId').value = '';
+        categorySelect.value = '';
+        newCategoryInput.value = '';
+        toggleNewCategoryInput();
         resetImagePreview();
         clearErrors();
     }
+
+    function toggleNewCategoryInput() {
+        const shouldShowNew = categorySelect.value === '__new__';
+        newCategoryGroup.classList.toggle('d-none', !shouldShowNew);
+
+        if (shouldShowNew) {
+            newCategoryInput.setAttribute('required', 'required');
+        } else {
+            newCategoryInput.removeAttribute('required');
+            newCategoryInput.value = '';
+            newCategoryInput.classList.remove('is-invalid');
+        }
+    }
+
+    function ensureCategoryOptionExists(category) {
+        if (!category) {
+            return;
+        }
+
+        const existingOption = Array.from(categorySelect.options).find(option => option.value === category);
+
+        if (!existingOption) {
+            const addNewOption = categorySelect.querySelector('option[value="__new__"]');
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.insertBefore(option, addNewOption);
+        }
+    }
+
+    categorySelect.addEventListener('change', toggleNewCategoryInput);
 
     function openEditModal(id) {
         document.getElementById('modalTitle').textContent = 'Edit Product';
@@ -254,6 +333,10 @@
         .then(data => {
             document.getElementById('productId').value = data.product.id;
             document.getElementById('productName').value = data.product.name;
+            ensureCategoryOptionExists(data.product.category || '');
+            categorySelect.value = data.product.category || '';
+            newCategoryInput.value = '';
+            toggleNewCategoryInput();
             document.getElementById('productDescription').value = data.product.description || '';
             document.getElementById('productPrice').value = data.product.price;
             document.getElementById('productStatus').value = data.product.is_active ? '1' : '0';
@@ -303,6 +386,22 @@
             formData.append('_method', 'PUT');
         }
 
+        if (categorySelect.value === '__new__') {
+            const customCategory = newCategoryInput.value.trim();
+
+            if (!customCategory) {
+                categorySelect.classList.add('is-invalid');
+                newCategoryInput.classList.add('is-invalid');
+                document.getElementById('categoryError').textContent = 'Please enter a new category name.';
+                document.getElementById('categoryError').style.display = 'block';
+                return;
+            }
+
+            formData.set('category', customCategory);
+        } else {
+            formData.set('category', categorySelect.value);
+        }
+
         document.getElementById('submitText').classList.add('d-none');
         document.getElementById('submitSpinner').classList.remove('d-none');
         document.getElementById('submitBtn').disabled = true;
@@ -323,8 +422,17 @@
 
             if (!ok) {
                 if (data.errors) {
+                    const fieldMap = {
+                        name: 'productName',
+                        category: 'productCategorySelect',
+                        description: 'productDescription',
+                        price: 'productPrice',
+                        is_active: 'productStatus',
+                        image: 'productImage'
+                    };
+
                     Object.keys(data.errors).forEach(field => {
-                        const input = document.getElementById(`product${field.charAt(0).toUpperCase() + field.slice(1)}`);
+                        const input = document.getElementById(fieldMap[field] || `product${field.charAt(0).toUpperCase() + field.slice(1)}`);
                         const error = document.getElementById(`${field}Error`);
                         if (input) input.classList.add('is-invalid');
                         if (error) {

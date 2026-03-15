@@ -34,7 +34,7 @@
                     
                     <!-- Description -->
                     <p class="hero-description">
-                        Indulge in the finest Mediterranean flavors, crafted with premium ingredients 
+                        Indulge in the finest Canadian flavors, crafted with premium ingredients 
                         and time-honored recipes. Every bite is a journey to culinary excellence.
                     </p>
                     
@@ -77,7 +77,7 @@
                     <div class="image-wrapper">
                         <!-- Main Image -->
                         <div class="main-image">
-                            <img src="{{ asset('images/lemorfood3.png') }}" 
+                               <img src="{{ asset('images/lemorfood1.png') }}" 
                                  alt="Delicious Mediterranean Cuisine at Pita Queen" 
                                  class="img-fluid"
                                  loading="eager">
