@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -17,6 +18,7 @@ Route::middleware(['auth', 'admin.user'])->name('admin.')->group(function (): vo
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('products', ProductController::class)->except(['create', 'show']);
+    Route::resource('testimonials', TestimonialController::class)->only(['index', 'update', 'destroy']);
 
     Route::get('contacts', [ContactController::class, 'edit'])->name('contacts.edit');
     Route::put('contacts', [ContactController::class, 'update'])->name('contacts.update');

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreFeedbackRequest;
+use App\Models\Feedback;
 use App\Models\Product;
 use App\Models\SiteSetting;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -22,44 +26,58 @@ class HomeController extends Controller
     }
 
     /**
+     * Store customer feedback from homepage.
+     */
+    public function storeFeedback(StoreFeedbackRequest $request): RedirectResponse
+    {
+        Feedback::create($request->validated());
+
+        return redirect()->to(route('home').'#feedback')
+            ->with('feedback_success', 'Thank you for sharing your experience!');
+    }
+
+    /**
      * Get testimonials data.
      */
     private function getTestimonials(): array
     {
-        return [
-            [
-                'id' => 1,
-                'name' => 'Sarah Mitchell',
-                'role' => 'Food Blogger',
-                'content' => 'The best shawarma I\'ve ever tasted! The flavors are authentic and the presentation is absolutely stunning. A must-visit for any food lover.',
-                'rating' => 5,
-                'avatar' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Michael Chen',
-                'role' => 'Regular Customer',
-                'content' => 'I\'ve been coming here for years and the quality has never dropped. The Royal Beef Shawarma is absolutely divine. Highly recommended!',
-                'rating' => 5,
-                'avatar' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Emily Rodriguez',
-                'role' => 'Food Critic',
-                'content' => 'An elevated dining experience that brings Mediterranean cuisine to new heights. The ambiance matches the exceptional food quality.',
-                'rating' => 5,
-                'avatar' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100',
-            ],
-            [
-                'id' => 4,
-                'name' => 'David Thompson',
-                'role' => 'Chef',
-                'content' => 'As a professional chef, I appreciate the attention to detail and authentic spice blends. This is shawarma done right!',
-                'rating' => 5,
-                'avatar' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100',
-            ],
-        ];
+        return Feedback::query()
+            ->where('is_visible', true)
+            ->latest()
+            ->take(12)
+            ->get(['id', 'customer_name', 'rating', 'message'])
+            ->map(function (Feedback $feedback): array {
+                return [
+                    'id' => $feedback->id,
+                    'name' => $feedback->customer_name,
+                    'role' => 'Verified Guest',
+                    'content' => $feedback->message,
+                    'rating' => $feedback->rating,
+                    'initials' => $this->getNameInitials($feedback->customer_name),
+                ];
+            })
+            ->all();
+    }
+
+    /**
+     * Build a two-letter initials badge from the first two name parts.
+     */
+    private function getNameInitials(string $name): string
+    {
+        $nameParts = array_values(array_filter(preg_split('/\s+/', trim($name)) ?: []));
+
+        if ($nameParts === []) {
+            return 'GU';
+        }
+
+        $firstInitial = Str::substr($nameParts[0], 0, 1);
+        $secondInitial = isset($nameParts[1])
+            ? Str::substr($nameParts[1], 0, 1)
+            : Str::substr($nameParts[0], 1, 1);
+
+        $initials = Str::upper($firstInitial.$secondInitial);
+
+        return $initials !== '' ? $initials : 'GU';
     }
 
     /**

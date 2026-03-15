@@ -165,18 +165,25 @@
             
             <!-- Menu Grid -->
             <div class="menu-grid" id="menuGrid">
-                @foreach($menuItems as $item)
+                @forelse($menuItems as $item)
                     <x-product-card :item="$item" />
-                @endforeach
+                @empty
+                    <div class="menu-empty-state" role="status" aria-live="polite">
+                        <h3>No menu items available yet.</h3>
+                        <p>Please check back soon!</p>
+                    </div>
+                @endforelse
             </div>
             
             <!-- View More Button -->
-            <div class="text-center mt-5" data-aos="fade-up">
-                <a href="#" class="btn btn-outline-golden btn-lg">
-                    <span>View Full Menu</span>
-                    <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-            </div>
+            @if($menuItems->isNotEmpty())
+                <div class="text-center mt-5" data-aos="fade-up">
+                    <a href="#" class="btn btn-outline-golden btn-lg">
+                        <span>View Full Menu</span>
+                        <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            @endif
         </div>
         
         <!-- Background Decoration -->
@@ -226,7 +233,7 @@
                 <!-- Cards Column -->
                 <div class="col-lg-7" data-aos="fade-left" data-aos-delay="100">
                     <div class="bestseller-showcase">
-                        @foreach($menuItems->take(3) as $index => $item)
+                        @forelse($menuItems->take(3) as $index => $item)
                             <div class="bestseller-card {{ $index === 0 ? 'featured' : '' }}">
                                 <div class="bs-card-image">
                                     @php
@@ -250,7 +257,12 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="menu-empty-state" role="status" aria-live="polite">
+                                <h3>No menu items available yet.</h3>
+                                <p>Please check back soon!</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -299,26 +311,108 @@
             <!-- Testimonials Slider -->
             <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="100">
                 <div class="slider-wrapper" id="testimonialsSlider">
-                    @foreach($testimonials as $testimonial)
+                    @forelse($testimonials as $testimonial)
                         <x-testimonial-card :testimonial="$testimonial" />
-                    @endforeach
+                    @empty
+                        <div class="testimonials-empty-state" role="status" aria-live="polite">
+                            <h3>No feedback yet.</h3>
+                            <p>Be the first guest to share your experience.</p>
+                        </div>
+                    @endforelse
                 </div>
                 
                 <!-- Slider Controls -->
-                <div class="slider-controls">
-                    <button class="slider-btn slider-prev" id="testimonialPrev">
-                        <i class="bi bi-arrow-left"></i>
-                    </button>
-                    <div class="slider-dots" id="testimonialDots"></div>
-                    <button class="slider-btn slider-next" id="testimonialNext">
-                        <i class="bi bi-arrow-right"></i>
-                    </button>
-                </div>
+                @if(count($testimonials) > 0)
+                    <div class="slider-controls">
+                        <button class="slider-btn slider-prev" id="testimonialPrev">
+                            <i class="bi bi-arrow-left"></i>
+                        </button>
+                        <div class="slider-dots" id="testimonialDots"></div>
+                        <button class="slider-btn slider-next" id="testimonialNext">
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
         
         <!-- Background Pattern -->
         <div class="testimonials-pattern"></div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section class="feedback-section section-padding" id="feedback">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-header text-center" data-aos="fade-up">
+                        <span class="section-badge">Feedback</span>
+                        <h2 class="section-title">Share Your <span class="text-golden">Experience</span></h2>
+                        <p class="section-description">
+                            We'd love to hear your thoughts about our food &amp; service
+                        </p>
+                    </div>
+
+                    @if(session('feedback_success'))
+                        <div class="feedback-success-banner" data-aos="fade-up" role="status">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>{{ session('feedback_success') }}</span>
+                        </div>
+                    @endif
+
+                    <div class="feedback-form-card" data-aos="fade-up" data-aos-delay="100">
+                        <form action="{{ route('home.feedback') }}" method="POST" class="feedback-form">
+                            @csrf
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="customer_name" class="feedback-label">Your Name</label>
+                                    <input id="customer_name" type="text" name="customer_name" class="feedback-input @error('customer_name') is-invalid @enderror" value="{{ old('customer_name') }}" placeholder="Enter your name" required>
+                                    @error('customer_name')
+                                        <p class="feedback-error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="customer_email" class="feedback-label">Email (optional)</label>
+                                    <input id="customer_email" type="email" name="customer_email" class="feedback-input @error('customer_email') is-invalid @enderror" value="{{ old('customer_email') }}" placeholder="your@email.com">
+                                    @error('customer_email')
+                                        <p class="feedback-error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="rating" class="feedback-label">Rating</label>
+                                    <select id="rating" name="rating" class="feedback-input @error('rating') is-invalid @enderror" required>
+                                        @for($rating = 5; $rating >= 1; $rating--)
+                                            <option value="{{ $rating }}" @selected((int) old('rating', 5) === $rating)>
+                                                {{ $rating }} Star{{ $rating > 1 ? 's' : '' }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                    @error('rating')
+                                        <p class="feedback-error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="message" class="feedback-label">Your Feedback</label>
+                                    <textarea id="message" name="message" class="feedback-input feedback-textarea @error('message') is-invalid @enderror" placeholder="Tell us about your experience..." required>{{ old('message') }}</textarea>
+                                    @error('message')
+                                        <p class="feedback-error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-golden mt-4 w-100">
+                                <i class="bi bi-send me-2"></i>
+                                <span>Submit Feedback</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- CTA Order Section -->

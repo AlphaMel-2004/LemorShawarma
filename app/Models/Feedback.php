@@ -16,6 +16,7 @@ class Feedback extends Model
         'customer_email',
         'rating',
         'message',
+        'is_visible',
     ];
 
     /**
@@ -27,6 +28,7 @@ class Feedback extends Model
     {
         return [
             'rating' => 'integer',
+            'is_visible' => 'boolean',
         ];
     }
 }

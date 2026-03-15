@@ -265,9 +265,25 @@ function initTestimonialsSlider() {
     
     const cards = slider.querySelectorAll('.testimonial-card');
     const totalCards = cards.length;
+
+    if (totalCards === 0) {
+        return;
+    }
+
     let currentIndex = 0;
     let cardsToShow = getCardsToShow();
     let autoplayInterval;
+
+    function getMaxIndex() {
+        return Math.max(0, totalCards - cardsToShow);
+    }
+
+    function updateControlsVisibility() {
+        const shouldShowControls = totalCards > cardsToShow;
+        prevBtn.style.display = shouldShowControls ? 'flex' : 'none';
+        nextBtn.style.display = shouldShowControls ? 'flex' : 'none';
+        dotsContainer.style.display = shouldShowControls ? 'flex' : 'none';
+    }
     
     function getCardsToShow() {
         if (window.innerWidth < 768) return 1;
@@ -277,7 +293,7 @@ function initTestimonialsSlider() {
     
     function createDots() {
         dotsContainer.innerHTML = '';
-        const totalDots = Math.ceil(totalCards / cardsToShow);
+        const totalDots = Math.max(1, Math.ceil(totalCards / cardsToShow));
         
         for (let i = 0; i < totalDots; i++) {
             const dot = document.createElement('span');
@@ -289,6 +305,10 @@ function initTestimonialsSlider() {
     }
     
     function updateSlider() {
+        if (!cards[0]) {
+            return;
+        }
+
         const cardWidth = cards[0].offsetWidth + 30; // Including gap
         const offset = currentIndex * cardWidth;
         slider.style.transform = `translateX(-${offset}px)`;
@@ -301,25 +321,29 @@ function initTestimonialsSlider() {
     }
     
     function nextSlide() {
-        const maxIndex = totalCards - cardsToShow;
+        const maxIndex = getMaxIndex();
         currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
         updateSlider();
     }
     
     function prevSlide() {
-        const maxIndex = totalCards - cardsToShow;
+        const maxIndex = getMaxIndex();
         currentIndex = currentIndex <= 0 ? maxIndex : currentIndex - 1;
         updateSlider();
     }
     
     function goToSlide(dotIndex) {
         currentIndex = dotIndex * cardsToShow;
-        const maxIndex = totalCards - cardsToShow;
+        const maxIndex = getMaxIndex();
         if (currentIndex > maxIndex) currentIndex = maxIndex;
         updateSlider();
     }
     
     function startAutoplay() {
+        if (totalCards <= cardsToShow) {
+            return;
+        }
+
         autoplayInterval = setInterval(nextSlide, 5000);
     }
     
@@ -376,13 +400,16 @@ function initTestimonialsSlider() {
         resizeTimeout = setTimeout(() => {
             cardsToShow = getCardsToShow();
             currentIndex = 0;
+            updateControlsVisibility();
             createDots();
             updateSlider();
         }, 200);
     });
     
     // Initialize
+    updateControlsVisibility();
     createDots();
+    updateSlider();
     startAutoplay();
 }
 

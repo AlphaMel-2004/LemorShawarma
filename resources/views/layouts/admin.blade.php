@@ -637,6 +637,10 @@
                 <i class="bi bi-box-seam-fill"></i>
                 <span>Products</span>
             </a>
+            <a href="{{ route('admin.testimonials.index') }}" class="sidebar-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+                <i class="bi bi-chat-left-quote-fill"></i>
+                <span>Testimonials</span>
+            </a>
             <a href="{{ route('admin.contacts.edit') }}" class="sidebar-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                 <i class="bi bi-telephone-fill"></i>
                 <span>Manage Contacts</span>

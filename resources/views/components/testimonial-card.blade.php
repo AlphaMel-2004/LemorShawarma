@@ -21,9 +21,9 @@
     <!-- Author -->
     <div class="testimonial-author">
         <div class="author-avatar">
-            <img src="{{ $testimonial['avatar'] }}" 
-                 alt="{{ $testimonial['name'] }}" 
-                 loading="lazy">
+            <span class="avatar-initials" aria-label="{{ $testimonial['name'] }} initials">
+                {{ $testimonial['initials'] ?? 'GU' }}
+            </span>
         </div>
         <div class="author-info">
             <h4 class="author-name">{{ $testimonial['name'] }}</h4>

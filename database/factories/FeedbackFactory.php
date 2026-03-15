@@ -21,6 +21,7 @@ class FeedbackFactory extends Factory
             'customer_email' => fake()->safeEmail(),
             'rating' => fake()->numberBetween(1, 5),
             'message' => fake()->paragraph(),
+            'is_visible' => false,
         ];
     }
 }
