@@ -259,8 +259,6 @@
         .admin-main {
             margin-left: var(--sidebar-width);
             min-height: 100vh;
-            position: relative;
-            z-index: 1;
         }
 
         .admin-topbar {
@@ -287,11 +285,6 @@
         .admin-content {
             padding: 2rem 2.2rem;
             animation: contentLift 0.35s ease;
-        }
-
-        .admin-content > * {
-            position: relative;
-            z-index: 1;
         }
 
         .topbar-action-btn {
