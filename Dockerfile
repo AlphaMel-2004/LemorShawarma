@@ -48,9 +48,11 @@ RUN apk add --no-cache --virtual .build-deps \
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
 COPY --from=frontend /app/public/build ./public/build
+COPY docker/start.sh /usr/local/bin/start.sh
 
 RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod +x /usr/local/bin/start.sh
 
 ENV APP_ENV=production
 ENV APP_DEBUG=false
@@ -60,4 +62,4 @@ EXPOSE 8080
 
 USER www-data
 
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+CMD ["/usr/local/bin/start.sh"]
