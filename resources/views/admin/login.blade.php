@@ -22,6 +22,7 @@
             --black-light:  #1A1A1A;
             --black-soft:   #242424;
             --black-border: #2D2D2D;
+            --black-deep:   #090909;
             --gold:         #D4AF37;
             --gold-light:   #E5C158;
             --gold-dark:    #B8942F;
@@ -35,7 +36,11 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--black);
+            background:
+                radial-gradient(circle at 12% 8%, rgba(212, 175, 55, 0.16), transparent 32%),
+                radial-gradient(circle at 88% 88%, rgba(184, 148, 47, 0.12), transparent 36%),
+                repeating-linear-gradient(135deg, rgba(212, 175, 55, 0.03) 0 2px, transparent 2px 16px),
+                linear-gradient(180deg, #0f0f0f 0%, #090909 100%);
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -48,12 +53,13 @@
         .login-card {
             display: flex;
             width: 100%;
-            max-width: 960px;
-            min-height: 580px;
+            max-width: 1060px;
+            min-height: 620px;
             background-color: var(--black-light);
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px var(--black-border);
+            border: 1px solid rgba(212, 175, 55, 0.18);
+            box-shadow: 0 36px 90px rgba(0, 0, 0, 0.62), 0 0 0 1px rgba(212, 175, 55, 0.08);
         }
 
         /* ══════════════════════════════
@@ -61,13 +67,24 @@
         ══════════════════════════════ */
         .login-left {
             flex: 1.1;
-            background: linear-gradient(150deg, #141414 0%, #0D0D0D 60%, #1a1500 100%);
+            background: linear-gradient(150deg, #141414 0%, #0D0D0D 52%, #1a1500 100%);
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 2.5rem;
             overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(112deg, rgba(9, 9, 9, 0.9) 0%, rgba(9, 9, 9, 0.68) 46%, rgba(9, 9, 9, 0.94) 100%),
+                url('{{ asset('images/lemorfood1.png') }}') center/cover no-repeat;
+            opacity: 0.5;
+            z-index: 0;
         }
 
         /* Decorative circles */
@@ -115,6 +132,7 @@
             position: absolute;
             font-size: 2.2rem;
             opacity: 0.35;
+            display: none;
         }
         .leaf-1 { bottom: 120px; left: 24px; transform: rotate(-20deg); }
         .leaf-2 { bottom: 80px;  left: 60px; transform: rotate(10deg); font-size: 1.6rem; }
@@ -128,6 +146,7 @@
             transform: translate(-50%, -54%);
             z-index: 2;
             text-align: center;
+            display: none;
         }
 
         .illustration-avatar {
@@ -153,12 +172,21 @@
         }
 
         .brand-icon {
-            width: 44px; height: 44px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            width: 46px;
+            height: 46px;
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem;
             flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.46);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 24px rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+        }
+
+        .brand-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .brand-name {
@@ -174,6 +202,81 @@
             text-transform: uppercase;
         }
 
+        .left-hero-copy {
+            position: relative;
+            z-index: 3;
+            margin-top: 2.1rem;
+            max-width: 390px;
+        }
+
+        .left-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            border: 1px solid rgba(212, 175, 55, 0.34);
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold-light);
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            padding: 0.4rem 0.72rem;
+            font-weight: 600;
+        }
+
+        .left-hero-title {
+            margin-top: 0.9rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            line-height: 1.1;
+            color: #fff;
+            letter-spacing: -0.01em;
+            text-wrap: balance;
+        }
+
+        .left-hero-title span {
+            color: var(--gold);
+            font-style: italic;
+        }
+
+        .left-hero-sub {
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .left-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+            max-width: 360px;
+        }
+
+        .left-stat {
+            border: 1px solid rgba(212, 175, 55, 0.24);
+            background: rgba(12, 12, 12, 0.58);
+            border-radius: 12px;
+            padding: 0.48rem 0.54rem;
+        }
+
+        .left-stat strong {
+            display: block;
+            color: var(--gold-light);
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .left-stat span {
+            display: block;
+            margin-top: 0.28rem;
+            color: rgba(255, 255, 255, 0.58);
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
         /* Bottom caption */
         .left-caption {
             position: relative;
@@ -182,9 +285,9 @@
 
         .left-caption p {
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.7);
             line-height: 1.7;
-            max-width: 280px;
+            max-width: 320px;
         }
 
         /* ══════════════════════════════
@@ -192,12 +295,13 @@
         ══════════════════════════════ */
         .login-right {
             flex: 1;
-            background-color: var(--black-soft);
+            background: linear-gradient(180deg, #212121 0%, #1a1a1a 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 3rem 2.75rem;
             position: relative;
+            border-left: 1px solid rgba(212, 175, 55, 0.14);
         }
 
         /* "Welcome back" badge — top-right corner of the card */
@@ -214,15 +318,28 @@
         }
 
         .form-heading {
-            font-size: 1.55rem;
+            font-size: 1.7rem;
             font-weight: 700;
             margin-bottom: 0.35rem;
+            letter-spacing: -0.01em;
         }
 
         .form-sub {
             font-size: 0.82rem;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.64);
             margin-bottom: 2rem;
+        }
+
+        .admin-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.85rem;
+            color: var(--gold-light);
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         /* Input Groups */
@@ -244,7 +361,7 @@
             position: relative;
         }
 
-        .input-wrapper i {
+        .input-wrapper .field-icon {
             position: absolute;
             left: 1rem;
             top: 50%;
@@ -256,11 +373,11 @@
 
         .input-wrapper input {
             width: 100%;
-            background-color: var(--black-light);
+            background-color: var(--black-deep);
             border: 1.5px solid var(--black-border);
             color: var(--text);
             border-radius: 12px;
-            padding: 0.78rem 1rem 0.78rem 2.6rem;
+            padding: 0.78rem 2.9rem 0.78rem 2.6rem;
             font-size: 0.9rem;
             font-family: 'Poppins', sans-serif;
             outline: none;
@@ -276,29 +393,38 @@
             box-shadow: 0 0 0 3px var(--gold-glow);
         }
 
-        .input-wrapper input:focus + i,
-        .input-wrapper input:focus ~ i {
+        .input-wrapper input:focus + .field-icon,
+        .input-wrapper input:focus ~ .field-icon {
             color: var(--gold);
         }
-
-        /* Move icon to left, focus highlight trick */
-        .input-wrapper input:focus ~ i { color: var(--gold); }
 
         /* Password toggle */
         .pw-toggle {
             position: absolute;
-            right: 1rem;
+            right: 0.65rem;
             top: 50%;
             transform: translateY(-50%);
+            width: 1.95rem;
+            height: 1.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background: none;
             border: none;
+            border-radius: 8px;
             color: var(--text-muted);
             cursor: pointer;
             font-size: 1rem;
             padding: 0;
             transition: color 0.2s;
+            z-index: 2;
         }
+
         .pw-toggle:hover { color: var(--gold); }
+        .pw-toggle:focus-visible {
+            outline: 1px solid rgba(212, 175, 55, 0.55);
+            outline-offset: 1px;
+        }
 
         /* Is-invalid state */
         .input-wrapper input.is-invalid {
@@ -407,12 +533,13 @@
         @media (max-width: 720px) {
             body { padding: 1rem; align-items: flex-start; }
             .login-card { flex-direction: column; min-height: auto; }
-            .login-left { min-height: 220px; padding: 2rem; }
-            .illustration-wrap { top: 50%; }
-            .illustration-avatar { width: 90px; height: 90px; font-size: 3rem; }
+            .login-left { min-height: 320px; padding: 1.7rem; }
+            .illustration-avatar { width: 84px; height: 84px; font-size: 2.6rem; }
             .deco-circle-1 { width: 200px; height: 200px; }
             .deco-circle-2 { width: 120px; height: 120px; }
             .deco-circle-3 { width: 160px; height: 160px; }
+            .left-hero-title { font-size: 1.55rem; }
+            .left-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; }
             .left-caption { display: none; }
             .login-right { padding: 2.5rem 1.75rem 2rem; }
             .welcome-badge { font-size: 0.7rem; padding: 0.5rem 1rem; }
@@ -441,10 +568,21 @@
 
         <!-- Brand Logo -->
         <div class="left-brand">
-            <div class="brand-icon"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></div>
+            <div class="brand-icon"><img src="{{ asset('images/logo.png') }}" alt="Pita Queen logo"></div>
             <div>
                 <div class="brand-name">Pita Queen</div>
                 <div class="brand-tagline">Admin Portal</div>
+            </div>
+        </div>
+
+        <div class="left-hero-copy">
+            <div class="left-badge"><i class="bi bi-star-fill" aria-hidden="true"></i> Premium Kitchen Ops</div>
+            <h2 class="left-hero-title">Keep The <span>Royal Taste</span> running flawlessly.</h2>
+            <p class="left-hero-sub">Sign in to manage menu quality, store visibility, and guest feedback in one streamlined control center.</p>
+            <div class="left-stats" aria-hidden="true">
+                <div class="left-stat"><strong>24/7</strong><span>Control</span></div>
+                <div class="left-stat"><strong>Fast</strong><span>Updates</span></div>
+                <div class="left-stat"><strong>Secure</strong><span>Access</span></div>
             </div>
         </div>
 
@@ -467,7 +605,8 @@
         <!-- Welcome Badge -->
         <div class="welcome-badge">Welcome back</div>
 
-        <h1 class="form-heading">Login your account</h1>
+        <div class="admin-mark"><i class="bi bi-shield-check" aria-hidden="true"></i> Admin Access</div>
+        <h1 class="form-heading">Welcome Back, Team</h1>
         <p class="form-sub">Enter your credentials to access the admin panel.</p>
 
         <form method="POST" action="{{ route('admin.login.submit') }}" id="loginForm">
@@ -477,7 +616,7 @@
             <div class="input-group-custom">
                 <label for="email">Email</label>
                 <div class="input-wrapper">
-                    <i class="bi bi-envelope"></i>
+                    <i class="bi bi-envelope field-icon"></i>
                     <input
                         type="email"
                         id="email"
@@ -501,7 +640,7 @@
             <div class="input-group-custom">
                 <label for="password">Password</label>
                 <div class="input-wrapper">
-                    <i class="bi bi-lock"></i>
+                    <i class="bi bi-lock field-icon"></i>
                     <input
                         type="password"
                         id="password"
