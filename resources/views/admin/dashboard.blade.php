@@ -17,10 +17,10 @@
         overflow: hidden;
         padding: 1.85rem;
         border-radius: 20px;
-        background: linear-gradient(120deg, #1846de 0%, #2963fb 45%, #1da7f4 100%);
+        background: linear-gradient(120deg, #171717 0%, #101010 45%, #1a1500 100%);
         color: #fff;
-        border: 1px solid rgba(191, 224, 255, 0.34);
-        box-shadow: 0 30px 52px rgba(24, 67, 186, 0.34);
+        border: 1px solid rgba(212, 175, 55, 0.28);
+        box-shadow: 0 28px 54px rgba(0, 0, 0, 0.45);
     }
 
     .dashboard-hero::selection {
@@ -32,7 +32,7 @@
         content: '';
         position: absolute;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(212, 175, 55, 0.14);
         pointer-events: none;
         animation: floatOrb 7s ease-in-out infinite;
     }
@@ -55,7 +55,11 @@
     .dashboard-hero-glow {
         position: absolute;
         inset: 0;
-        background: linear-gradient(100deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+        background:
+            linear-gradient(100deg, rgba(212, 175, 55, 0.12), rgba(255, 255, 255, 0)),
+            linear-gradient(108deg, rgba(9, 9, 9, 0.24) 0%, rgba(9, 9, 9, 0.5) 100%),
+            url('{{ asset('images/lemorfood1.png') }}') center/cover no-repeat;
+        opacity: 0.42;
         pointer-events: none;
     }
 
@@ -66,7 +70,7 @@
         left: -18%;
         top: -58%;
         transform: rotate(16deg);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
+        background: linear-gradient(180deg, rgba(212, 175, 55, 0.16), rgba(255, 255, 255, 0));
         pointer-events: none;
     }
 
@@ -97,12 +101,12 @@
     }
 
     .hero-pill {
-        border: 1px solid rgba(255, 255, 255, 0.28);
+        border: 1px solid rgba(212, 175, 55, 0.34);
         border-radius: 999px;
         padding: 0.3rem 0.7rem;
         font-size: 0.79rem;
-        color: rgba(255, 255, 255, 0.94);
-        background: rgba(255, 255, 255, 0.16);
+        color: rgba(255, 243, 211, 0.94);
+        background: rgba(212, 175, 55, 0.14);
     }
 
     .hero-actions {
@@ -114,9 +118,9 @@
 
     .hero-action-btn {
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: #fff;
-        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(212, 175, 55, 0.32);
+        color: #fbe8b2;
+        background: rgba(212, 175, 55, 0.14);
         font-size: 0.82rem;
         font-weight: 700;
         padding: 0.46rem 0.95rem;
@@ -125,8 +129,8 @@
     }
 
     .hero-action-btn:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.22);
+        color: #fff5d9;
+        background: rgba(212, 175, 55, 0.24);
         transform: translateY(-1px);
     }
 
@@ -136,9 +140,9 @@
         padding: 1.18rem;
         border-radius: 16px;
         border: 1px solid var(--admin-border);
-        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+        background: linear-gradient(180deg, #1f1f1f 0%, #191919 100%);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: 0 14px 28px rgba(18, 45, 104, 0.1);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4);
     }
 
     .metric-card::after {
@@ -148,12 +152,12 @@
         right: 0;
         bottom: 0;
         height: 3px;
-        background: linear-gradient(90deg, rgba(31, 87, 255, 0.2), rgba(31, 87, 255, 0));
+        background: linear-gradient(90deg, rgba(212, 175, 55, 0.4), rgba(212, 175, 55, 0));
     }
 
     .metric-card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 14px 30px rgba(18, 45, 104, 0.12);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.48);
     }
 
     .metric-head {
@@ -174,7 +178,7 @@
     }
 
     .metric-icon-blue {
-        background: rgba(57, 106, 255, 0.15);
+        background: rgba(212, 175, 55, 0.16);
         color: var(--admin-primary);
     }
 
@@ -220,9 +224,9 @@
     .surface-panel {
         border: 1px solid var(--admin-border);
         border-radius: 16px;
-        background: #fff;
+        background: linear-gradient(180deg, #1c1c1c 0%, #171717 100%);
         padding: 1.15rem;
-        box-shadow: 0 16px 30px rgba(18, 45, 104, 0.1);
+        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.42);
     }
 
     .panel-title {
@@ -267,7 +271,7 @@
         width: 100%;
         height: 9px;
         border-radius: 999px;
-        background: #ecf1fb;
+        background: rgba(255, 255, 255, 0.1);
         overflow: hidden;
         margin-top: 0.45rem;
     }
@@ -277,7 +281,7 @@
         border-radius: inherit;
     }
 
-    .progress-blue { background: linear-gradient(90deg, #2f66ff, #59b5ff); }
+    .progress-blue { background: linear-gradient(90deg, #b8942f, #e5c158); }
     .progress-green { background: linear-gradient(90deg, #16dbaa, #5ce3c4); }
     .progress-coral { background: linear-gradient(90deg, #fe5c73, #ff9a8b); }
 
@@ -295,13 +299,13 @@
         border: 1px solid var(--admin-border);
         border-radius: 14px;
         padding: 0.72rem;
-        background: linear-gradient(180deg, #fbfdff 0%, #f7faff 100%);
+        background: linear-gradient(180deg, #202020 0%, #191919 100%);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .activity-item:hover {
         transform: translateY(-1px);
-        box-shadow: 0 10px 24px rgba(33, 61, 126, 0.1);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.42);
     }
 
     .activity-thumb,
@@ -321,7 +325,7 @@
         font-size: 0.83rem;
         font-weight: 700;
         color: var(--admin-primary);
-        background: rgba(57, 106, 255, 0.11);
+        background: rgba(212, 175, 55, 0.14);
     }
 
     .activity-title {
@@ -384,7 +388,7 @@
         border: 1px solid var(--admin-border);
         color: var(--admin-text);
         text-decoration: none;
-        background: linear-gradient(180deg, #fff 0%, #f7fbff 100%);
+        background: linear-gradient(180deg, #202020 0%, #1a1a1a 100%);
         transition: all 0.2s ease;
         font-size: 0.84rem;
         font-weight: 600;
@@ -392,8 +396,8 @@
 
     .quick-link:hover {
         color: var(--admin-primary);
-        border-color: rgba(57, 106, 255, 0.35);
-        background: rgba(57, 106, 255, 0.04);
+        border-color: rgba(212, 175, 55, 0.38);
+        background: rgba(212, 175, 55, 0.08);
         transform: translateY(-1px);
     }
 
@@ -409,8 +413,8 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        border: 1px solid rgba(31, 87, 255, 0.16);
-        background: rgba(31, 87, 255, 0.08);
+        border: 1px solid rgba(212, 175, 55, 0.24);
+        background: rgba(212, 175, 55, 0.12);
     }
 
     .quick-link-title {
@@ -430,15 +434,15 @@
     .panel-action-btn {
         border-radius: 999px;
         font-weight: 700;
-        border-color: rgba(31, 87, 255, 0.34);
+        border-color: rgba(212, 175, 55, 0.34);
         color: var(--admin-primary);
-        background: rgba(31, 87, 255, 0.04);
+        background: rgba(212, 175, 55, 0.08);
     }
 
     .panel-action-btn:hover {
         color: var(--admin-primary);
         border-color: var(--admin-primary);
-        background: rgba(31, 87, 255, 0.12);
+        background: rgba(212, 175, 55, 0.18);
     }
 
     @media (max-width: 991.98px) {
@@ -854,8 +858,8 @@
                         <span class="quick-link-sub">Keep address, phone, and service details accurate.</span>
                     </span>
                 </a>
-                <a href="{{ route('home') }}" target="_blank" class="quick-link">
-                    <span class="quick-link-icon" style="border-color: rgba(14, 165, 233, 0.24); background: rgba(14, 165, 233, 0.12);"><i class="bi bi-globe2" style="color: #0ea5e9;"></i></span>
+                <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer" class="quick-link">
+                    <span class="quick-link-icon" style="border-color: rgba(212, 175, 55, 0.24); background: rgba(212, 175, 55, 0.12);"><i class="bi bi-globe2" style="color: var(--admin-primary);"></i></span>
                     <span>
                         <span class="quick-link-title">Preview Website</span>
                         <span class="quick-link-sub">Open storefront in a new tab to verify changes quickly.</span>
