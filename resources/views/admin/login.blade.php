@@ -470,14 +470,6 @@
         <h1 class="form-heading">Login your account</h1>
         <p class="form-sub">Enter your credentials to access the admin panel.</p>
 
-        {{-- General error --}}
-        @if($errors->any())
-            <div class="auth-alert">
-                <i class="bi bi-exclamation-circle-fill mt-1" style="flex-shrink:0;"></i>
-                <span>{{ $errors->first() }}</span>
-            </div>
-        @endif
-
         <form method="POST" action="{{ route('admin.login.submit') }}" id="loginForm">
             @csrf
 
