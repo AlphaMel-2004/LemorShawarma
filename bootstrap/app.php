@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function (): void {
             Route::middleware(['web', AdminNoIndex::class])
-                ->domain((string) config('app.admin_domain'))
+                ->domain((string) config('app.root_domain'))
+                ->prefix('admin')
                 ->group(base_path('routes/admin.php'));
         },
     )
