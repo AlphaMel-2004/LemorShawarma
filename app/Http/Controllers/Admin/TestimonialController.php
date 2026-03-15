@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateTestimonialVisibilityRequest;
 use App\Models\Feedback;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,11 +45,9 @@ class TestimonialController extends Controller
     /**
      * Update testimonial visibility.
      */
-    public function update(Request $request, Feedback $testimonial): RedirectResponse
+    public function update(UpdateTestimonialVisibilityRequest $request, Feedback $testimonial): RedirectResponse
     {
-        $validated = $request->validate([
-            'is_visible' => ['required', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $testimonial->update([
             'is_visible' => (bool) $validated['is_visible'],

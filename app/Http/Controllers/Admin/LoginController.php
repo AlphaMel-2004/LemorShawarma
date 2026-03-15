@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminLoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,12 +30,9 @@ class LoginController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function login(Request $request): RedirectResponse
+    public function login(AdminLoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $credentials = $request->safe()->only(['email', 'password']);
 
         if (Auth::attempt([
             'email' => $credentials['email'],
@@ -47,7 +45,7 @@ class LoginController extends Controller
         }
 
         return back()
-            ->withInput($request->only('email'))
+            ->withInput($request->only(['email', 'remember']))
             ->withErrors(['email' => 'These credentials do not match our records.']);
     }
 
