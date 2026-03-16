@@ -53,7 +53,7 @@
             <!-- CTA Button -->
             <div class="navbar-cta ms-lg-4">
                 <a href="{{ route('home') }}#order" class="btn btn-golden btn-sm">
-                    <i class="bi bi-bag-check me-2"></i>Order Now
+                    <i class="bi bi-bag-check me-2"></i>Start Order
                 </a>
             </div>
         </div>

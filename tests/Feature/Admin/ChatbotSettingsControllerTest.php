@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -55,5 +56,38 @@ class ChatbotSettingsControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('admin.chatbot.edit');
+    }
+
+    public function test_admin_can_update_visibility_only_without_revalidating_disabled_fields(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        SiteSetting::setValue('chatbot_enabled', '1');
+        SiteSetting::setValue('chatbot_name', 'Golden Assistant');
+        SiteSetting::setValue('chatbot_welcome_message', 'Welcome to Pita Queen support!');
+        SiteSetting::setValue('chatbot_fab_icon', 'robot');
+        SiteSetting::setValue('chatbot_model', 'google/flan-t5-base');
+        SiteSetting::setValue('chatbot_knowledge', 'We serve premium shawarma and pita meals.');
+        SiteSetting::setValue('chatbot_restrictions', 'Never provide harmful instructions.');
+        SiteSetting::setValue('chatbot_temperature', '0.4');
+        SiteSetting::setValue('chatbot_max_tokens', '160');
+
+        $response = $this->actingAs($admin)->put($this->adminUrl('/chatbot'), [
+            'chatbot_enabled' => '0',
+        ]);
+
+        $response->assertRedirect(route('admin.chatbot.edit'));
+        $response->assertSessionHas('success');
+        $response->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('site_settings', [
+            'key' => 'chatbot_enabled',
+            'value' => '0',
+        ]);
+
+        $this->assertDatabaseHas('site_settings', [
+            'key' => 'chatbot_name',
+            'value' => 'Golden Assistant',
+        ]);
     }
 }

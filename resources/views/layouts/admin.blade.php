@@ -577,7 +577,13 @@
         }
 
         .btn-close {
-            filter: none;
+            filter: invert(1) grayscale(100%) brightness(200%);
+            opacity: 0.9;
+        }
+
+        .btn-close:hover,
+        .btn-close:focus {
+            opacity: 1;
         }
 
         .admin-form-label {

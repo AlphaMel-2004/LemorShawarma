@@ -354,6 +354,30 @@
         color: var(--admin-text);
     }
 
+    #chatbot_enabled.form-check-input {
+        width: 2.55rem;
+        border-radius: 999px;
+        border-color: rgba(212, 175, 55, 0.42);
+        background-color: #0f0f0f;
+        background-position: left center;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23efe5c8'/%3E%3C/svg%3E");
+    }
+
+    #chatbot_enabled.form-check-input:checked {
+        background-color: rgba(212, 175, 55, 0.9);
+        border-color: rgba(212, 175, 55, 1);
+        background-position: right center;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23160f02'/%3E%3C/svg%3E");
+    }
+
+    #chatbot_enabled.form-check-input:focus {
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.24);
+    }
+
+    #chatbot_enabled + .form-check-label {
+        margin-left: 0.45rem;
+    }
+
     .chatbot-save-row .btn-primary {
         background: linear-gradient(135deg, var(--admin-primary), #e5c158);
         border-color: transparent;
@@ -409,7 +433,7 @@
                                 <label class="form-check-label fw-semibold" for="chatbot_enabled">Enable chatbot on homepage</label>
                             </div>
                             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2">
-                                <p class="chatbot-help mb-0">When disabled, all public chatbot replies are blocked and users will not see the widget.</p>
+                                <p class="chatbot-help mb-0">When disabled, users cannot see or use the chatbot widget.</p>
                                 <a href="{{ route('home') }}" target="_blank" rel="noopener" class="chatbot-quick-link">Preview homepage <i class="bi bi-box-arrow-up-right"></i></a>
                             </div>
                         </div>

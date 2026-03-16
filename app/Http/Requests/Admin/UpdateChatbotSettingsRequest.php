@@ -8,6 +8,33 @@ use Illuminate\Validation\Rule;
 
 class UpdateChatbotSettingsRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $existing = SiteSetting::getChatbotSettings();
+        $fallbackKeys = [
+            'chatbot_name',
+            'chatbot_welcome_message',
+            'chatbot_fab_icon',
+            'chatbot_model',
+            'chatbot_knowledge',
+            'chatbot_restrictions',
+            'chatbot_temperature',
+            'chatbot_max_tokens',
+        ];
+
+        $fallbackPayload = [];
+
+        foreach ($fallbackKeys as $key) {
+            if (! $this->has($key)) {
+                $fallbackPayload[$key] = (string) ($existing[$key] ?? '');
+            }
+        }
+
+        if ($fallbackPayload !== []) {
+            $this->merge($fallbackPayload);
+        }
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */

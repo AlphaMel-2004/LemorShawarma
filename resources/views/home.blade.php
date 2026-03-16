@@ -25,8 +25,18 @@
 
 @section('content')
 
+    @php
+        $locationCount = count($locations);
+        $isSingleLocation = $locationCount === 1;
+        $locationBadgeText = $isSingleLocation ? 'Visit Us' : 'Visit Us';
+        $locationTitleWord = $isSingleLocation ? 'Location' : 'Locations';
+        $locationDescription = $isSingleLocation
+            ? 'Visit our location for premium Canadian cuisine'
+            : 'Find us at these convenient locations across the city';
+    @endphp
+
     <!-- Hero Section -->
-    <x-hero />
+    <x-hero :contact-settings="$contactSettings" />
 
     <!-- About Section -->
     <section class="about-section section-padding" id="about">
@@ -283,15 +293,15 @@
         <div class="container">
             <!-- Section Header -->
             <div class="section-header text-center" data-aos="fade-up">
-                <span class="section-badge">Visit Us</span>
-                <h2 class="section-title">Our <span class="text-golden">Locations</span></h2>
+                <span class="section-badge">{{ $locationBadgeText }}</span>
+                <h2 class="section-title">Our <span class="text-golden">{{ $locationTitleWord }}</span></h2>
                 <p class="section-description">
-                    Find us at these convenient locations across the city
+                    {{ $locationDescription }}
                 </p>
             </div>
             
             <!-- Locations Grid -->
-            <div class="locations-grid">
+            <div class="locations-grid {{ $isSingleLocation ? 'is-single' : '' }}">
                 @forelse($locations as $index => $location)
                     <x-location-card :location="$location" data-aos-delay="{{ $index * 100 }}" />
                 @empty

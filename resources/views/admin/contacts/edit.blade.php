@@ -255,11 +255,168 @@
         box-shadow: none;
     }
 
+    .hours-builder {
+        border: 1px solid var(--admin-border);
+        border-radius: 10px;
+        background: rgba(18, 18, 18, 0.92);
+        padding: 0.95rem;
+    }
+
+    .hours-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.55rem;
+    }
+
+    .hours-top-label {
+        margin: 0;
+        font-size: 0.76rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--admin-text-muted);
+        font-weight: 700;
+    }
+
+    .hours-presets {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.35rem;
+    }
+
+    .hours-preset {
+        border: 1px solid var(--admin-border);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--admin-text-muted);
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 0.27rem 0.62rem;
+        transition: all 0.16s ease;
+    }
+
+    .hours-preset:hover {
+        color: #ffdca1;
+        border-color: rgba(245, 158, 11, 0.58);
+        background: rgba(245, 158, 11, 0.15);
+    }
+
+    .hours-days {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 0.4rem;
+    }
+
+    .hours-day {
+        border: 1px solid var(--admin-border);
+        background: transparent;
+        color: var(--admin-text-muted);
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.42rem 0.25rem;
+        transition: all 0.18s ease;
+    }
+
+    .hours-day:hover {
+        border-color: rgba(245, 158, 11, 0.6);
+        color: var(--admin-text);
+    }
+
+    .hours-day.active {
+        border-color: rgba(245, 158, 11, 0.78);
+        background: rgba(245, 158, 11, 0.18);
+        color: #ffdca1;
+    }
+
+    .hours-time-wrap {
+        margin-top: 0.75rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+    }
+
+    .hours-time-label {
+        display: block;
+        font-size: 0.72rem;
+        color: var(--admin-text-muted);
+        margin-bottom: 0.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-weight: 700;
+    }
+
+    .hours-preview {
+        margin-top: 0.7rem;
+        border: 1px solid var(--admin-border);
+        border-radius: 8px;
+        padding: 0.55rem 0.7rem;
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .hours-preview-label {
+        display: block;
+        font-size: 0.68rem;
+        color: var(--admin-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.15rem;
+    }
+
+    .hours-preview-value {
+        font-size: 0.86rem;
+        color: var(--admin-text);
+        font-weight: 500;
+    }
+
+    .hours-help {
+        font-size: 0.78rem;
+        color: var(--admin-text-muted);
+        margin-top: 0.48rem;
+        margin-bottom: 0;
+    }
+
+    #contactHoursOpen,
+    #contactHoursClose {
+        color: var(--admin-text);
+        color-scheme: dark;
+        padding-right: 2.65rem;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.85rem center;
+        background-size: 1.05rem 1.05rem;
+    }
+
+    #contactHoursOpen::-webkit-calendar-picker-indicator,
+    #contactHoursClose::-webkit-calendar-picker-indicator {
+        opacity: 0 !important;
+        width: 1.2rem;
+        height: 1.2rem;
+        cursor: pointer;
+    }
+
+    #contactHoursOpen::-webkit-datetime-edit,
+    #contactHoursClose::-webkit-datetime-edit {
+        color: var(--admin-text);
+    }
+
     /* ── Sticky sidebar ── */
     @media (min-width: 992px) {
         .sidebar-sticky {
             position: sticky;
             top: 100px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hours-days {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .hours-time-wrap {
+            grid-template-columns: 1fr;
         }
     }
 </style>
@@ -364,12 +521,47 @@
                                 <span class="field-label">Operating Hours</span>
                             </div>
                             <input
-                                type="text"
+                                type="hidden"
+                                id="contactHoursInput"
                                 name="contact_hours"
-                                class="admin-form-control w-100 @error('contact_hours') is-invalid @enderror"
                                 value="{{ old('contact_hours', $settings['contact_hours']) }}"
-                                placeholder="e.g. Mon - Sun: 11AM - 11PM"
                             >
+                            <div class="hours-builder @error('contact_hours') is-invalid @enderror">
+                                <div class="hours-top">
+                                    <p class="hours-top-label">Quick Select</p>
+                                    <div class="hours-presets" id="contactHoursPresets">
+                                        <button type="button" class="hours-preset" data-preset="everyday">Everyday</button>
+                                        <button type="button" class="hours-preset" data-preset="weekdays">Weekdays</button>
+                                        <button type="button" class="hours-preset" data-preset="weekends">Weekends</button>
+                                        <button type="button" class="hours-preset" data-preset="clear">Clear</button>
+                                    </div>
+                                </div>
+
+                                <div class="hours-days" id="contactHoursDays">
+                                    <button type="button" class="hours-day" data-day="Mon">Mon</button>
+                                    <button type="button" class="hours-day" data-day="Tue">Tue</button>
+                                    <button type="button" class="hours-day" data-day="Wed">Wed</button>
+                                    <button type="button" class="hours-day" data-day="Thu">Thu</button>
+                                    <button type="button" class="hours-day" data-day="Fri">Fri</button>
+                                    <button type="button" class="hours-day" data-day="Sat">Sat</button>
+                                    <button type="button" class="hours-day" data-day="Sun">Sun</button>
+                                </div>
+                                <div class="hours-time-wrap">
+                                    <div>
+                                        <label class="hours-time-label" for="contactHoursOpen">Open Time</label>
+                                        <input type="time" id="contactHoursOpen" class="admin-form-control w-100" value="11:00">
+                                    </div>
+                                    <div>
+                                        <label class="hours-time-label" for="contactHoursClose">Close Time</label>
+                                        <input type="time" id="contactHoursClose" class="admin-form-control w-100" value="23:00">
+                                    </div>
+                                </div>
+                                <p class="hours-help">Tip: Start with quick select, then fine-tune days and times.</p>
+                                <div class="hours-preview" aria-live="polite" aria-atomic="true">
+                                    <span class="hours-preview-label">Saved Hours</span>
+                                    <div id="contactHoursValuePreview" class="hours-preview-value">{{ old('contact_hours', $settings['contact_hours']) }}</div>
+                                </div>
+                            </div>
                             @error('contact_hours')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -499,8 +691,7 @@
         'contact_address_line1': 'previewAddress1',
         'contact_address_line2': 'previewAddress2',
         'contact_phone': 'previewPhone',
-        'contact_email': 'previewEmail',
-        'contact_hours': 'previewHours'
+        'contact_email': 'previewEmail'
     };
 
     Object.keys(bindings).forEach(function (inputName) {
@@ -514,6 +705,331 @@
             });
         }
     });
+
+    var dayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    var dayLookup = dayOrder.reduce(function (carry, day, index) {
+        carry[day.toLowerCase()] = { day: day, index: index };
+
+        return carry;
+    }, {});
+    var selectedDays = new Set();
+
+    var contactHoursInput = document.getElementById('contactHoursInput');
+    var contactHoursDays = document.getElementById('contactHoursDays');
+    var contactHoursPresets = document.getElementById('contactHoursPresets');
+    var contactHoursOpen = document.getElementById('contactHoursOpen');
+    var contactHoursClose = document.getElementById('contactHoursClose');
+    var contactHoursValuePreview = document.getElementById('contactHoursValuePreview');
+    var previewHours = document.getElementById('previewHours');
+
+    function expandDayRange(startDay, endDay) {
+        var start = dayLookup[startDay.toLowerCase()] ? dayLookup[startDay.toLowerCase()].index : null;
+        var end = dayLookup[endDay.toLowerCase()] ? dayLookup[endDay.toLowerCase()].index : null;
+
+        if (start === null || end === null) {
+            return [];
+        }
+
+        if (start <= end) {
+            return dayOrder.slice(start, end + 1);
+        }
+
+        return dayOrder.slice(start).concat(dayOrder.slice(0, end + 1));
+    }
+
+    function normalizeDayToken(rawDay) {
+        var clean = (rawDay || '').trim().slice(0, 3).toLowerCase();
+
+        return dayLookup[clean] ? dayLookup[clean].day : null;
+    }
+
+    function parseDays(dayPart) {
+        var normalizedPart = (dayPart || '').replace(/\s+/g, ' ').trim();
+        if (!normalizedPart) {
+            return [];
+        }
+
+        var rangeMatch = normalizedPart.match(/^([A-Za-z]{3,})\s*-\s*([A-Za-z]{3,})$/);
+        if (rangeMatch) {
+            var startDay = normalizeDayToken(rangeMatch[1]);
+            var endDay = normalizeDayToken(rangeMatch[2]);
+
+            if (startDay && endDay) {
+                return expandDayRange(startDay, endDay);
+            }
+        }
+
+        var parts = normalizedPart.split(',');
+        var list = parts.map(function (part) {
+            return normalizeDayToken(part);
+        }).filter(Boolean);
+
+        if (list.length > 0) {
+            return dayOrder.filter(function (day) {
+                return list.indexOf(day) !== -1;
+            });
+        }
+
+        var single = normalizeDayToken(normalizedPart);
+
+        return single ? [single] : [];
+    }
+
+    function parseHoursTokenToMinutes(token) {
+        var normalized = (token || '').toUpperCase().replace(/\s+/g, '').trim();
+        var match = normalized.match(/^(\d{1,2})(?::(\d{2}))?(AM|PM)$/);
+
+        if (!match) {
+            return null;
+        }
+
+        var hour = Number.parseInt(match[1], 10);
+        var minute = Number.parseInt(match[2] || '0', 10);
+
+        if (Number.isNaN(hour) || Number.isNaN(minute) || hour < 1 || hour > 12 || minute < 0 || minute > 59) {
+            return null;
+        }
+
+        var hour24 = hour % 12;
+        if (match[3] === 'PM') {
+            hour24 += 12;
+        }
+
+        return (hour24 * 60) + minute;
+    }
+
+    function parseTimeValueToMinutes(timeValue) {
+        var parts = (timeValue || '').split(':');
+        if (parts.length !== 2) {
+            return null;
+        }
+
+        var hour = Number.parseInt(parts[0], 10);
+        var minute = Number.parseInt(parts[1], 10);
+
+        if (Number.isNaN(hour) || Number.isNaN(minute) || hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+            return null;
+        }
+
+        return (hour * 60) + minute;
+    }
+
+    function minutesToTimeValue(totalMinutes) {
+        if (totalMinutes === null || totalMinutes === undefined) {
+            return '';
+        }
+
+        var hour = Math.floor(totalMinutes / 60);
+        var minute = totalMinutes % 60;
+
+        return String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0');
+    }
+
+    function minutesToDisplay(totalMinutes) {
+        if (totalMinutes === null || totalMinutes === undefined) {
+            return '';
+        }
+
+        var hour24 = Math.floor(totalMinutes / 60);
+        var minute = totalMinutes % 60;
+        var period = hour24 >= 12 ? 'PM' : 'AM';
+        var hour12 = (hour24 % 12) || 12;
+
+        if (minute === 0) {
+            return String(hour12) + period;
+        }
+
+        return String(hour12) + ':' + String(minute).padStart(2, '0') + period;
+    }
+
+    function formatSelectedDays(days) {
+        if (days.length === 0) {
+            return '';
+        }
+
+        if (days.length === dayOrder.length) {
+            return 'Mon-Sun';
+        }
+
+        var isContiguous = true;
+        for (var i = 1; i < days.length; i += 1) {
+            var previous = dayOrder.indexOf(days[i - 1]);
+            var current = dayOrder.indexOf(days[i]);
+
+            if (current !== previous + 1) {
+                isContiguous = false;
+                break;
+            }
+        }
+
+        if (isContiguous && days.length >= 2) {
+            return days[0] + '-' + days[days.length - 1];
+        }
+
+        return days.join(', ');
+    }
+
+    function renderDaySelection() {
+        if (!contactHoursDays) {
+            return;
+        }
+
+        contactHoursDays.querySelectorAll('[data-day]').forEach(function (button) {
+            var day = button.getAttribute('data-day') || '';
+            var active = selectedDays.has(day);
+
+            button.classList.toggle('active', active);
+            button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+    }
+
+    function syncHoursValue() {
+        if (!contactHoursInput || !contactHoursOpen || !contactHoursClose) {
+            return;
+        }
+
+        var days = dayOrder.filter(function (day) {
+            return selectedDays.has(day);
+        });
+        var openMinutes = parseTimeValueToMinutes(contactHoursOpen.value);
+        var closeMinutes = parseTimeValueToMinutes(contactHoursClose.value);
+
+        if (days.length === 0 || openMinutes === null || closeMinutes === null) {
+            contactHoursInput.value = '';
+
+            if (contactHoursValuePreview) {
+                contactHoursValuePreview.textContent = 'Select days and set open/close time.';
+            }
+            if (previewHours) {
+                previewHours.textContent = '--';
+            }
+
+            return;
+        }
+
+        var nextValue = formatSelectedDays(days) + ': ' + minutesToDisplay(openMinutes) + ' - ' + minutesToDisplay(closeMinutes);
+        contactHoursInput.value = nextValue;
+
+        if (contactHoursValuePreview) {
+            contactHoursValuePreview.textContent = nextValue;
+        }
+        if (previewHours) {
+            previewHours.textContent = nextValue;
+        }
+    }
+
+    function applyHoursValue(rawHours) {
+        var fallbackDays = dayOrder;
+        var selected = fallbackDays.slice();
+        var openMinutes = parseHoursTokenToMinutes('11AM');
+        var closeMinutes = parseHoursTokenToMinutes('11PM');
+        var normalizedHours = (rawHours || '').trim();
+        var partsMatch = normalizedHours.match(/^(.*?):\s*(.*?)\s*-\s*(.*?)$/);
+
+        if (partsMatch) {
+            var parsedDays = parseDays(partsMatch[1]);
+            var parsedOpen = parseHoursTokenToMinutes(partsMatch[2]);
+            var parsedClose = parseHoursTokenToMinutes(partsMatch[3]);
+
+            if (parsedDays.length > 0) {
+                selected = parsedDays;
+            }
+            if (parsedOpen !== null) {
+                openMinutes = parsedOpen;
+            }
+            if (parsedClose !== null) {
+                closeMinutes = parsedClose;
+            }
+        }
+
+        selectedDays.clear();
+        selected.forEach(function (day) {
+            selectedDays.add(day);
+        });
+
+        if (contactHoursOpen) {
+            contactHoursOpen.value = minutesToTimeValue(openMinutes);
+        }
+        if (contactHoursClose) {
+            contactHoursClose.value = minutesToTimeValue(closeMinutes);
+        }
+
+        renderDaySelection();
+        syncHoursValue();
+    }
+
+    function applyDayPreset(preset) {
+        selectedDays.clear();
+
+        if (preset === 'everyday') {
+            dayOrder.forEach(function (day) {
+                selectedDays.add(day);
+            });
+        }
+
+        if (preset === 'weekdays') {
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].forEach(function (day) {
+                selectedDays.add(day);
+            });
+        }
+
+        if (preset === 'weekends') {
+            ['Sat', 'Sun'].forEach(function (day) {
+                selectedDays.add(day);
+            });
+        }
+
+        renderDaySelection();
+        syncHoursValue();
+    }
+
+    if (contactHoursDays && contactHoursPresets && contactHoursOpen && contactHoursClose && contactHoursInput) {
+        contactHoursDays.addEventListener('click', function (event) {
+            var target = event.target;
+            if (!(target instanceof HTMLElement)) {
+                return;
+            }
+
+            var dayButton = target.closest('[data-day]');
+            if (!(dayButton instanceof HTMLElement)) {
+                return;
+            }
+
+            var day = dayButton.getAttribute('data-day');
+            if (!day) {
+                return;
+            }
+
+            if (selectedDays.has(day)) {
+                selectedDays.delete(day);
+            } else {
+                selectedDays.add(day);
+            }
+
+            renderDaySelection();
+            syncHoursValue();
+        });
+
+        contactHoursOpen.addEventListener('change', syncHoursValue);
+        contactHoursClose.addEventListener('change', syncHoursValue);
+
+        contactHoursPresets.addEventListener('click', function (event) {
+            var target = event.target;
+            if (!(target instanceof HTMLElement)) {
+                return;
+            }
+
+            var presetButton = target.closest('[data-preset]');
+            if (!(presetButton instanceof HTMLElement)) {
+                return;
+            }
+
+            var preset = presetButton.getAttribute('data-preset') || '';
+            applyDayPreset(preset);
+        });
+
+        applyHoursValue(contactHoursInput.value);
+    }
 
     // ── QR Code Actions ──
     var menuUrl = document.getElementById('qrUrlText').textContent.trim();
