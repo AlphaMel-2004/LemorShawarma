@@ -17,9 +17,25 @@ class MobileMenuController extends Controller
     public function index(): View
     {
         $menuItems = Product::where('is_active', true)->orderBy('name')->get();
+        $menuCategories = Product::query()
+            ->where('is_active', true)
+            ->whereNotNull('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category')
+            ->values();
+
+        return view('mobile.menu', compact('menuItems', 'menuCategories'));
+    }
+
+    /**
+     * Display the mobile feedback page.
+     */
+    public function feedback(): View
+    {
         $contactSettings = SiteSetting::getContactSettings();
 
-        return view('mobile.menu', compact('menuItems', 'contactSettings'));
+        return view('mobile.feedback', compact('contactSettings'));
     }
 
     /**

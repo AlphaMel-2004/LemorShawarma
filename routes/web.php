@@ -20,6 +20,7 @@ Route::domain((string) config('app.root_domain'))->group(function (): void {
         ->name('chatbot.reply');
 
     Route::get('/menu', [MobileMenuController::class, 'index'])->name('mobile.menu');
+    Route::get('/menu/feedback', [MobileMenuController::class, 'feedback'])->name('mobile.feedback.page');
     Route::post('/menu/feedback', [MobileMenuController::class, 'storeFeedback'])
         ->middleware('throttle:10,1')
         ->name('mobile.feedback');

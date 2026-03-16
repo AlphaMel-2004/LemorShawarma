@@ -3,7 +3,7 @@
 <head>
     @php
         $pageTitle = 'Pita Queen - Menu & Order';
-        $pageDescription = 'Browse the Pita Queen menu, pick your favorites, and send your order quickly from your phone. Fresh Mediterranean meals, shawarma, and more.';
+        $pageDescription = 'Browse the Pita Queen menu, filter by category, and send your order quickly from your phone.';
         $pageCanonical = route('mobile.menu');
         $pageImage = asset('images/logo.png');
     @endphp
@@ -70,6 +70,9 @@
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             padding: calc(0.75rem + env(safe-area-inset-top)) 1rem 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .header-brand {
@@ -90,90 +93,126 @@
             color: var(--gold);
         }
 
-        /* Tab Navigation */
-        .tab-nav {
-            display: flex;
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 65px;
-            z-index: 99;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .tab-nav::-webkit-scrollbar { display: none; }
-
-        .tab-btn {
-            flex: 1 0 auto;
-            min-width: 33.33%;
-            padding: 0.85rem 0.5rem;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            color: var(--text-muted);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            display: flex;
+        .btn-order-now {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 0.4rem;
+            background: var(--gold);
+            color: var(--bg-dark);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            border: none;
+            border-radius: 999px;
+            padding: 0.45rem 0.95rem;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.18s;
+            white-space: nowrap;
         }
 
-        .tab-btn.active {
+        .btn-order-now:hover { background: var(--gold-light); }
+        .btn-order-now:active { transform: scale(0.96); }
+        .btn-order-now i { font-size: 0.8rem; }
+
+        /* Page Hero */
+        .menu-page-hero {
+            padding: 1.75rem 1.25rem 1.5rem;
+            background: linear-gradient(170deg, rgba(212,175,55,0.12) 0%, rgba(13,13,13,0) 60%);
+            border-bottom: 1px solid rgba(212,175,55,0.15);
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.68rem;
+            font-weight: 600;
             color: var(--gold);
-            border-bottom-color: var(--gold);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin: 0 0 0.4rem;
         }
 
-        .tab-btn i { font-size: 1rem; }
-
-        @media (max-width: 420px) {
-            .tab-btn {
-                min-width: 120px;
-                font-size: 0.74rem;
-                padding: 0.75rem 0.45rem;
-            }
-
-            .tab-btn i {
-                font-size: 0.9rem;
-            }
+        .hero-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 0.35rem;
+            line-height: 1.05;
         }
 
-        /* Section containers */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .gold-text { color: var(--gold); }
+
+        .hero-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
 
         .content-area {
             padding: 1.25rem;
-            padding-bottom: 6rem;
+            padding-bottom: 8rem;
+        }
+
+        .category-scroller {
+            display: flex;
+            gap: 0.45rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 1.1rem;
+            padding-bottom: 0.15rem;
+        }
+
+        .category-scroller::-webkit-scrollbar { display: none; }
+
+        .category-chip {
+            border: 1.5px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+            border-radius: 999px;
+            padding: 0.42rem 0.9rem;
+            font-size: 0.73rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .category-chip.active {
+            color: var(--bg-dark);
+            background: var(--gold);
+            border-color: var(--gold);
+            box-shadow: 0 2px 10px rgba(212,175,55,0.35);
+        }
+
+        .category-chip:not(.active):hover {
+            border-color: rgba(212,175,55,0.4);
+            color: var(--gold);
         }
 
         /* Menu Section */
         .menu-search {
             position: relative;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
         }
 
         .menu-search input {
             width: 100%;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 0.8rem 1rem 0.8rem 2.85rem;
             color: var(--text-primary);
             font-family: 'Poppins', sans-serif;
             font-size: 0.85rem;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background 0.2s;
         }
 
         .menu-search input:focus {
             outline: none;
-            border-color: var(--gold);
+            background: rgba(212,175,55,0.06);
+            border-color: rgba(212,175,55,0.55);
         }
 
         .menu-search input::placeholder { color: var(--text-muted); }
@@ -184,108 +223,163 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
-        /* Menu Item Card */
+        /* Menu Grid & Cards */
+        #menuList {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
         .menu-item {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 16px;
             overflow: hidden;
-            margin-bottom: 1rem;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.18s ease, border-color 0.18s, box-shadow 0.18s;
+            animation: cardIn 0.35s ease both;
         }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item:nth-child(even) { animation-delay: 0.07s; }
 
         .menu-item:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
+            border-color: rgba(212,175,55,0.45);
+            box-shadow: 0 4px 20px rgba(212,175,55,0.12);
         }
 
-        .menu-item-inner {
-            display: flex;
-            padding: 0.85rem;
-            gap: 0.85rem;
-        }
-
-        .menu-item-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .menu-item-img-placeholder {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
+        .mi-thumb {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
             background: var(--bg-surface);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            flex-shrink: 0;
         }
 
-        .menu-item-info { flex: 1; min-width: 0; }
+        .mi-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
 
-        .menu-item-name {
-            font-size: 0.95rem;
-            font-weight: 600;
+        .menu-item:active .mi-img { transform: scale(1.04); }
+
+        .mi-img-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(13,13,13,0.5) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        .mi-cat {
+            position: absolute;
+            top: 0.45rem;
+            left: 0.45rem;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(212,175,55,0.3);
+            color: var(--gold);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            border-radius: 6px;
+            padding: 0.18rem 0.42rem;
+        }
+
+        .mi-body {
+            padding: 0.65rem 0.75rem 0.75rem;
+        }
+
+        .mi-name {
+            font-size: 0.82rem;
+            font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.2rem;
+            margin: 0 0 0.2rem;
+            line-height: 1.3;
         }
 
-        .menu-item-desc {
-            font-size: 0.75rem;
+        .mi-desc {
+            font-size: 0.68rem;
             color: var(--text-secondary);
             line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 0.5rem;
+            margin: 0 0 0.5rem;
         }
 
-        .menu-item-bottom {
+        .mi-foot {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .menu-item-price {
-            font-size: 1rem;
+        .mi-price {
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--gold);
-        }
-
-        .menu-item-price small {
-            font-size: 0.7rem;
-            font-weight: 400;
-            color: var(--text-muted);
         }
 
         .btn-add-order {
             width: 32px;
             height: 32px;
-            border-radius: 8px;
-            border: 1px solid var(--gold);
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--gold);
+            border-radius: 50%;
+            border: none;
+            background: var(--gold);
+            color: var(--bg-dark);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            transition: all 0.2s;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
             cursor: pointer;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: 0 4px 14px rgba(212,175,55,0.45);
         }
 
-        .btn-add-order:hover, .btn-add-order:active {
-            background: var(--gold);
-            color: var(--bg-dark);
+        /* Pulse ring */
+        .btn-add-order::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid rgba(212,175,55,0.45);
+            animation: orderPulse 2.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes orderPulse {
+            0%, 100% { transform: scale(1);   opacity: 0.6; }
+            50%       { transform: scale(1.22); opacity: 0; }
+        }
+
+        .btn-add-order:hover {
+            background: var(--gold-light);
+            box-shadow: 0 6px 20px rgba(212,175,55,0.6);
+            transform: scale(1.1);
+        }
+
+        .btn-add-order:active {
+            transform: scale(0.93);
+            box-shadow: 0 2px 8px rgba(212,175,55,0.3);
         }
 
         .empty-state {
+            grid-column: 1 / -1;
             text-align: center;
             padding: 3rem 1rem;
             color: var(--text-muted);
@@ -293,529 +387,262 @@
 
         .empty-state i { font-size: 3rem; margin-bottom: 0.75rem; display: block; }
 
-        /* Order Cart */
-        .cart-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(13, 13, 13, 0.97);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border);
-            padding: 0.85rem 1.25rem;
-            z-index: 200;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .cart-bar.show { transform: translateY(0); }
-
-        .cart-bar-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .cart-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .cart-badge {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: var(--gold);
-            color: var(--bg-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .cart-count { font-size: 0.8rem; color: var(--text-secondary); }
-        .cart-total { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
-
-        .btn-view-order {
-            background: var(--gold);
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 10px;
-            padding: 0.6rem 1.25rem;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-view-order:hover { background: var(--gold-light); }
-
-        /* Order Summary Modal */
-        .order-overlay {
+        /* Delivery App Sheet */
+        .delivery-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.72);
             z-index: 300;
-            display: none;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: opacity 0.32s ease;
         }
 
-        .order-overlay.show { display: block; }
+        .delivery-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-        .order-sheet {
+        .delivery-sheet {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 301;
-            background: var(--bg-card);
-            border-radius: 20px 20px 0 0;
-            max-height: 85vh;
-            overflow-y: auto;
+            background: linear-gradient(180deg, #252525 0%, #141414 100%);
+            border-radius: 32px 32px 0 0;
+            padding: 0 1.25rem calc(2.5rem + env(safe-area-inset-bottom));
             transform: translateY(100%);
-            transition: transform 0.3s ease;
-            padding: 1.5rem 1.25rem;
+            transition: transform 0.5s cubic-bezier(0.34, 1.28, 0.64, 1);
+            box-shadow: 0 -16px 60px rgba(0,0,0,0.75), 0 -1px 0 rgba(212,175,55,0.28);
+            will-change: transform;
         }
 
-        .order-sheet.show { transform: translateY(0); }
+        .delivery-sheet.show { transform: translateY(0); }
 
-        .order-sheet-handle {
+        /* Gold glow line at top edge */
+        .delivery-sheet::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 55%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+            pointer-events: none;
+        }
+
+        .delivery-sheet-handle {
             width: 40px;
             height: 4px;
+            background: rgba(255,255,255,0.08);
             border-radius: 2px;
-            background: var(--bg-surface);
-            margin: 0 auto 1.25rem;
+            margin: 1.1rem auto 1.5rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .order-sheet-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+        /* Shimmer sweep across handle when sheet opens */
+        .delivery-sheet.show .delivery-sheet-handle::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.9), transparent);
+            animation: handleShimmer 1.6s ease 0.5s forwards;
         }
 
-        .order-item {
+        @keyframes handleShimmer {
+            from { left: -100%; }
+            to   { left: 200%; }
+        }
+
+        .delivery-sheet-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.4rem;
+            gap: 0.75rem;
         }
 
-        .order-item-left { display: flex; align-items: center; gap: 0.75rem; }
+        .delivery-sheet-heading-wrap { flex: 1; min-width: 0; }
 
-        .order-qty-controls {
+        .delivery-sheet-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0 0 0.22rem;
+            line-height: 1.2;
+        }
+
+        .delivery-sheet-sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin: 0;
+            letter-spacing: 0.01em;
+        }
+
+        .delivery-sheet-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.28s;
         }
 
-        .qty-btn {
+        .delivery-sheet-close:hover {
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .delivery-app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .delivery-app-row {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 0.8rem 0.85rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: border-color 0.22s, background 0.22s, box-shadow 0.22s, transform 0.16s;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(18px) scale(0.96);
+            position: relative;
+            overflow: hidden;
+            will-change: transform, opacity;
+        }
+
+        .delivery-sheet.show .delivery-app-row {
+            animation: rowSlideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .delivery-sheet.show .delivery-app-row:nth-child(1) { animation-delay: 0.08s; }
+        .delivery-sheet.show .delivery-app-row:nth-child(2) { animation-delay: 0.15s; }
+        .delivery-sheet.show .delivery-app-row:nth-child(3) { animation-delay: 0.22s; }
+        .delivery-sheet.show .delivery-app-row:nth-child(4) { animation-delay: 0.29s; }
+
+        @keyframes rowSlideIn {
+            from { opacity: 0; transform: translateY(18px) scale(0.96); filter: blur(3px); }
+            to   { opacity: 1; transform: translateY(0)   scale(1);    filter: blur(0); }
+        }
+
+        .delivery-app-row:hover  { transform: translateY(-2px); }
+        .delivery-app-row:active { transform: scale(0.97) !important; }
+
+        /* Per-brand colour glow on hover */
+        .delivery-app-row[data-app="ubereats"]:hover {
+            border-color: rgba(6,193,103,0.4);
+            background: rgba(6,193,103,0.07);
+            box-shadow: 0 6px 24px rgba(6,193,103,0.16);
+        }
+        .delivery-app-row[data-app="doordash"]:hover {
+            border-color: rgba(255,48,8,0.4);
+            background: rgba(255,48,8,0.07);
+            box-shadow: 0 6px 24px rgba(255,48,8,0.16);
+        }
+        .delivery-app-row[data-app="grubhub"]:hover {
+            border-color: rgba(246,52,64,0.4);
+            background: rgba(246,52,64,0.07);
+            box-shadow: 0 6px 24px rgba(246,52,64,0.16);
+        }
+        /* Touch ripple */
+        .delivery-app-row .ripple-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+            pointer-events: none;
+            transform: scale(0);
+            animation: rippleOut 0.55s ease-out forwards;
+        }
+
+        @keyframes rippleOut {
+            to { transform: scale(1); opacity: 0; }
+        }
+
+        .app-logo-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            padding: 10px;
+            transition: transform 0.22s, box-shadow 0.22s;
+        }
+
+        .app-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: brightness(0) invert(1);
+        }
+
+        .delivery-app-row:hover .app-logo-box { transform: scale(1.08); }
+
+        .app-logo-ubereats  { background: #06C167; box-shadow: 0 6px 18px rgba(6,193,103,0.5); }
+        .app-logo-doordash  { background: #FF3008; box-shadow: 0 6px 18px rgba(255,48,8,0.5); }
+        .app-logo-grubhub   { background: #F63440; box-shadow: 0 6px 18px rgba(246,52,64,0.5); }
+
+        .app-text-col { flex: 1; min-width: 0; }
+
+        .app-row-name {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 0.12rem;
+            letter-spacing: -0.01em;
+        }
+
+        .app-row-tag {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .app-row-chevron {
             width: 28px;
             height: 28px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-primary);
-            display: flex;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: inline-flex !important;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            cursor: pointer;
+            color: rgba(255,255,255,0.22);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            transition: background 0.22s, color 0.22s, transform 0.22s;
         }
 
-        .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-        .order-item-qty {
-            font-size: 0.85rem;
-            font-weight: 600;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .order-item-name { font-size: 0.85rem; font-weight: 500; }
-        .order-item-price { font-size: 0.85rem; font-weight: 600; color: var(--gold); white-space: nowrap; }
-
-        .order-total-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0 0.5rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .order-total-row .gold { color: var(--gold); }
-
-        .btn-place-order {
-            width: 100%;
-            background: var(--gold);
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 12px;
-            padding: 0.85rem;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-top: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-place-order:hover { background: var(--gold-light); }
-
-        .receipt-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 350;
-            display: none;
-        }
-
-        .receipt-overlay.show { display: block; }
-
-        .receipt-modal {
-            position: fixed;
-            left: 1rem;
-            right: 1rem;
-            bottom: 1rem;
-            z-index: 351;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1rem;
-            transform: translateY(120%);
-            transition: transform 0.3s ease;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .receipt-modal.show { transform: translateY(0); }
-
-        .receipt-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .receipt-header h3 {
-            margin: 0;
-            font-size: 1rem;
-            font-weight: 700;
-        }
-
-        .receipt-close {
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-primary);
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .receipt-meta {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .receipt-order-number {
-            font-size: 0.85rem;
-            font-weight: 700;
+        .delivery-app-row:hover .app-row-chevron {
+            background: rgba(212,175,55,0.14);
             color: var(--gold);
-            margin-bottom: 0.25rem;
+            transform: translateX(3px);
         }
-
-        .receipt-date {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .receipt-lines {
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 0.75rem;
-        }
-
-        .receipt-line {
-            display: flex;
-            justify-content: space-between;
-            gap: 0.75rem;
-            padding: 0.65rem 0.75rem;
-            font-size: 0.8rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .receipt-line:last-child { border-bottom: none; }
-
-        .receipt-line-name {
-            color: var(--text-primary);
-            flex: 1;
-        }
-
-        .receipt-line-price {
-            color: var(--gold);
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .receipt-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1rem;
-            font-weight: 700;
-            margin-top: 0.25rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .receipt-note {
-            font-size: 0.74rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-        }
-
-        .receipt-customer {
-            margin-bottom: 0.75rem;
-        }
-
-        .receipt-customer-label {
-            display: block;
-            font-size: 0.74rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.35rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .receipt-customer-input {
-            width: 100%;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            padding: 0.6rem 0.7rem;
-            font-size: 0.86rem;
-        }
-
-        .receipt-customer-input:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.18);
-        }
-
-        .receipt-customer-error {
-            display: none;
-            margin-top: 0.35rem;
-            font-size: 0.72rem;
-            color: #ff8a9e;
-        }
-
-        /* Feedback Section */
-        .feedback-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .feedback-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .feedback-header p {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .feedback-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.5rem;
-        }
-
-        .fb-field {
-            margin-bottom: 1.25rem;
-        }
-
-        .fb-label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-secondary);
-            margin-bottom: 0.4rem;
-        }
-
-        .fb-input, .fb-textarea {
-            width: 100%;
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 0.7rem 0.85rem;
-            color: var(--text-primary);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            transition: border-color 0.2s;
-        }
-
-        .fb-input:focus, .fb-textarea:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        .fb-input::placeholder, .fb-textarea::placeholder { color: var(--text-muted); }
-
-        .fb-textarea { min-height: 120px; resize: vertical; }
-
-        /* Star Rating */
-        .star-rating {
-            display: flex;
-            gap: 0.5rem;
-            flex-direction: row-reverse;
-            justify-content: flex-end;
-        }
-
-        .star-rating input { display: none; }
-
-        .star-rating label {
-            font-size: 1.75rem;
-            color: var(--border);
-            cursor: pointer;
-            transition: color 0.15s;
-        }
-
-        .star-rating input:checked ~ label,
-        .star-rating label:hover,
-        .star-rating label:hover ~ label {
-            color: var(--gold);
-        }
-
-        .btn-submit-feedback {
-            width: 100%;
-            background: var(--gold);
-            color: var(--bg-dark);
-            border: none;
-            border-radius: 12px;
-            padding: 0.85rem;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-submit-feedback:hover { background: var(--gold-light); }
-
-        .btn-submit-feedback:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .feedback-success {
-            text-align: center;
-            padding: 2rem 0;
-            display: none;
-        }
-
-        .feedback-success.show { display: block; }
-
-        .feedback-success i {
-            font-size: 3.5rem;
-            color: var(--success);
-            display: block;
-            margin-bottom: 0.75rem;
-        }
-
-        .feedback-success h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .feedback-success p {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .fb-error {
-            color: var(--danger);
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-        }
-
-        /* Contact Info Bar */
-        .contact-bar {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.25rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .contact-bar-item {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.4rem 0;
-        }
-
-        .contact-bar-item i {
-            color: var(--gold);
-            font-size: 0.9rem;
-            width: 20px;
-            text-align: center;
-        }
-
-        .contact-bar-item span,
-        .contact-bar-item a {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-        }
-
-        .contact-bar-item a:hover { color: var(--gold); }
-
-        /* Toast */
-        .mobile-toast {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(-120%);
-            background: var(--bg-card);
-            border: 1px solid var(--gold);
-            border-radius: 12px;
-            padding: 0.75rem 1.25rem;
-            z-index: 999;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .mobile-toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .mobile-toast i { color: var(--gold); }
 
         /* No results */
         .no-results {
+            grid-column: 1 / -1;
             text-align: center;
             padding: 2.5rem 1rem;
             display: none;
@@ -832,516 +659,214 @@
             <img src="/images/logo.png" alt="Pita Queen">
             <span class="header-brand-name">Pita Queen</span>
         </div>
+        <button class="btn-order-now" onclick="openDeliverySheet()">
+            <i class="bi bi-bag-fill"></i> Order Now
+        </button>
     </header>
 
-    {{-- Tab Navigation --}}
-    <nav class="tab-nav">
-        <button class="tab-btn active" data-tab="menu">
-            <i class="bi bi-grid-fill"></i> Menu
-        </button>
-        <button class="tab-btn" data-tab="feedback">
-            <i class="bi bi-chat-heart-fill"></i> Feedback
-        </button>
-        <button class="tab-btn" data-tab="info">
-            <i class="bi bi-info-circle-fill"></i> Info
-        </button>
-    </nav>
+    {{-- Page Hero --}}
+    <div class="menu-page-hero">
+        <p class="hero-eyebrow">Freshly made daily</p>
+        <h1 class="hero-heading">Our <span class="gold-text">Menu</span></h1>
+        <p class="hero-sub">{{ $menuItems->count() }} handcrafted items</p>
+    </div>
 
-    {{-- ═══ Menu Tab ═══ --}}
-    <div class="tab-content active" id="tab-menu">
-        <div class="content-area">
-            <div class="menu-search">
-                <i class="bi bi-search"></i>
-                <input type="text" id="menuSearch" placeholder="Search our menu...">
-            </div>
+    <div class="content-area">
+        <div class="menu-search">
+            <i class="bi bi-search"></i>
+            <input type="text" id="menuSearch" placeholder="Search our menu...">
+        </div>
 
-            <div id="menuList">
-                @forelse ($menuItems as $item)
-                    @php
-                        $imageUrl = $item->image_url;
-                    @endphp
-                    <div class="menu-item" data-name="{{ strtolower($item->name) }}" data-id="{{ $item->id }}">
-                        <div class="menu-item-inner">
-                            <img src="{{ $imageUrl }}" alt="{{ $item->name }}" class="menu-item-img" loading="lazy">
+        <div class="category-scroller" id="categoryScroller">
+            <button type="button" class="category-chip active" data-category="all">All</button>
+            @foreach($menuCategories as $menuCategory)
+                <button type="button" class="category-chip" data-category="{{ \Illuminate\Support\Str::slug($menuCategory) }}">{{ $menuCategory }}</button>
+            @endforeach
+        </div>
 
-                            <div class="menu-item-info">
-                                <div class="menu-item-name">{{ $item->name }}</div>
-                                @if ($item->description)
-                                    <div class="menu-item-desc">{{ $item->description }}</div>
-                                @endif
-                                <div class="menu-item-bottom">
-                                    <span class="menu-item-price">₱{{ number_format($item->price, 2) }}</span>
-                                    <button class="btn-add-order" data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-price="{{ $item->price }}">
-                                        <i class="bi bi-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
+        <div id="menuList">
+            @forelse ($menuItems as $item)
+                @php $imageUrl = $item->image_url; @endphp
+                <div class="menu-item" data-name="{{ strtolower($item->name) }}" data-category="{{ \Illuminate\Support\Str::slug((string) $item->category) }}" data-id="{{ $item->id }}">
+                    <div class="mi-thumb">
+                        <img src="{{ $imageUrl }}" alt="{{ $item->name }}" class="mi-img" loading="lazy">
+                        <div class="mi-img-gradient"></div>
+                        @if($item->category)
+                            <span class="mi-cat">{{ $item->category }}</span>
+                        @endif
+                    </div>
+                    <div class="mi-body">
+                        <p class="mi-name">{{ $item->name }}</p>
+                        @if($item->description)
+                            <p class="mi-desc">{{ $item->description }}</p>
+                        @endif
+                        <div class="mi-foot">
+                            <span class="mi-price">₱{{ number_format($item->price, 2) }}</span>
+                            <button class="btn-add-order" data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-price="{{ $item->price }}" aria-label="Order {{ $item->name }}">
+                                <i class="bi bi-bag-fill"></i>
+                            </button>
                         </div>
                     </div>
-                @empty
-                    <div class="empty-state">
-                        <i class="bi bi-inbox"></i>
-                        <p>No menu items available yet.<br>Please check back soon!</p>
-                    </div>
-                @endforelse
-            </div>
+                </div>
+            @empty
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <p>No menu items available yet.<br>Check back soon!</p>
+                </div>
+            @endforelse
+        </div>
 
-            <div class="no-results" id="noResults">
-                <i class="bi bi-search"></i>
-                <p>No items match your search.</p>
-            </div>
+        <div class="no-results" id="noResults">
+            <i class="bi bi-search"></i>
+            <p>No items match your search.</p>
         </div>
     </div>
 
-    {{-- ═══ Feedback Tab ═══ --}}
-    <div class="tab-content" id="tab-feedback">
-        <div class="content-area">
-            <div class="feedback-header">
-                <h2>Share Your <span style="color: var(--gold);">Experience</span></h2>
-                <p>We'd love to hear your thoughts about our food & service</p>
+    {{-- Delivery App Sheet --}}
+    <div class="delivery-overlay" id="deliveryOverlay" onclick="closeDeliverySheet()"></div>
+    <div class="delivery-sheet" id="deliverySheet">
+        <div class="delivery-sheet-handle"></div>
+        <div class="delivery-sheet-header">
+            <div class="delivery-sheet-heading-wrap">
+                <h2 class="delivery-sheet-heading">Order <span style="color:var(--gold)">Delivery</span></h2>
+                <p class="delivery-sheet-sub">Choose your delivery partner</p>
             </div>
-
-            <div class="feedback-card" id="feedbackFormCard">
-                <form id="feedbackForm">
-                    <div class="fb-field">
-                        <label class="fb-label">Your Name</label>
-                        <input type="text" name="customer_name" class="fb-input" placeholder="Enter your name" required>
-                        <div class="fb-error" id="err_customer_name"></div>
-                    </div>
-
-                    <div class="fb-field">
-                        <label class="fb-label">Email <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
-                        <input type="email" name="customer_email" class="fb-input" placeholder="your@email.com">
-                        <div class="fb-error" id="err_customer_email"></div>
-                    </div>
-
-                    <div class="fb-field">
-                        <label class="fb-label">Rating</label>
-                        <div class="star-rating">
-                            <input type="radio" name="rating" value="5" id="star5" checked>
-                            <label for="star5"><i class="bi bi-star-fill"></i></label>
-                            <input type="radio" name="rating" value="4" id="star4">
-                            <label for="star4"><i class="bi bi-star-fill"></i></label>
-                            <input type="radio" name="rating" value="3" id="star3">
-                            <label for="star3"><i class="bi bi-star-fill"></i></label>
-                            <input type="radio" name="rating" value="2" id="star2">
-                            <label for="star2"><i class="bi bi-star-fill"></i></label>
-                            <input type="radio" name="rating" value="1" id="star1">
-                            <label for="star1"><i class="bi bi-star-fill"></i></label>
-                        </div>
-                        <div class="fb-error" id="err_rating"></div>
-                    </div>
-
-                    <div class="fb-field">
-                        <label class="fb-label">Your Feedback</label>
-                        <textarea name="message" class="fb-textarea" placeholder="Tell us about your experience..." maxlength="500" required></textarea>
-                        <div class="fb-error" id="err_message"></div>
-                    </div>
-
-                    <button type="submit" class="btn-submit-feedback" id="submitFeedbackBtn">
-                        <i class="bi bi-send me-1"></i> Submit Feedback
-                    </button>
-                </form>
-            </div>
-
-            <div class="feedback-success" id="feedbackSuccess">
-                <i class="bi bi-heart-fill"></i>
-                <h3>Thank You!</h3>
-                <p>Your feedback means everything to us.</p>
-                <button class="btn-submit-feedback mt-3" onclick="resetFeedbackForm()" style="max-width: 200px; margin: 0 auto; display: block;">
-                    Submit Another
-                </button>
-            </div>
-        </div>
-    </div>
-
-    {{-- ═══ Info Tab ═══ --}}
-    <div class="tab-content" id="tab-info">
-        <div class="content-area">
-            <div class="feedback-header">
-                <h2>Visit <span style="color: var(--gold);">Pita Queen</span></h2>
-                <p>Find us at our location</p>
-            </div>
-
-            <div class="contact-bar">
-                <div class="contact-bar-item">
-                    <i class="bi bi-geo-alt-fill"></i>
-                    <span>{{ $contactSettings['contact_address_line1'] }}, {{ $contactSettings['contact_address_line2'] }}</span>
-                </div>
-                <div class="contact-bar-item">
-                    <i class="bi bi-telephone-fill"></i>
-                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}">{{ $contactSettings['contact_phone'] }}</a>
-                </div>
-                <div class="contact-bar-item">
-                    <i class="bi bi-envelope-fill"></i>
-                    <a href="mailto:{{ $contactSettings['contact_email'] }}">{{ $contactSettings['contact_email'] }}</a>
-                </div>
-                <div class="contact-bar-item">
-                    <i class="bi bi-clock-fill"></i>
-                    <span>{{ $contactSettings['contact_hours'] }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Cart Bottom Bar --}}
-    <div class="cart-bar" id="cartBar">
-        <div class="cart-bar-inner">
-            <div class="cart-info">
-                <div class="cart-badge" id="cartCount">0</div>
-                <div>
-                    <div class="cart-count"><span id="cartItemCount">0</span> items</div>
-                    <div class="cart-total">₱<span id="cartTotal">0.00</span></div>
-                </div>
-            </div>
-            <button class="btn-view-order" onclick="openOrderSheet()">View Order</button>
-        </div>
-    </div>
-
-    {{-- Order Sheet --}}
-    <div class="order-overlay" id="orderOverlay" onclick="closeOrderSheet()"></div>
-    <div class="order-sheet" id="orderSheet">
-        <div class="order-sheet-handle"></div>
-        <div class="order-sheet-title">Your Order</div>
-        <div id="orderItems"></div>
-        <div class="order-total-row">
-            <span>Total</span>
-            <span class="gold">₱<span id="orderTotal">0.00</span></span>
-        </div>
-        <button class="btn-place-order" onclick="placeOrder()">
-            <i class="bi bi-bag-check me-1"></i> Place Order
-        </button>
-    </div>
-
-    <div class="receipt-overlay" id="receiptOverlay" onclick="closeReceiptModal()"></div>
-    <div class="receipt-modal" id="receiptModal">
-        <div class="receipt-header">
-            <h3>Order Receipt</h3>
-            <button class="receipt-close" type="button" onclick="closeReceiptModal()" aria-label="Close receipt">
+            <button class="delivery-sheet-close" onclick="closeDeliverySheet()" aria-label="Close">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
-        <div class="receipt-meta">
-            <div class="receipt-order-number">Order #<span id="receiptNumber">-</span></div>
-            <div class="receipt-date" id="receiptDate">-</div>
+        <div class="delivery-app-list">
+            <button class="delivery-app-row" data-app="ubereats" onclick="openDeliveryApp('ubereats')">
+                <div class="app-logo-box app-logo-ubereats">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/ubereats.svg" alt="Uber Eats" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="app-text-col">
+                    <p class="app-row-name">Uber Eats</p>
+                    <p class="app-row-tag">Fast delivery &middot; Track in real time</p>
+                </div>
+                <i class="bi bi-chevron-right app-row-chevron"></i>
+            </button>
+            <button class="delivery-app-row" data-app="doordash" onclick="openDeliveryApp('doordash')">
+                <div class="app-logo-box app-logo-doordash">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/doordash.svg" alt="DoorDash" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="app-text-col">
+                    <p class="app-row-name">DoorDash</p>
+                    <p class="app-row-tag">On-demand delivery &middot; Wide selection</p>
+                </div>
+                <i class="bi bi-chevron-right app-row-chevron"></i>
+            </button>
+            <button class="delivery-app-row" data-app="grubhub" onclick="openDeliveryApp('grubhub')">
+                <div class="app-logo-box app-logo-grubhub">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/grubhub.svg" alt="Grubhub" loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="app-text-col">
+                    <p class="app-row-name">Grubhub</p>
+                    <p class="app-row-tag">Thousands of restaurants nearby</p>
+                </div>
+                <i class="bi bi-chevron-right app-row-chevron"></i>
+            </button>
         </div>
-        <div class="receipt-lines" id="receiptItems"></div>
-        <div class="receipt-total">
-            <span>Total</span>
-            <span class="gold">₱<span id="receiptTotal">0.00</span></span>
-        </div>
-        <div class="receipt-note">Use this order number when following up with our staff.</div>
-        <div class="receipt-customer">
-            <label class="receipt-customer-label" for="receiptCustomerNickname">Customer Nickname <span style="color:#ff8a9e;">*</span></label>
-            <input type="text" id="receiptCustomerNickname" class="receipt-customer-input" placeholder="Enter nickname (required)">
-            <div class="receipt-customer-error" id="receiptCustomerNicknameError">Please enter your nickname before sending to WhatsApp.</div>
-        </div>
-        <button class="btn-place-order" type="button" onclick="sendReceiptToWhatsApp()">
-            <i class="bi bi-whatsapp me-1"></i> Send to WhatsApp
-        </button>
-    </div>
-
-    {{-- Toast --}}
-    <div class="mobile-toast" id="mobileToast">
-        <i class="bi bi-check-circle-fill"></i>
-        <span id="toastMsg"></span>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ── Tab Switching ──
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
-            });
-        });
+        let activeCategory = 'all';
 
-        // ── Menu Search ──
-        document.getElementById('menuSearch').addEventListener('input', function () {
-            const q = this.value.toLowerCase().trim();
+        function applyMenuFilters() {
+            const query = (document.getElementById('menuSearch').value || '').toLowerCase().trim();
             let visible = 0;
+
             document.querySelectorAll('.menu-item').forEach(item => {
-                const show = item.dataset.name.includes(q);
+                const matchesSearch = item.dataset.name.includes(query);
+                const itemCategory = item.dataset.category || '';
+                const matchesCategory = activeCategory === 'all' || itemCategory === activeCategory;
+                const show = matchesSearch && matchesCategory;
+
                 item.style.display = show ? '' : 'none';
-                if (show) visible++;
+                if (show) {
+                    visible += 1;
+                }
             });
+
             document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+        }
+
+        document.getElementById('menuSearch').addEventListener('input', applyMenuFilters);
+        document.querySelectorAll('.category-chip').forEach((chip) => {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('.category-chip').forEach((item) => item.classList.remove('active'));
+                this.classList.add('active');
+                activeCategory = this.dataset.category || 'all';
+                applyMenuFilters();
+            });
         });
 
-        // ── Cart ──
-        let cart = {};
-        let pendingOrderPayload = null;
+        // ── Delivery App Sheet ──
+        const deliveryApps = {
+            ubereats:  { deepLink: 'ubereats://',  fallback: 'https://www.ubereats.com' },
+            doordash:  { deepLink: 'doordash://',  fallback: 'https://www.doordash.com' },
+            grubhub:   { deepLink: 'grubhub://',   fallback: 'https://www.grubhub.com' },
+        };
 
-        function generateOrderNumber() {
-            const now = new Date();
-            const datePart = now.toISOString().slice(0, 10).replace(/-/g, '');
-            const randomPart = Math.floor(1000 + Math.random() * 9000);
-
-            return `PQ-${datePart}-${randomPart}`;
+        function openDeliverySheet() {
+            document.getElementById('deliveryOverlay').classList.add('show');
+            document.getElementById('deliverySheet').classList.add('show');
         }
 
-        function buildOrderDetails() {
-            const lines = [];
-            let total = 0;
+        function closeDeliverySheet() {
+            document.getElementById('deliveryOverlay').classList.remove('show');
+            document.getElementById('deliverySheet').classList.remove('show');
+        }
 
-            Object.values(cart).forEach(item => {
-                const subtotal = item.qty * item.price;
-                total += subtotal;
-                lines.push({
-                    text: `${item.qty}x ${item.name}`,
-                    subtotal,
-                });
+        // Touch ripple on delivery rows
+        document.querySelectorAll('.delivery-app-row').forEach(function (row) {
+            row.addEventListener('pointerdown', function (e) {
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height) * 2;
+                const dot  = document.createElement('span');
+                dot.className = 'ripple-dot';
+                dot.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - rect.left - size / 2) + 'px;top:' + (e.clientY - rect.top - size / 2) + 'px';
+                this.appendChild(dot);
+                dot.addEventListener('animationend', function () { dot.remove(); });
             });
+        });
 
-            return { lines, total };
-        }
+        function openDeliveryApp(key) {
+            const app = deliveryApps[key];
+            if (!app) { return; }
+            closeDeliverySheet();
 
-        function addToCart(id, name, price) {
-            if (cart[id]) {
-                cart[id].qty++;
-            } else {
-                cart[id] = { name, price: parseFloat(price), qty: 1 };
-            }
-            updateCartUI();
-            showToast(name + ' added');
-        }
+            // Use a hidden iframe so the deep-link attempt does not navigate
+            // the page or show a browser-level "no handler" error.
+            const iframe = document.createElement('iframe');
+            iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;';
+            iframe.src = app.deepLink;
+            document.body.appendChild(iframe);
 
-        function updateCartUI() {
-            let totalItems = 0, totalPrice = 0;
-            Object.values(cart).forEach(item => {
-                totalItems += item.qty;
-                totalPrice += item.qty * item.price;
-            });
+            // If the native app opens, the page will become hidden.
+            // If it stays visible after the grace period, fall back to the web URL.
+            let opened = false;
+            const onHide = () => { opened = true; };
+            document.addEventListener('visibilitychange', onHide, { once: true });
 
-            document.getElementById('cartCount').textContent = totalItems;
-            document.getElementById('cartItemCount').textContent = totalItems;
-            document.getElementById('cartTotal').textContent = totalPrice.toFixed(2);
-            document.getElementById('orderTotal').textContent = totalPrice.toFixed(2);
-
-            const bar = document.getElementById('cartBar');
-            if (totalItems > 0) {
-                bar.classList.add('show');
-            } else {
-                bar.classList.remove('show');
-            }
-
-            renderOrderItems();
-        }
-
-        function renderOrderItems() {
-            const container = document.getElementById('orderItems');
-            container.innerHTML = '';
-            Object.entries(cart).forEach(([id, item]) => {
-                container.innerHTML += `
-                    <div class="order-item">
-                        <div class="order-item-left">
-                            <div class="order-qty-controls">
-                                <button class="qty-btn" onclick="changeQty('${id}', -1)"><i class="bi bi-dash"></i></button>
-                                <span class="order-item-qty">${item.qty}</span>
-                                <button class="qty-btn" onclick="changeQty('${id}', 1)"><i class="bi bi-plus"></i></button>
-                            </div>
-                            <span class="order-item-name">${item.name}</span>
-                        </div>
-                        <span class="order-item-price">₱${(item.qty * item.price).toFixed(2)}</span>
-                    </div>`;
-            });
-        }
-
-        function changeQty(id, delta) {
-            if (!cart[id]) return;
-            cart[id].qty += delta;
-            if (cart[id].qty <= 0) delete cart[id];
-            updateCartUI();
-            if (Object.keys(cart).length === 0) closeOrderSheet();
-        }
-
-        function openOrderSheet() {
-            document.getElementById('orderOverlay').classList.add('show');
-            document.getElementById('orderSheet').classList.add('show');
-        }
-
-        function closeOrderSheet() {
-            document.getElementById('orderOverlay').classList.remove('show');
-            document.getElementById('orderSheet').classList.remove('show');
-        }
-
-        function openReceiptModal() {
-            document.getElementById('receiptOverlay').classList.add('show');
-            document.getElementById('receiptModal').classList.add('show');
-        }
-
-        function closeReceiptModal() {
-            document.getElementById('receiptOverlay').classList.remove('show');
-            document.getElementById('receiptModal').classList.remove('show');
-
-            const nicknameInput = document.getElementById('receiptCustomerNickname');
-            const nicknameError = document.getElementById('receiptCustomerNicknameError');
-            if (nicknameInput) {
-                nicknameInput.value = '';
-            }
-            if (nicknameError) {
-                nicknameError.style.display = 'none';
-            }
-        }
-
-        function renderReceipt(orderNumber, lines, total) {
-            const receiptItems = document.getElementById('receiptItems');
-            receiptItems.innerHTML = lines.map(line => `
-                <div class="receipt-line">
-                    <span class="receipt-line-name">${line.text}</span>
-                    <span class="receipt-line-price">₱${line.subtotal.toFixed(2)}</span>
-                </div>
-            `).join('');
-
-            document.getElementById('receiptNumber').textContent = orderNumber;
-            document.getElementById('receiptDate').textContent = new Date().toLocaleString();
-            document.getElementById('receiptTotal').textContent = total.toFixed(2);
-        }
-
-        function placeOrder() {
-            if (Object.keys(cart).length === 0) {
-                showToast('Your order is empty.');
-                return;
-            }
-
-            const phone = "{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}";
-            const orderNumber = generateOrderNumber();
-            const orderDetails = buildOrderDetails();
-            pendingOrderPayload = {
-                phone,
-                orderNumber,
-                lines: orderDetails.lines,
-                total: orderDetails.total,
-                createdAt: new Date().toLocaleString(),
-            };
-
-            renderReceipt(orderNumber, orderDetails.lines, orderDetails.total);
-            closeOrderSheet();
-            openReceiptModal();
-        }
-
-        function buildWhatsAppMessage(orderPayload, nickname) {
-            const lineItems = orderPayload.lines
-                .map(line => `- ${line.text} (₱${line.subtotal.toFixed(2)})`)
-                .join('\n');
-
-            return [
-                'Hi! I would like to place an order.',
-                '',
-                `Customer: ${nickname}`,
-                `Order No: ${orderPayload.orderNumber}`,
-                `Date: ${orderPayload.createdAt}`,
-                '',
-                'Items:',
-                lineItems,
-                '',
-                `Total: ₱${orderPayload.total.toFixed(2)}`,
-                '',
-                'Thank you!',
-            ].join('\n');
-        }
-
-        function sendReceiptToWhatsApp() {
-            if (!pendingOrderPayload) {
-                showToast('Unable to send order right now.');
-                return;
-            }
-
-            const nicknameInput = document.getElementById('receiptCustomerNickname');
-            const nicknameError = document.getElementById('receiptCustomerNicknameError');
-            const nickname = (nicknameInput?.value || '').trim();
-
-            if (!nickname) {
-                if (nicknameError) {
-                    nicknameError.style.display = 'block';
+            setTimeout(() => {
+                document.removeEventListener('visibilitychange', onHide);
+                document.body.removeChild(iframe);
+                if (!opened) {
+                    window.open(app.fallback, '_blank');
                 }
-                nicknameInput?.focus();
-                showToast('Nickname is required before sending.');
-                return;
-            }
-
-            if (nicknameError) {
-                nicknameError.style.display = 'none';
-            }
-
-            const cleanPhone = pendingOrderPayload.phone.replace('+', '');
-            const message = buildWhatsAppMessage(pendingOrderPayload, nickname);
-            const whatsappUrl = 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(message);
-
-            window.open(whatsappUrl, '_blank');
-
-            cart = {};
-            pendingOrderPayload = null;
-            updateCartUI();
-            closeReceiptModal();
-            showToast('Order message sent to WhatsApp!');
+            }, 1400);
         }
 
-        // Add-to-cart button handlers
         document.querySelectorAll('.btn-add-order').forEach(btn => {
             btn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                addToCart(this.dataset.id, this.dataset.name, this.dataset.price);
+                openDeliverySheet();
             });
         });
 
-        // ── Toast ──
-        function showToast(msg) {
-            const toast = document.getElementById('mobileToast');
-            document.getElementById('toastMsg').textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
-        }
-
-        // ── Feedback ──
-        const feedbackForm = document.getElementById('feedbackForm');
-        feedbackForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitFeedbackBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Sending...';
-
-            // Clear errors
-            document.querySelectorAll('.fb-error').forEach(el => el.textContent = '');
-
-            const data = new FormData(this);
-            try {
-                const res = await fetch("{{ route('mobile.feedback') }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json',
-                    },
-                    body: data,
-                });
-
-                if (res.status === 422) {
-                    const json = await res.json();
-                    Object.entries(json.errors || {}).forEach(([key, msgs]) => {
-                        const el = document.getElementById('err_' + key);
-                        if (el) el.textContent = msgs[0];
-                    });
-                } else if (res.ok) {
-                    document.getElementById('feedbackFormCard').style.display = 'none';
-                    document.getElementById('feedbackSuccess').classList.add('show');
-                }
-            } catch (err) {
-                showToast('Something went wrong. Please try again.');
-            }
-
-            btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-send me-1"></i> Submit Feedback';
-        });
-
-        function resetFeedbackForm() {
-            feedbackForm.reset();
-            document.getElementById('feedbackFormCard').style.display = '';
-            document.getElementById('feedbackSuccess').classList.remove('show');
-            document.querySelectorAll('.fb-error').forEach(el => el.textContent = '');
-        }
+        applyMenuFilters();
     </script>
 </body>
 </html>

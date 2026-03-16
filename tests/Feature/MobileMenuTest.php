@@ -41,9 +41,18 @@ class MobileMenuTest extends TestCase
         $response->assertSee('No menu items available yet');
     }
 
-    public function test_mobile_menu_displays_contact_information(): void
+    public function test_mobile_menu_page_has_hero_section(): void
     {
         $response = $this->get(route('mobile.menu'));
+
+        $response->assertStatus(200);
+        $response->assertSeeText('Our Menu');
+        $response->assertSee('menu-page-hero');
+    }
+
+    public function test_mobile_feedback_page_loads_successfully(): void
+    {
+        $response = $this->get(route('mobile.feedback.page'));
 
         $response->assertStatus(200);
         $response->assertSee('Share Your');

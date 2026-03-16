@@ -3,6 +3,11 @@
 @section('title', 'Manage Contacts')
 @section('page-title', 'Manage Contacts')
 
+@php
+    $mobileMenuUrl = route('mobile.menu');
+    $mobileFeedbackUrl = route('mobile.feedback.page');
+@endphp
+
 @push('styles')
 <style>
     /* ── Cards ── */
@@ -636,7 +641,7 @@
                         </div>
                         <div>
                             <p class="card-header-title">Menu QR Code</p>
-                            <p class="card-header-sub">Customers scan to view menu &amp; order</p>
+                            <p class="card-header-sub">Use separate links: menu for ordering, feedback for reviews.</p>
                         </div>
                     </div>
                     <div class="card-body-inner">
@@ -644,7 +649,7 @@
                             <div class="qr-canvas-box">
                                 <img
                                     id="qrImage"
-                                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('mobile.menu')) }}"
+                                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($mobileMenuUrl) }}"
                                     alt="Menu QR Code"
                                     width="200"
                                     height="200"
@@ -655,25 +660,35 @@
                             <div>
                                 <div class="qr-url-text">
                                     <i class="bi bi-link-45deg"></i>
-                                    <span id="qrUrlText">{{ route('mobile.menu') }}</span>
+                                    <span id="qrUrlText">{{ $mobileMenuUrl }}</span>
+                                </div>
+                                <div class="qr-url-text" style="margin-top: -0.35rem;">
+                                    <i class="bi bi-chat-heart"></i>
+                                    <span id="qrFeedbackUrlText">{{ $mobileFeedbackUrl }}</span>
                                 </div>
                             </div>
 
                             <div class="qr-actions">
-                                <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data={{ urlencode(route('mobile.menu')) }}" download="pita-queen-menu-qr.png" class="btn-qr btn-qr-primary">
-                                    <i class="bi bi-download"></i> Download PNG
+                                <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data={{ urlencode($mobileMenuUrl) }}" download="pita-queen-menu-qr.png" class="btn-qr btn-qr-primary">
+                                    <i class="bi bi-download"></i> Download Menu QR
+                                </a>
+                                <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data={{ urlencode($mobileFeedbackUrl) }}" download="pita-queen-feedback-qr.png" class="btn-qr">
+                                    <i class="bi bi-download"></i> Download Feedback QR
                                 </a>
                                 <button type="button" class="btn-qr" id="copyLinkBtn">
-                                    <i class="bi bi-clipboard"></i> Copy Link
+                                    <i class="bi bi-clipboard"></i> Copy Menu Link
+                                </button>
+                                <button type="button" class="btn-qr" id="copyFeedbackLinkBtn">
+                                    <i class="bi bi-clipboard-heart"></i> Copy Feedback Link
                                 </button>
                                 <button type="button" class="btn-qr" id="printQrBtn">
-                                    <i class="bi bi-printer"></i> Print
+                                    <i class="bi bi-printer"></i> Print Menu QR
                                 </button>
                             </div>
 
                             <div class="qr-tip">
                                 <i class="bi bi-lightbulb"></i>
-                                <span>Print this QR code and place it on tables, counter, or packaging so customers can browse the menu and place orders from their phone.</span>
+                                <span>Use the menu QR for ordering and the feedback QR for reviews. Great for tables, counter cards, and takeaway packaging.</span>
                             </div>
                         </div>
                     </div>
@@ -1033,10 +1048,26 @@
 
     // ── QR Code Actions ──
     var menuUrl = document.getElementById('qrUrlText').textContent.trim();
+    var feedbackUrl = document.getElementById('qrFeedbackUrlText').textContent.trim();
 
     document.getElementById('copyLinkBtn').addEventListener('click', function () {
         var btn = this;
         navigator.clipboard.writeText(menuUrl).then(function () {
+            var original = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-check2"><\/i> Copied!';
+            btn.style.color = 'var(--admin-success)';
+            btn.style.borderColor = 'var(--admin-success)';
+            setTimeout(function () {
+                btn.innerHTML = original;
+                btn.style.color = '';
+                btn.style.borderColor = '';
+            }, 2000);
+        });
+    });
+
+    document.getElementById('copyFeedbackLinkBtn').addEventListener('click', function () {
+        var btn = this;
+        navigator.clipboard.writeText(feedbackUrl).then(function () {
             var original = btn.innerHTML;
             btn.innerHTML = '<i class="bi bi-check2"><\/i> Copied!';
             btn.style.color = 'var(--admin-success)';
