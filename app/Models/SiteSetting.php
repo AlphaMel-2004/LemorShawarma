@@ -85,7 +85,7 @@ class SiteSetting extends Model
     /**
      * Static metadata for each delivery app (not stored in DB).
      *
-     * @var array<string, array{deep_link: string, tag: string, color: string}>
+     * @var array<string, array{deep_link: string, tag: string, color: string, logo?: string}>
      */
     public const DELIVERY_APP_META = [
         'ubereats' => [
@@ -102,6 +102,7 @@ class SiteSetting extends Model
             'deep_link' => 'skipthedishes://',
             'tag' => 'Canada\'s largest food delivery network',
             'color' => '#FF5A00',
+            'logo' => '/images/delivery/skipthedishes.svg',
         ],
     ];
 
@@ -222,6 +223,7 @@ class SiteSetting extends Model
                 'fallback' => (string) self::getValue("delivery_{$key}_url", self::DELIVERY_DEFAULTS["delivery_{$key}_url"]),
                 'tag' => self::DELIVERY_APP_META[$key]['tag'],
                 'color' => self::DELIVERY_APP_META[$key]['color'],
+                'logo' => self::DELIVERY_APP_META[$key]['logo'] ?? null,
             ];
         }
 

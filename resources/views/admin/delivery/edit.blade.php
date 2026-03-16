@@ -343,7 +343,7 @@
                         @foreach($settings as $key => $app)
                             <div class="app-row">
                                 <div class="app-logo app-logo-{{ $key }}">
-                                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{{ $key }}.svg"
+                                    <img src="{{ $app['logo'] ?? 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/'.$key.'.svg' }}"
                                          alt="{{ $app['name'] }}"
                                          loading="lazy"
                                          onerror="this.style.display='none';this.nextElementSibling.style.display='block'">

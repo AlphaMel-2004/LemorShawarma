@@ -744,7 +744,7 @@
                 @if($app['enabled'])
                     <button class="delivery-app-row" data-app="{{ $appKey }}" onclick="openDeliveryApp('{{ $appKey }}')">
                         <div class="app-logo-box app-logo-{{ $appKey }}">
-                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{{ $appKey }}.svg"
+                            <img src="{{ $app['logo'] ?? 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/'.$appKey.'.svg' }}"
                                  alt="{{ $app['name'] }}"
                                  loading="lazy"
                                  onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
