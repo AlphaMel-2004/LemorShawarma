@@ -66,6 +66,46 @@ class SiteSetting extends Model
     ];
 
     /**
+     * The default delivery app settings.
+     *
+     * @var array<string, string>
+     */
+    public const DELIVERY_DEFAULTS = [
+        'delivery_ubereats_enabled' => '1',
+        'delivery_ubereats_name' => 'Uber Eats',
+        'delivery_ubereats_url' => 'https://www.ubereats.com',
+        'delivery_doordash_enabled' => '1',
+        'delivery_doordash_name' => 'DoorDash',
+        'delivery_doordash_url' => 'https://www.doordash.com',
+        'delivery_skipthedishes_enabled' => '1',
+        'delivery_skipthedishes_name' => 'SkipTheDishes',
+        'delivery_skipthedishes_url' => 'https://www.skipthedishes.com',
+    ];
+
+    /**
+     * Static metadata for each delivery app (not stored in DB).
+     *
+     * @var array<string, array{deep_link: string, tag: string, color: string}>
+     */
+    public const DELIVERY_APP_META = [
+        'ubereats' => [
+            'deep_link' => 'ubereats://',
+            'tag' => 'Fast delivery · Track in real time',
+            'color' => '#06C167',
+        ],
+        'doordash' => [
+            'deep_link' => 'doordash://',
+            'tag' => 'On-demand delivery · Wide selection',
+            'color' => '#FF3008',
+        ],
+        'skipthedishes' => [
+            'deep_link' => 'skipthedishes://',
+            'tag' => 'Canada\'s largest food delivery network',
+            'color' => '#FF5A00',
+        ],
+    ];
+
+    /**
      * Chatbot FAB icon options.
      *
      * @var array<string, array{icon: string, label: string}>
@@ -166,11 +206,34 @@ class SiteSetting extends Model
     }
 
     /**
+     * Get all delivery app settings merged with static metadata.
+     *
+     * @return array<string, array{enabled: bool, name: string, deep_link: string, fallback: string, tag: string, color: string}>
+     */
+    public static function getDeliverySettings(): array
+    {
+        $apps = [];
+
+        foreach (array_keys(self::DELIVERY_APP_META) as $key) {
+            $apps[$key] = [
+                'enabled' => self::getValue("delivery_{$key}_enabled", self::DELIVERY_DEFAULTS["delivery_{$key}_enabled"]) === '1',
+                'name' => (string) self::getValue("delivery_{$key}_name", self::DELIVERY_DEFAULTS["delivery_{$key}_name"]),
+                'deep_link' => self::DELIVERY_APP_META[$key]['deep_link'],
+                'fallback' => (string) self::getValue("delivery_{$key}_url", self::DELIVERY_DEFAULTS["delivery_{$key}_url"]),
+                'tag' => self::DELIVERY_APP_META[$key]['tag'],
+                'color' => self::DELIVERY_APP_META[$key]['color'],
+            ];
+        }
+
+        return $apps;
+    }
+
+    /**
      * Clear all site setting caches.
      */
     public static function clearCache(): void
     {
-        foreach (array_keys(self::CONTACT_DEFAULTS + self::CHATBOT_DEFAULTS + self::LEGAL_DEFAULTS) as $key) {
+        foreach (array_keys(self::CONTACT_DEFAULTS + self::CHATBOT_DEFAULTS + self::LEGAL_DEFAULTS + self::DELIVERY_DEFAULTS) as $key) {
             Cache::forget("site_setting.{$key}");
         }
     }

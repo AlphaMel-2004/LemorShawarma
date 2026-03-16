@@ -559,10 +559,10 @@
             background: rgba(255,48,8,0.07);
             box-shadow: 0 6px 24px rgba(255,48,8,0.16);
         }
-        .delivery-app-row[data-app="grubhub"]:hover {
-            border-color: rgba(246,52,64,0.4);
-            background: rgba(246,52,64,0.07);
-            box-shadow: 0 6px 24px rgba(246,52,64,0.16);
+        .delivery-app-row[data-app="skipthedishes"]:hover {
+            border-color: rgba(255,90,0,0.4);
+            background: rgba(255,90,0,0.07);
+            box-shadow: 0 6px 24px rgba(255,90,0,0.16);
         }
         /* Touch ripple */
         .delivery-app-row .ripple-dot {
@@ -590,19 +590,23 @@
             transition: transform 0.22s, box-shadow 0.22s;
         }
 
-        .app-logo-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-            filter: brightness(0) invert(1);
+        .app-logo-box img { width: 100%; height: 100%; object-fit: contain; display: block; filter: brightness(0) invert(1); }
+        .app-logo-box .app-logo-initials {
+            display: none;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+            text-align: center;
+            line-height: 1.1;
+            text-transform: uppercase;
         }
 
         .delivery-app-row:hover .app-logo-box { transform: scale(1.08); }
 
         .app-logo-ubereats  { background: #06C167; box-shadow: 0 6px 18px rgba(6,193,103,0.5); }
         .app-logo-doordash  { background: #FF3008; box-shadow: 0 6px 18px rgba(255,48,8,0.5); }
-        .app-logo-grubhub   { background: #F63440; box-shadow: 0 6px 18px rgba(246,52,64,0.5); }
+        .app-logo-skipthedishes { background: #FF5A00; box-shadow: 0 6px 18px rgba(255,90,0,0.5); }
 
         .app-text-col { flex: 1; min-width: 0; }
 
@@ -736,36 +740,24 @@
             </button>
         </div>
         <div class="delivery-app-list">
-            <button class="delivery-app-row" data-app="ubereats" onclick="openDeliveryApp('ubereats')">
-                <div class="app-logo-box app-logo-ubereats">
-                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/ubereats.svg" alt="Uber Eats" loading="lazy" onerror="this.style.display='none'">
-                </div>
-                <div class="app-text-col">
-                    <p class="app-row-name">Uber Eats</p>
-                    <p class="app-row-tag">Fast delivery &middot; Track in real time</p>
-                </div>
-                <i class="bi bi-chevron-right app-row-chevron"></i>
-            </button>
-            <button class="delivery-app-row" data-app="doordash" onclick="openDeliveryApp('doordash')">
-                <div class="app-logo-box app-logo-doordash">
-                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/doordash.svg" alt="DoorDash" loading="lazy" onerror="this.style.display='none'">
-                </div>
-                <div class="app-text-col">
-                    <p class="app-row-name">DoorDash</p>
-                    <p class="app-row-tag">On-demand delivery &middot; Wide selection</p>
-                </div>
-                <i class="bi bi-chevron-right app-row-chevron"></i>
-            </button>
-            <button class="delivery-app-row" data-app="grubhub" onclick="openDeliveryApp('grubhub')">
-                <div class="app-logo-box app-logo-grubhub">
-                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/grubhub.svg" alt="Grubhub" loading="lazy" onerror="this.style.display='none'">
-                </div>
-                <div class="app-text-col">
-                    <p class="app-row-name">Grubhub</p>
-                    <p class="app-row-tag">Thousands of restaurants nearby</p>
-                </div>
-                <i class="bi bi-chevron-right app-row-chevron"></i>
-            </button>
+            @foreach($deliveryApps as $appKey => $app)
+                @if($app['enabled'])
+                    <button class="delivery-app-row" data-app="{{ $appKey }}" onclick="openDeliveryApp('{{ $appKey }}')">
+                        <div class="app-logo-box app-logo-{{ $appKey }}">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{{ $appKey }}.svg"
+                                 alt="{{ $app['name'] }}"
+                                 loading="lazy"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <span class="app-logo-initials">{{ implode('', array_map(fn($w) => $w[0], array_slice(explode(' ', $app['name']), 0, 2))) }}</span>
+                        </div>
+                        <div class="app-text-col">
+                            <p class="app-row-name">{{ $app['name'] }}</p>
+                            <p class="app-row-tag">{{ $app['tag'] }}</p>
+                        </div>
+                        <i class="bi bi-chevron-right app-row-chevron"></i>
+                    </button>
+                @endif
+            @endforeach
         </div>
     </div>
 
@@ -803,11 +795,11 @@
         });
 
         // ── Delivery App Sheet ──
-        const deliveryApps = {
-            ubereats:  { deepLink: 'ubereats://',  fallback: 'https://www.ubereats.com' },
-            doordash:  { deepLink: 'doordash://',  fallback: 'https://www.doordash.com' },
-            grubhub:   { deepLink: 'grubhub://',   fallback: 'https://www.grubhub.com' },
-        };
+        const deliveryApps = @json(
+            collect($deliveryApps)
+                ->mapWithKeys(fn ($app, $key) => [$key => ['deepLink' => $app['deep_link'], 'fallback' => $app['fallback']]])
+                ->all()
+        );
 
         function openDeliverySheet() {
             document.getElementById('deliveryOverlay').classList.add('show');

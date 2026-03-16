@@ -3,11 +3,6 @@
 @section('title', 'Manage Contacts')
 @section('page-title', 'Manage Contacts')
 
-@php
-    $mobileMenuUrl = route('mobile.menu');
-    $mobileFeedbackUrl = route('mobile.feedback.page');
-@endphp
-
 @push('styles')
 <style>
     /* ── Cards ── */
@@ -143,96 +138,6 @@
         font-size: 0.85rem;
         color: var(--admin-text);
         font-weight: 500;
-    }
-
-    /* ── QR Code ── */
-    .qr-wrapper {
-        text-align: center;
-    }
-
-    .qr-canvas-box {
-        background: #ffffff;
-        border-radius: 14px;
-        padding: 1.25rem;
-        display: inline-block;
-        margin-bottom: 1rem;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    }
-
-    .qr-canvas-box canvas {
-        display: block;
-    }
-
-    .qr-url-text {
-        font-size: 0.78rem;
-        color: var(--admin-text-muted);
-        word-break: break-all;
-        margin-bottom: 1rem;
-        background: var(--admin-bg);
-        border: 1px solid var(--admin-border);
-        border-radius: 8px;
-        padding: 0.5rem 0.85rem;
-        display: inline-block;
-    }
-
-    .qr-url-text i { color: var(--admin-primary); margin-right: 0.35rem; }
-
-    .qr-actions {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .btn-qr {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        border: 1px solid var(--admin-border);
-        background: var(--admin-card);
-        color: var(--admin-text);
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .btn-qr:hover {
-        border-color: var(--admin-primary);
-        color: var(--admin-primary);
-        background: rgba(57, 106, 255, 0.05);
-    }
-
-    .btn-qr-primary {
-        background: var(--admin-primary);
-        color: #0d0d0d;
-        border-color: var(--admin-primary);
-    }
-
-    .btn-qr-primary:hover {
-        background: var(--admin-primary-hover);
-        color: #0d0d0d;
-    }
-
-    .qr-tip {
-        font-size: 0.72rem;
-        color: var(--admin-text-muted);
-        margin-top: 1rem;
-        display: flex;
-        align-items: flex-start;
-        gap: 0.4rem;
-        text-align: left;
-        background: rgba(57, 106, 255, 0.04);
-        border-radius: 8px;
-        padding: 0.65rem 0.85rem;
-    }
-
-    .qr-tip i {
-        color: var(--admin-primary);
-        margin-top: 2px;
-        flex-shrink: 0;
     }
 
     /* ── Buttons ── */
@@ -633,67 +538,6 @@
                     </div>
                 </div>
 
-                {{-- QR Code Generator --}}
-                <div class="settings-card">
-                    <div class="card-header-bar">
-                        <div class="card-header-icon card-header-icon-violet">
-                            <i class="bi bi-qr-code"></i>
-                        </div>
-                        <div>
-                            <p class="card-header-title">Menu QR Code</p>
-                            <p class="card-header-sub">Use separate links: menu for ordering, feedback for reviews.</p>
-                        </div>
-                    </div>
-                    <div class="card-body-inner">
-                        <div class="qr-wrapper">
-                            <div class="qr-canvas-box">
-                                <img
-                                    id="qrImage"
-                                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($mobileMenuUrl) }}"
-                                    alt="Menu QR Code"
-                                    width="200"
-                                    height="200"
-                                    style="display:block;"
-                                >
-                            </div>
-
-                            <div>
-                                <div class="qr-url-text">
-                                    <i class="bi bi-link-45deg"></i>
-                                    <span id="qrUrlText">{{ $mobileMenuUrl }}</span>
-                                </div>
-                                <div class="qr-url-text" style="margin-top: -0.35rem;">
-                                    <i class="bi bi-chat-heart"></i>
-                                    <span id="qrFeedbackUrlText">{{ $mobileFeedbackUrl }}</span>
-                                </div>
-                            </div>
-
-                            <div class="qr-actions">
-                                <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data={{ urlencode($mobileMenuUrl) }}" download="pita-queen-menu-qr.png" class="btn-qr btn-qr-primary">
-                                    <i class="bi bi-download"></i> Download Menu QR
-                                </a>
-                                <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data={{ urlencode($mobileFeedbackUrl) }}" download="pita-queen-feedback-qr.png" class="btn-qr">
-                                    <i class="bi bi-download"></i> Download Feedback QR
-                                </a>
-                                <button type="button" class="btn-qr" id="copyLinkBtn">
-                                    <i class="bi bi-clipboard"></i> Copy Menu Link
-                                </button>
-                                <button type="button" class="btn-qr" id="copyFeedbackLinkBtn">
-                                    <i class="bi bi-clipboard-heart"></i> Copy Feedback Link
-                                </button>
-                                <button type="button" class="btn-qr" id="printQrBtn">
-                                    <i class="bi bi-printer"></i> Print Menu QR
-                                </button>
-                            </div>
-
-                            <div class="qr-tip">
-                                <i class="bi bi-lightbulb"></i>
-                                <span>Use the menu QR for ordering and the feedback QR for reviews. Great for tables, counter cards, and takeaway packaging.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -702,7 +546,6 @@
 @push('scripts')
 <script>
     // ── Live Preview Bindings ──
-    var bindings = {
         'contact_address_line1': 'previewAddress1',
         'contact_address_line2': 'previewAddress2',
         'contact_phone': 'previewPhone',
@@ -1045,56 +888,5 @@
 
         applyHoursValue(contactHoursInput.value);
     }
-
-    // ── QR Code Actions ──
-    var menuUrl = document.getElementById('qrUrlText').textContent.trim();
-    var feedbackUrl = document.getElementById('qrFeedbackUrlText').textContent.trim();
-
-    document.getElementById('copyLinkBtn').addEventListener('click', function () {
-        var btn = this;
-        navigator.clipboard.writeText(menuUrl).then(function () {
-            var original = btn.innerHTML;
-            btn.innerHTML = '<i class="bi bi-check2"><\/i> Copied!';
-            btn.style.color = 'var(--admin-success)';
-            btn.style.borderColor = 'var(--admin-success)';
-            setTimeout(function () {
-                btn.innerHTML = original;
-                btn.style.color = '';
-                btn.style.borderColor = '';
-            }, 2000);
-        });
-    });
-
-    document.getElementById('copyFeedbackLinkBtn').addEventListener('click', function () {
-        var btn = this;
-        navigator.clipboard.writeText(feedbackUrl).then(function () {
-            var original = btn.innerHTML;
-            btn.innerHTML = '<i class="bi bi-check2"><\/i> Copied!';
-            btn.style.color = 'var(--admin-success)';
-            btn.style.borderColor = 'var(--admin-success)';
-            setTimeout(function () {
-                btn.innerHTML = original;
-                btn.style.color = '';
-                btn.style.borderColor = '';
-            }, 2000);
-        });
-    });
-
-    document.getElementById('printQrBtn').addEventListener('click', function () {
-        var imgSrc = document.getElementById('qrImage').src;
-        var printWindow = window.open('', '_blank');
-        var html = [];
-        html.push('<html>');
-        html.push('<head><title>Pita Queen - Menu QR Code<\/title><\/head>');
-        html.push('<body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;font-family:Arial,sans-serif;">');
-        html.push('<h2 style="margin-bottom:0.5rem;">Pita Queen<\/h2>');
-        html.push('<p style="color:#888;margin-bottom:1.5rem;">Scan to view our menu<\/p>');
-        html.push('<img src="' + imgSrc + '" style="width:280px;height:280px;">');
-        html.push('<p style="margin-top:1rem;color:#aaa;font-size:0.85rem;">' + menuUrl + '<\/p>');
-        html.push('<\/body><\/html>');
-        printWindow.document.write(html.join(''));
-        printWindow.document.close();
-        printWindow.onload = function () { printWindow.print(); printWindow.close(); };
-    });
 </script>
 @endpush

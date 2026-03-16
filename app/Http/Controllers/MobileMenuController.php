@@ -24,8 +24,9 @@ class MobileMenuController extends Controller
             ->orderBy('category')
             ->pluck('category')
             ->values();
+        $deliveryApps = SiteSetting::getDeliverySettings();
 
-        return view('mobile.menu', compact('menuItems', 'menuCategories'));
+        return view('mobile.menu', compact('menuItems', 'menuCategories', 'deliveryApps'));
     }
 
     /**
