@@ -107,7 +107,7 @@
         display: flex;
         align-items: flex-start;
         gap: 0.75rem;
-        padding: 0.65rem 0;
+        padding: 0.75rem 0;
         border-bottom: 1px solid var(--admin-border);
     }
 
@@ -139,6 +139,74 @@
         color: var(--admin-text);
         font-weight: 500;
     }
+
+    .preview-copy {
+        margin-left: auto;
+        flex-shrink: 0;
+        background: none;
+        border: 1px solid var(--admin-border);
+        border-radius: 6px;
+        color: var(--admin-text-muted);
+        font-size: 0.72rem;
+        padding: 0.2rem 0.5rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        align-self: center;
+    }
+
+    .preview-copy:hover {
+        color: var(--admin-primary);
+        border-color: var(--admin-primary);
+    }
+
+    .preview-copy.copied {
+        color: var(--admin-success);
+        border-color: var(--admin-success);
+    }
+
+    /* ── Quick Links card ── */
+    .quick-link-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid var(--admin-border);
+        text-decoration: none;
+    }
+
+    .quick-link-row:last-child { border-bottom: none; }
+
+    .quick-link-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.88rem;
+        flex-shrink: 0;
+    }
+
+    .quick-link-icon-gold   { background: rgba(212,175,55,0.14); color: var(--admin-primary); }
+    .quick-link-icon-blue   { background: rgba(57,106,255,0.12); color: #396aff; }
+
+    .quick-link-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--admin-text);
+        margin: 0;
+    }
+
+    .quick-link-sub {
+        font-size: 0.72rem;
+        color: var(--admin-text-muted);
+        margin: 0;
+    }
+
+    .quick-link-row:hover .quick-link-title { color: var(--admin-primary); }
 
     /* ── Buttons ── */
     .btn-save {
@@ -491,6 +559,41 @@
         <div class="col-lg-5">
             <div class="sidebar-sticky d-flex flex-column gap-4">
 
+                {{-- Quick Links --}}
+                <div class="settings-card">
+                    <div class="card-header-bar">
+                        <div class="card-header-icon card-header-icon-violet">
+                            <i class="bi bi-lightning-fill"></i>
+                        </div>
+                        <div>
+                            <p class="card-header-title">Quick Links</p>
+                            <p class="card-header-sub">Jump to related settings</p>
+                        </div>
+                    </div>
+                    <div class="card-body-inner py-2">
+                        <a href="{{ route('admin.delivery.edit') }}" class="quick-link-row">
+                            <div class="quick-link-icon quick-link-icon-gold">
+                                <i class="bi bi-qr-code"></i>
+                            </div>
+                            <div>
+                                <p class="quick-link-title">QR Codes &amp; Delivery Apps</p>
+                                <p class="quick-link-sub">Manage order links and download QR codes</p>
+                            </div>
+                            <i class="bi bi-chevron-right ms-auto" style="color:var(--admin-text-muted);font-size:0.75rem;"></i>
+                        </a>
+                        <a href="{{ route('admin.chatbot.edit') }}" class="quick-link-row">
+                            <div class="quick-link-icon quick-link-icon-blue">
+                                <i class="bi bi-chat-dots-fill"></i>
+                            </div>
+                            <div>
+                                <p class="quick-link-title">Chat Assistant</p>
+                                <p class="quick-link-sub">Update the chatbot's name and knowledge</p>
+                            </div>
+                            <i class="bi bi-chevron-right ms-auto" style="color:var(--admin-text-muted);font-size:0.75rem;"></i>
+                        </a>
+                    </div>
+                </div>
+
                 {{-- Live Preview --}}
                 <div class="settings-card">
                     <div class="card-header-bar">
@@ -518,6 +621,9 @@
                                 <div class="preview-label">Phone</div>
                                 <div class="preview-value" id="previewPhone">{{ $settings['contact_phone'] }}</div>
                             </div>
+                            <button type="button" class="preview-copy" data-copy-source="previewPhone" title="Copy phone">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
                         </div>
 
                         <div class="preview-item">
@@ -526,6 +632,9 @@
                                 <div class="preview-label">Email</div>
                                 <div class="preview-value" id="previewEmail">{{ $settings['contact_email'] }}</div>
                             </div>
+                            <button type="button" class="preview-copy" data-copy-source="previewEmail" title="Copy email">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
                         </div>
 
                         <div class="preview-item">
@@ -546,6 +655,7 @@
 @push('scripts')
 <script>
     // ── Live Preview Bindings ──
+    var bindings = {
         'contact_address_line1': 'previewAddress1',
         'contact_address_line2': 'previewAddress2',
         'contact_phone': 'previewPhone',
@@ -888,5 +998,22 @@
 
         applyHoursValue(contactHoursInput.value);
     }
+
+    // ── Copy buttons on preview items ──
+    document.querySelectorAll('.preview-copy').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var sourceId = btn.getAttribute('data-copy-source');
+            var el = document.getElementById(sourceId);
+            if (!el) { return; }
+            navigator.clipboard.writeText(el.textContent.trim()).then(function () {
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="bi bi-check2"></i>';
+                setTimeout(function () {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<i class="bi bi-clipboard"></i>';
+                }, 2000);
+            });
+        });
+    });
 </script>
 @endpush

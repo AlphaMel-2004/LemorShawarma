@@ -328,16 +328,10 @@
                         </div>
                         <div>
                             <p class="card-header-title">Delivery Apps</p>
-                            <p class="card-header-sub">Toggle each app on or off and edit its display name and web link.</p>
+                            <p class="card-header-sub">Paste your <strong style="color:var(--admin-text)">restaurant listing URL</strong> from each platform. Customers tap the button and land directly on your store page in the app.</p>
                         </div>
                     </div>
                     <div class="card-body-inner">
-
-                        @if(session('success'))
-                            <div class="alert alert-success py-2 px-3 mb-3" style="font-size:0.82rem;">
-                                <i class="bi bi-check-circle-fill me-1"></i> {{ session('success') }}
-                            </div>
-                        @endif
 
                         @if($errors->any())
                             <div class="alert alert-danger py-2 px-3 mb-3" style="font-size:0.82rem;">
@@ -371,11 +365,11 @@
                                                    maxlength="60">
                                         </div>
                                         <div class="field-pair">
-                                            <div class="field-label">Web fallback URL</div>
+                                            <div class="field-label">Restaurant page URL</div>
                                             <input type="url"
                                                    name="delivery_{{ $key }}_url"
                                                    value="{{ old('delivery_'.$key.'_url', $app['fallback']) }}"
-                                                   placeholder="https://…">
+                                                   placeholder="https://www.ubereats.com/store/your-restaurant/…">
                                         </div>
                                     </div>
                                 </div>
@@ -397,6 +391,12 @@
                             <button type="submit" class="btn-save">
                                 <i class="bi bi-floppy-fill me-1"></i> Save Changes
                             </button>
+                        </div>
+
+                        <div class="mt-3 p-3 rounded-3" style="background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.18);font-size:0.78rem;color:var(--admin-text-muted);">
+                            <i class="bi bi-lightbulb-fill me-1" style="color:var(--admin-primary);"></i>
+                            <strong style="color:var(--admin-text);">How to find your restaurant URL:</strong>
+                            open each delivery app, go to your restaurant's page, tap <em>Share</em> and copy the link. On mobile browsers, tapping that link will open the app directly to your store.
                         </div>
                     </div>
                 </div>
@@ -456,9 +456,6 @@
                             <button type="button" class="btn-qr" id="copyFeedbackLinkBtn">
                                 <i class="bi bi-clipboard-heart"></i> Copy Feedback Link
                             </button>
-                            <button type="button" class="btn-qr" id="printQrBtn">
-                                <i class="bi bi-printer"></i> Print Menu QR
-                            </button>
                         </div>
 
                         <div class="qr-tip">
@@ -501,21 +498,5 @@
         });
     });
 
-    document.getElementById('printQrBtn').addEventListener('click', function () {
-        var imgSrc = document.getElementById('qrImage').src;
-        var printWindow = window.open('', '_blank');
-        var html = [
-            '<html><head><title>Pita Queen - Menu QR Code</title></head>',
-            '<body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;font-family:Arial,sans-serif;">',
-            '<h2 style="margin-bottom:0.5rem;">Pita Queen</h2>',
-            '<p style="color:#888;margin-bottom:1.5rem;">Scan to view our menu</p>',
-            '<img src="' + imgSrc + '" style="width:280px;height:280px;">',
-            '<p style="margin-top:1rem;color:#aaa;font-size:0.85rem;">' + menuUrl + '</p>',
-            '</body></html>',
-        ];
-        printWindow.document.write(html.join(''));
-        printWindow.document.close();
-        printWindow.onload = function () { printWindow.print(); printWindow.close(); };
-    });
 </script>
 @endpush

@@ -828,27 +828,10 @@
             const app = deliveryApps[key];
             if (!app) { return; }
             closeDeliverySheet();
-
-            // Use a hidden iframe so the deep-link attempt does not navigate
-            // the page or show a browser-level "no handler" error.
-            const iframe = document.createElement('iframe');
-            iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;';
-            iframe.src = app.deepLink;
-            document.body.appendChild(iframe);
-
-            // If the native app opens, the page will become hidden.
-            // If it stays visible after the grace period, fall back to the web URL.
-            let opened = false;
-            const onHide = () => { opened = true; };
-            document.addEventListener('visibilitychange', onHide, { once: true });
-
-            setTimeout(() => {
-                document.removeEventListener('visibilitychange', onHide);
-                document.body.removeChild(iframe);
-                if (!opened) {
-                    window.open(app.fallback, '_blank');
-                }
-            }, 1400);
+            // Universal/App Links: the restaurant URL opens directly in the
+            // delivery app (if installed) on both iOS and Android — no deep
+            // link scheme needed. Falls back to browser if app isn't installed.
+            setTimeout(() => window.open(app.fallback, '_blank'), 300);
         }
 
         document.querySelectorAll('.btn-add-order').forEach(btn => {
