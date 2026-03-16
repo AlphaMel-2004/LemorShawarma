@@ -333,49 +333,35 @@
         }
 
         .btn-add-order {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            background: var(--gold);
-            color: var(--bg-dark);
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
+            gap: 0.25rem;
+            border-radius: 999px;
+            border: 1.5px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.62rem;
             font-weight: 700;
-            transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+            letter-spacing: 0.04em;
+            padding: 0.25rem 0.6rem;
             cursor: pointer;
             flex-shrink: 0;
             position: relative;
-            box-shadow: 0 4px 14px rgba(212,175,55,0.45);
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+            white-space: nowrap;
         }
 
-        /* Pulse ring */
-        .btn-add-order::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 2px solid rgba(212,175,55,0.45);
-            animation: orderPulse 2.2s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes orderPulse {
-            0%, 100% { transform: scale(1);   opacity: 0.6; }
-            50%       { transform: scale(1.22); opacity: 0; }
-        }
+        .btn-add-order i { font-size: 0.72rem; }
 
         .btn-add-order:hover {
-            background: var(--gold-light);
-            box-shadow: 0 6px 20px rgba(212,175,55,0.6);
-            transform: scale(1.1);
+            background: var(--gold);
+            color: var(--bg-dark);
+            box-shadow: 0 4px 14px rgba(212,175,55,0.4);
         }
 
         .btn-add-order:active {
-            transform: scale(0.93);
-            box-shadow: 0 2px 8px rgba(212,175,55,0.3);
+            transform: scale(0.95);
         }
 
         .empty-state {
@@ -707,7 +693,7 @@
                         <div class="mi-foot">
                             <span class="mi-price">₱{{ number_format($item->price, 2) }}</span>
                             <button class="btn-add-order" data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-price="{{ $item->price }}" aria-label="Order {{ $item->name }}">
-                                <i class="bi bi-bag-fill"></i>
+                                <i class="bi bi-cart-fill"></i> BUY
                             </button>
                         </div>
                     </div>
