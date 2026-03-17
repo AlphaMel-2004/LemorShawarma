@@ -420,7 +420,7 @@
                         </div>
                         <div>
                             <p class="card-header-title">Delivery Apps</p>
-                            <p class="card-header-sub">Paste your <strong style="color:var(--admin-text)">restaurant listing URL</strong> from each platform. Customers tap the button and land directly on your store page in the app.</p>
+                            <p class="card-header-sub">Paste your <strong style="color:var(--admin-text)">restaurant listing URL</strong> from each platform. When an app is turned off, customers will still see it marked as unavailable.</p>
                         </div>
                     </div>
                     <div class="card-body-inner">
@@ -445,7 +445,7 @@
                                 <div class="app-meta">
                                     <div class="app-name">{{ $app['name'] }}</div>
                                     <div class="app-disabled-badge">
-                                        <i class="bi bi-lock-fill"></i> Not shown to customers
+                                        <i class="bi bi-slash-circle-fill"></i> Shown as unavailable to customers
                                     </div>
                                     <div class="app-fields">
                                         <div class="field-pair">

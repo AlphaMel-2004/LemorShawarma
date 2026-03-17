@@ -86,5 +86,7 @@ class LocationControllerTest extends TestCase
         $response->assertOk();
         $response->assertSee('Display Branch');
         $response->assertSee('data-hours="Tue-Sun: 09AM - 06PM"', false);
+        $response->assertSee('data-time-picker-trigger="locationHoursOpen-add-location"', false);
+        $response->assertSee('data-time-picker-trigger="locationHoursClose-add-location"', false);
     }
 }

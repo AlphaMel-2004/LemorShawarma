@@ -117,6 +117,12 @@
             trim((string) ($contactSettings['contact_address_line1'] ?? '')),
             trim((string) ($contactSettings['contact_address_line2'] ?? '')),
         ])->filter()->implode(', '));
+        $heroSchedulePayload = [
+            'selectedDays' => $selectedDays,
+            'openMinutes' => $openMinutes,
+            'closeMinutes' => $closeMinutes,
+            'timezone' => config('app.timezone'),
+        ];
     @endphp
 
     <!-- Background Elements -->
@@ -157,17 +163,17 @@
                         and time-honored recipes. Every bite is a journey to culinary excellence.
                     </p>
 
-                    <div class="hero-live-badge" aria-live="polite" aria-atomic="true">
+                    <div class="hero-live-badge" id="heroLiveBadge" data-hero-schedule='@json($heroSchedulePayload)' aria-live="polite" aria-atomic="true">
                         <div class="hero-live-address-row">
                             <span class="hero-live-address-icon" aria-hidden="true"><i class="bi bi-geo-alt-fill"></i></span>
                             <span class="hero-live-address-text">{{ $addressText !== '' ? $addressText : 'Visit our nearest branch today.' }}</span>
                         </div>
                         <div class="hero-live-top-row">
-                            <span class="hero-open-pill {{ $isOpenNow ? 'is-open' : 'is-closed' }}">
+                            <span class="hero-open-pill {{ $isOpenNow ? 'is-open' : 'is-closed' }}" id="heroOpenPill">
                                 <i class="bi bi-circle-fill" aria-hidden="true"></i>
-                                {{ $isOpenNow ? 'Open now' : 'Closed now' }}
+                                <span id="heroOpenStatusText">{{ $isOpenNow ? 'Open now' : 'Closed now' }}</span>
                             </span>
-                            <span class="hero-live-closing">{{ $nextTimeLabel }}</span>
+                            <span class="hero-live-closing" id="heroNextTimeLabel">{{ $nextTimeLabel }}</span>
                         </div>
                     </div>
                     
@@ -261,3 +267,101 @@
         </a>
     </div>
 </section>
+
+@once
+    @push('scripts')
+        <script>
+            (function () {
+                var heroLiveBadge = document.getElementById('heroLiveBadge');
+                var heroOpenPill = document.getElementById('heroOpenPill');
+                var heroOpenStatusText = document.getElementById('heroOpenStatusText');
+                var heroNextTimeLabel = document.getElementById('heroNextTimeLabel');
+
+                if (! heroLiveBadge || ! heroOpenPill || ! heroOpenStatusText || ! heroNextTimeLabel) {
+                    return;
+                }
+
+                var schedule = JSON.parse(heroLiveBadge.dataset.heroSchedule || '{}');
+                var selectedDays = Array.isArray(schedule.selectedDays) ? schedule.selectedDays : [];
+                var openMinutes = Number.isInteger(schedule.openMinutes) ? schedule.openMinutes : Number.parseInt(schedule.openMinutes, 10);
+                var closeMinutes = Number.isInteger(schedule.closeMinutes) ? schedule.closeMinutes : Number.parseInt(schedule.closeMinutes, 10);
+                var storeTimeZone = typeof schedule.timezone === 'string' ? schedule.timezone : 'UTC';
+
+                if (selectedDays.length === 0 || Number.isNaN(openMinutes) || Number.isNaN(closeMinutes)) {
+                    return;
+                }
+
+                function formatMinutesToDisplay(minutes) {
+                    if (! Number.isInteger(minutes)) {
+                        return 'soon';
+                    }
+
+                    var hour24 = Math.floor(minutes / 60);
+                    var minute = minutes % 60;
+                    var period = hour24 >= 12 ? 'PM' : 'AM';
+                    var hour12 = hour24 % 12;
+
+                    if (hour12 === 0) {
+                        hour12 = 12;
+                    }
+
+                    return hour12 + ':' + String(minute).padStart(2, '0') + ' ' + period;
+                }
+
+                function getCurrentStoreTimeParts() {
+                    if (! storeTimeZone || storeTimeZone === 'UTC') {
+                        var browserNow = new Date();
+                        var browserDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+                        return {
+                            dayShort: browserDays[browserNow.getDay()],
+                            minutes: (browserNow.getHours() * 60) + browserNow.getMinutes(),
+                        };
+                    }
+
+                    var formatter = new Intl.DateTimeFormat('en-US', {
+                        timeZone: storeTimeZone,
+                        weekday: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                    });
+
+                    var parts = formatter.formatToParts(new Date());
+                    var partLookup = parts.reduce(function (carry, part) {
+                        carry[part.type] = part.value;
+
+                        return carry;
+                    }, {});
+
+                    return {
+                        dayShort: partLookup.weekday || '',
+                        minutes: (Number.parseInt(partLookup.hour || '0', 10) * 60) + Number.parseInt(partLookup.minute || '0', 10),
+                    };
+                }
+
+                function updateHeroOpenStatus() {
+                    var currentStoreTime = getCurrentStoreTimeParts();
+                    var isTodaySelected = selectedDays.indexOf(currentStoreTime.dayShort) !== -1;
+                    var isOpenNow = false;
+
+                    if (isTodaySelected) {
+                        if (openMinutes <= closeMinutes) {
+                            isOpenNow = currentStoreTime.minutes >= openMinutes && currentStoreTime.minutes <= closeMinutes;
+                        } else {
+                            isOpenNow = currentStoreTime.minutes >= openMinutes || currentStoreTime.minutes <= closeMinutes;
+                        }
+                    }
+
+                    heroOpenPill.classList.toggle('is-open', isOpenNow);
+                    heroOpenPill.classList.toggle('is-closed', ! isOpenNow);
+                    heroOpenStatusText.textContent = isOpenNow ? 'Open now' : 'Closed now';
+                    heroNextTimeLabel.textContent = (isOpenNow ? 'Closes ' : 'Opens ') + formatMinutesToDisplay(isOpenNow ? closeMinutes : openMinutes);
+                }
+
+                updateHeroOpenStatus();
+                window.setInterval(updateHeroOpenStatus, 60000);
+            })();
+        </script>
+    @endpush
+@endonce

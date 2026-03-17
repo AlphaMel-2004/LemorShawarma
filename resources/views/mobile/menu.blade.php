@@ -534,6 +534,32 @@
         .delivery-app-row:hover  { transform: translateY(-2px); }
         .delivery-app-row:active { transform: scale(0.97) !important; }
 
+        .delivery-app-row.is-unavailable {
+            cursor: not-allowed;
+            background: linear-gradient(180deg, rgba(212,175,55,0.08), rgba(255,255,255,0.02));
+            border-color: rgba(212,175,55,0.18);
+            box-shadow: inset 0 0 0 1px rgba(212,175,55,0.05);
+        }
+
+        .delivery-app-row.is-unavailable:hover,
+        .delivery-app-row.is-unavailable:active {
+            transform: none !important;
+            box-shadow: none;
+        }
+
+        .delivery-app-row.is-unavailable .app-logo-box {
+            filter: grayscale(0.18) saturate(0.88);
+            opacity: 0.92;
+        }
+
+        .delivery-app-row.is-unavailable .app-row-name {
+            color: #f5ecd2;
+        }
+
+        .delivery-app-row.is-unavailable .app-row-tag {
+            color: rgba(255, 232, 186, 0.72);
+        }
+
         /* Per-brand colour glow on hover */
         .delivery-app-row[data-app="ubereats"]:hover {
             border-color: rgba(6,193,103,0.4);
@@ -628,6 +654,29 @@
             background: rgba(212,175,55,0.14);
             color: var(--gold);
             transform: translateX(3px);
+        }
+
+        .app-row-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.32rem;
+            padding: 0.38rem 0.62rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+            font-size: 0.64rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .app-row-status.is-unavailable {
+            border-color: rgba(212,175,55,0.22);
+            background: rgba(212,175,55,0.12);
+            color: #f4d989;
         }
 
         /* No results */
@@ -727,25 +776,56 @@
         </div>
         <div class="delivery-app-list">
             @foreach($deliveryApps as $appKey => $app)
-                @if($app['enabled'])
-                    <button class="delivery-app-row" data-app="{{ $appKey }}" onclick="openDeliveryApp('{{ $appKey }}')">
-                        <div class="app-logo-box app-logo-{{ $appKey }}">
-                            <img src="{{ $app['logo'] ?? 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/'.$appKey.'.svg' }}"
-                                 alt="{{ $app['name'] }}"
-                                 loading="lazy"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                            <span class="app-logo-initials">{{ implode('', array_map(fn($w) => $w[0], array_slice(explode(' ', $app['name']), 0, 2))) }}</span>
-                        </div>
-                        <div class="app-text-col">
-                            <p class="app-row-name">{{ $app['name'] }}</p>
-                            <p class="app-row-tag">{{ $app['tag'] }}</p>
-                        </div>
+                <button
+                    type="button"
+                    class="delivery-app-row {{ $app['enabled'] ? '' : 'is-unavailable' }}"
+                    data-app="{{ $appKey }}"
+                    @if($app['enabled'])
+                        onclick="openDeliveryApp('{{ $appKey }}')"
+                    @else
+                        disabled
+                        aria-disabled="true"
+                    @endif
+                >
+                    <div class="app-logo-box app-logo-{{ $appKey }}">
+                        <img src="{{ $app['logo'] ?? 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/'.$appKey.'.svg' }}"
+                             alt="{{ $app['name'] }}"
+                             loading="lazy"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                        <span class="app-logo-initials">{{ implode('', array_map(fn($w) => $w[0], array_slice(explode(' ', $app['name']), 0, 2))) }}</span>
+                    </div>
+                    <div class="app-text-col">
+                        <p class="app-row-name">{{ $app['name'] }}</p>
+                        <p class="app-row-tag">
+                            {{ $app['enabled'] ? $app['tag'] : 'Temporarily unavailable. Try another app.' }}
+                        </p>
+                    </div>
+                    @if($app['enabled'])
                         <i class="bi bi-chevron-right app-row-chevron"></i>
-                    </button>
-                @endif
+                    @else
+                        <span class="app-row-status is-unavailable">
+                            <i class="bi bi-clock-history"></i>
+                            Back Soon
+                        </span>
+                    @endif
+                </button>
             @endforeach
         </div>
     </div>
+
+    @php
+        $deliveryAppLinks = collect($deliveryApps)
+            ->mapWithKeys(function (array $app, string $key): array {
+                return [
+                    $key => [
+                        'enabled' => $app['enabled'],
+                        'deepLink' => $app['deep_link'],
+                        'fallback' => $app['fallback'],
+                    ],
+                ];
+            })
+            ->all();
+    @endphp
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -781,11 +861,7 @@
         });
 
         // ── Delivery App Sheet ──
-        const deliveryApps = @json(
-            collect($deliveryApps)
-                ->mapWithKeys(fn ($app, $key) => [$key => ['deepLink' => $app['deep_link'], 'fallback' => $app['fallback']]])
-                ->all()
-        );
+        const deliveryApps = @json($deliveryAppLinks);
 
         function openDeliverySheet() {
             document.getElementById('deliveryOverlay').classList.add('show');
@@ -798,7 +874,7 @@
         }
 
         // Touch ripple on delivery rows
-        document.querySelectorAll('.delivery-app-row').forEach(function (row) {
+        document.querySelectorAll('.delivery-app-row:not([disabled])').forEach(function (row) {
             row.addEventListener('pointerdown', function (e) {
                 const rect = this.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height) * 2;
@@ -812,7 +888,7 @@
 
         function openDeliveryApp(key) {
             const app = deliveryApps[key];
-            if (!app) { return; }
+            if (!app || !app.enabled) { return; }
             closeDeliverySheet();
             // Universal/App Links: the restaurant URL opens directly in the
             // delivery app (if installed) on both iOS and Android — no deep

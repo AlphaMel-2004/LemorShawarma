@@ -49,6 +49,8 @@ class ContactControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('admin.contacts.edit');
         $response->assertViewHas('settings');
+        $response->assertSee('data-time-picker-trigger="contactHoursOpen"', false);
+        $response->assertSee('data-time-picker-trigger="contactHoursClose"', false);
     }
 
     public function test_contact_edit_page_shows_default_values_when_no_settings_exist(): void

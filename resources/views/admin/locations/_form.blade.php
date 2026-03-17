@@ -177,6 +177,34 @@
         font-weight: 700;
     }
 
+    .location-hours-time-input-wrap {
+        position: relative;
+    }
+
+    .location-hours-time-trigger {
+        position: absolute;
+        top: 50%;
+        right: 0.55rem;
+        transform: translateY(-50%);
+        width: 2rem;
+        height: 2rem;
+        border: 1px solid rgba(212, 175, 55, 0.24);
+        border-radius: 999px;
+        background: rgba(212, 175, 55, 0.08);
+        color: #f4d989;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    }
+
+    .location-hours-time-trigger:hover {
+        background: rgba(212, 175, 55, 0.16);
+        border-color: rgba(212, 175, 55, 0.42);
+        color: #ffe7a6;
+    }
+
     .location-hours-preview {
         margin-top: 0.65rem;
     }
@@ -185,11 +213,7 @@
     #locationHoursClose-{{ $formId }} {
         color: var(--admin-text);
         color-scheme: dark;
-        padding-right: 2.65rem;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 0.85rem center;
-        background-size: 1.05rem 1.05rem;
+        padding-right: 3.2rem;
     }
 
     #locationHoursOpen-{{ $formId }}::-webkit-calendar-picker-indicator,
@@ -269,11 +293,21 @@
             <div class="location-hours-time-wrap">
                 <div>
                     <label class="location-hours-time-label" for="locationHoursOpen-{{ $formId }}">Open Time</label>
-                    <input type="time" id="locationHoursOpen-{{ $formId }}" class="admin-form-control w-100" value="10:00">
+                    <div class="location-hours-time-input-wrap">
+                        <input type="time" id="locationHoursOpen-{{ $formId }}" class="admin-form-control w-100" value="10:00">
+                        <button type="button" class="location-hours-time-trigger" data-time-picker-trigger="locationHoursOpen-{{ $formId }}" aria-label="Open time picker">
+                            <i class="bi bi-clock"></i>
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <label class="location-hours-time-label" for="locationHoursClose-{{ $formId }}">Close Time</label>
-                    <input type="time" id="locationHoursClose-{{ $formId }}" class="admin-form-control w-100" value="22:00">
+                    <div class="location-hours-time-input-wrap">
+                        <input type="time" id="locationHoursClose-{{ $formId }}" class="admin-form-control w-100" value="22:00">
+                        <button type="button" class="location-hours-time-trigger" data-time-picker-trigger="locationHoursClose-{{ $formId }}" aria-label="Close time picker">
+                            <i class="bi bi-clock"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -589,6 +623,22 @@
             return days.join(', ');
         }
 
+        function openTimePicker(input) {
+            if (!(input instanceof HTMLInputElement)) {
+                return;
+            }
+
+            input.focus({ preventScroll: true });
+
+            if (typeof input.showPicker === 'function') {
+                try {
+                    input.showPicker();
+                } catch (error) {
+                    // Some browsers only allow the native picker during direct user gestures.
+                }
+            }
+        }
+
         function renderDaySelection() {
             hoursDaysContainer.querySelectorAll('[data-day]').forEach(function (button) {
                 const day = button.getAttribute('data-day') || '';
@@ -707,6 +757,21 @@
 
         hoursOpenInput.addEventListener('change', syncHoursValue);
         hoursCloseInput.addEventListener('change', syncHoursValue);
+        hoursOpenInput.addEventListener('click', function () {
+            openTimePicker(hoursOpenInput);
+        });
+        hoursCloseInput.addEventListener('click', function () {
+            openTimePicker(hoursCloseInput);
+        });
+
+        document.querySelectorAll(`[data-time-picker-trigger$="${formId}"]`).forEach(function (button) {
+            button.addEventListener('click', function () {
+                const targetId = button.getAttribute('data-time-picker-trigger');
+                const input = targetId ? document.getElementById(targetId) : null;
+
+                openTimePicker(input);
+            });
+        });
 
         hoursPresetsContainer.addEventListener('click', function (event) {
             const target = event.target;

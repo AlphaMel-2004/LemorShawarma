@@ -34,11 +34,13 @@ class DeliverySettingsControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.delivery.edit');
         $response->assertSee('Delivery Apps');
+        $response->assertSee('When an app is turned off, customers will still see it marked as unavailable.');
         $response->assertSee('Quick QR Links');
         $response->assertSee('Uber Eats');
         $response->assertSee('DoorDash');
         $response->assertSee('SkipTheDishes');
         $response->assertSee('Show app');
+        $response->assertSee('Shown as unavailable to customers');
         $response->assertSee('Home');
         $response->assertSee('Locations');
         $response->assertSee('Menu');
@@ -132,7 +134,7 @@ class DeliverySettingsControllerTest extends TestCase
         $response->assertSessionHasErrors('delivery_ubereats_url');
     }
 
-    public function test_menu_page_only_renders_enabled_delivery_apps(): void
+    public function test_menu_page_keeps_disabled_delivery_apps_visible_as_unavailable(): void
     {
         SiteSetting::setValue('delivery_ubereats_enabled', '1');
         SiteSetting::setValue('delivery_ubereats_name', 'Uber Eats');
@@ -148,7 +150,10 @@ class DeliverySettingsControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('ubereats');
+        $response->assertSee('doordash');
         $response->assertSee('skipthedishes');
-        $response->assertDontSee("openDeliveryApp('doordash')");
+        $response->assertSee('Temporarily unavailable. Try another app.');
+        $response->assertSee('Back Soon');
+        $response->assertDontSee('onclick="openDeliveryApp(\'doordash\')"', false);
     }
 }
