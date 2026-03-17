@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Order & QR Settings')
-@section('page-title', 'Order & QR Settings')
+@section('title', 'Delivery & QR Settings')
+@section('page-title', 'Delivery & QR Settings')
 
 @push('styles')
 <style>
@@ -173,35 +173,58 @@
     .app-toggle-wrap {
         flex-shrink: 0;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 0.3rem;
+        justify-content: flex-end;
+        min-width: 136px;
+    }
+
+    .app-toggle-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
     }
 
     .app-toggle-wrap .form-check-input {
-        width: 2.4em;
-        height: 1.3em;
+        width: 2.55rem;
+        height: 1.45rem;
+        margin: 0;
         border-radius: 999px;
         cursor: pointer;
-        border: 1px solid rgba(255,255,255,0.18);
-        background-color: rgba(255,255,255,0.08);
-        transition: background-color 0.2s, border-color 0.2s;
+        border-color: rgba(212, 175, 55, 0.42);
+        background-color: #0f0f0f;
+        background-position: left center;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23efe5c8'/%3E%3C/svg%3E");
+        transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
 
     .app-toggle-wrap .form-check-input:checked {
-        background-color: var(--admin-primary);
-        border-color: var(--admin-primary);
+        background-color: rgba(212, 175, 55, 0.9);
+        border-color: rgba(212, 175, 55, 1);
+        background-position: right center;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23160f02'/%3E%3C/svg%3E");
     }
 
     .app-toggle-wrap .form-check-input:focus {
-        box-shadow: 0 0 0 0.2rem rgba(212,175,55,0.2);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.24);
     }
 
     .app-toggle-label {
-        font-size: 0.65rem;
-        color: var(--admin-text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--admin-text);
+        white-space: nowrap;
+    }
+
+    @media (max-width: 767.98px) {
+        .app-row {
+            flex-wrap: wrap;
+        }
+
+        .app-toggle-wrap {
+            width: 100%;
+            justify-content: flex-start;
+            margin-left: 3.85rem;
+        }
     }
 
     .field-label {
@@ -295,6 +318,75 @@
 
     .qr-tip i { color: var(--admin-primary); margin-top: 2px; flex-shrink: 0; }
 
+    .qr-switcher {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .qr-toggle-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border-radius: 12px;
+        border: 1px solid var(--admin-border);
+        background: var(--admin-bg);
+        color: var(--admin-text-muted);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+    }
+
+    .qr-toggle-btn:hover {
+        border-color: rgba(212,175,55,0.35);
+        color: var(--admin-text);
+    }
+
+    .qr-toggle-btn.is-active {
+        background: rgba(212,175,55,0.12);
+        border-color: rgba(212,175,55,0.45);
+        color: var(--admin-text);
+        box-shadow: inset 0 0 0 1px rgba(212,175,55,0.1);
+    }
+
+    .qr-toggle-btn i {
+        color: var(--admin-primary);
+        font-size: 0.88rem;
+    }
+
+    .qr-toggle-btn span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .qr-block-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--admin-text);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .qr-block-label i { color: var(--admin-primary); font-size: 0.85rem; }
+
+    @media (max-width: 575.98px) {
+        .qr-switcher {
+            grid-template-columns: 1fr;
+        }
+    }
+
     /* ── Save ── */
     .btn-save {
         background: var(--admin-primary);
@@ -375,14 +467,16 @@
                                 </div>
 
                                 <div class="app-toggle-wrap">
-                                    <input class="form-check-input app-toggle"
-                                           type="checkbox"
-                                           role="switch"
-                                           id="delivery_{{ $key }}_enabled"
-                                           name="delivery_{{ $key }}_enabled"
-                                           value="1"
-                                           @checked(old('delivery_'.$key.'_enabled', $app['enabled'] ? '1' : '0') === '1')>
-                                    <label class="app-toggle-label" for="delivery_{{ $key }}_enabled">On / Off</label>
+                                    <div class="app-toggle-control form-check form-switch">
+                                        <input class="form-check-input app-toggle"
+                                               type="checkbox"
+                                               role="switch"
+                                               id="delivery_{{ $key }}_enabled"
+                                               name="delivery_{{ $key }}_enabled"
+                                               value="1"
+                                               @checked(old('delivery_'.$key.'_enabled', $app['enabled'] ? '1' : '0') === '1')>
+                                        <label class="app-toggle-label" for="delivery_{{ $key }}_enabled">Show app</label>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -405,64 +499,117 @@
 
         {{-- QR Code Panel --}}
         <div class="col-12 col-xl-5">
+            @php
+                $qrCodes = [
+                    'home' => [
+                        'label' => 'Website Home',
+                        'button_label' => 'Home',
+                        'icon' => 'bi bi-house-door-fill',
+                        'url' => $websiteHomeUrl,
+                        'preview' => 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($websiteHomeUrl),
+                        'download' => 'https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data='.urlencode($websiteHomeUrl),
+                        'filename' => 'website-home-qr.png',
+                        'alt' => 'Website Home QR Code',
+                    ],
+                    'locations' => [
+                        'label' => 'Store Locations',
+                        'button_label' => 'Locations',
+                        'icon' => 'bi bi-geo-alt-fill',
+                        'url' => $websiteLocationsUrl,
+                        'preview' => 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($websiteLocationsUrl),
+                        'download' => 'https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data='.urlencode($websiteLocationsUrl),
+                        'filename' => 'website-locations-qr.png',
+                        'alt' => 'Locations QR Code',
+                    ],
+                    'menu' => [
+                        'label' => 'Menu & Order',
+                        'button_label' => 'Menu',
+                        'icon' => 'bi bi-bag-fill',
+                        'url' => $mobileMenuUrl,
+                        'preview' => 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($mobileMenuUrl),
+                        'download' => 'https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data='.urlencode($mobileMenuUrl),
+                        'filename' => 'menu-qr.png',
+                        'alt' => 'Menu QR Code',
+                    ],
+                    'feedback' => [
+                        'label' => 'Feedback & Reviews',
+                        'button_label' => 'Reviews',
+                        'icon' => 'bi bi-chat-heart-fill',
+                        'url' => $mobileFeedbackUrl,
+                        'preview' => 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($mobileFeedbackUrl),
+                        'download' => 'https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data='.urlencode($mobileFeedbackUrl),
+                        'filename' => 'feedback-qr.png',
+                        'alt' => 'Feedback QR Code',
+                    ],
+                ];
+                $defaultQrCode = $qrCodes['home'];
+            @endphp
             <div class="settings-card">
                 <div class="card-header-bar">
                     <div class="card-header-icon card-header-icon-violet">
                         <i class="bi bi-qr-code"></i>
                     </div>
                     <div>
-                        <p class="card-header-title">Menu QR Codes</p>
-                        <p class="card-header-sub">Use separate links: menu for ordering, feedback for reviews.</p>
+                        <p class="card-header-title">Quick QR Links</p>
+                        <p class="card-header-sub">Choose a page, then copy the link or download its QR code.</p>
                     </div>
                 </div>
                 <div class="card-body-inner">
-                    <div class="qr-wrapper">
+                    <div class="qr-switcher" role="tablist" aria-label="QR code views">
+                        @foreach($qrCodes as $key => $qrCode)
+                            <button
+                                type="button"
+                                class="qr-toggle-btn {{ $loop->first ? 'is-active' : '' }}"
+                                id="qrToggle{{ ucfirst($key) }}"
+                                data-qr-trigger="{{ $key }}"
+                                role="tab"
+                                aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                                aria-controls="qrPreviewPanel"
+                            >
+                                <i class="{{ $qrCode['icon'] }}"></i>
+                                <span>{{ $qrCode['button_label'] }}</span>
+                            </button>
+                        @endforeach
+                    </div>
+
+                    <div class="qr-wrapper" id="qrPreviewPanel">
+                        <div class="qr-block-label" id="qrPanelLabel">
+                            <i class="{{ $defaultQrCode['icon'] }}" id="qrPanelIcon"></i>
+                            <span id="qrPanelTitle">{{ $defaultQrCode['label'] }}</span>
+                        </div>
                         <div class="qr-canvas-box">
                             <img
-                                id="qrImage"
-                                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode($mobileMenuUrl) }}"
-                                alt="Menu QR Code"
+                                id="qrPreviewImage"
+                                src="{{ $defaultQrCode['preview'] }}"
+                                alt="{{ $defaultQrCode['alt'] }}"
                                 width="200"
                                 height="200"
                                 style="display:block;"
                             >
                         </div>
-
-                        <div>
-                            <div class="qr-url-text">
-                                <i class="bi bi-bag-fill"></i>
-                                <span id="qrUrlText">{{ $mobileMenuUrl }}</span>
-                            </div>
-                            <div class="qr-url-text" style="margin-top: -0.35rem;">
-                                <i class="bi bi-chat-heart"></i>
-                                <span id="qrFeedbackUrlText">{{ $mobileFeedbackUrl }}</span>
-                            </div>
+                        <div class="qr-url-text">
+                            <span id="qrCurrentUrl">{{ $defaultQrCode['url'] }}</span>
                         </div>
-
                         <div class="qr-actions">
-                            <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data={{ urlencode($mobileMenuUrl) }}"
-                               download="pita-queen-menu-qr.png"
-                               class="btn-qr btn-qr-primary">
-                                <i class="bi bi-download"></i> Download Menu QR
+                            <a
+                                href="{{ $defaultQrCode['download'] }}"
+                                download="{{ $defaultQrCode['filename'] }}"
+                                class="btn-qr btn-qr-primary"
+                                id="qrDownloadBtn"
+                            >
+                                <i class="bi bi-download"></i> Download
                             </a>
-                            <a href="https://api.qrserver.com/v1/create-qr-code/?size=600x600&format=png&data={{ urlencode($mobileFeedbackUrl) }}"
-                               download="pita-queen-feedback-qr.png"
-                               class="btn-qr">
-                                <i class="bi bi-download"></i> Download Feedback QR
-                            </a>
-                            <button type="button" class="btn-qr" id="copyLinkBtn">
-                                <i class="bi bi-clipboard"></i> Copy Menu Link
+                            <button type="button" class="btn-qr" id="qrCopyBtn">
+                                <i class="bi bi-clipboard"></i> Copy Link
                             </button>
-                            <button type="button" class="btn-qr" id="copyFeedbackLinkBtn">
-                                <i class="bi bi-clipboard-heart"></i> Copy Feedback Link
-                            </button>
-                        </div>
-
-                        <div class="qr-tip">
-                            <i class="bi bi-lightbulb"></i>
-                            <span>Use the menu QR for ordering and the feedback QR for reviews. Great for tables, counter cards, and takeaway packaging.</span>
                         </div>
                     </div>
+
+                    <div class="qr-tip" style="margin-top:1.25rem;">
+                        <i class="bi bi-lightbulb"></i>
+                        <span>Great for tables, counter cards, and takeaway packaging.</span>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -473,28 +620,58 @@
 
 @push('scripts')
 <script>
-    var menuUrl    = document.getElementById('qrUrlText').textContent.trim();
-    var feedbackUrl = document.getElementById('qrFeedbackUrlText').textContent.trim();
+    var qrCodes = @json($qrCodes);
+    var activeQrKey = 'home';
+    var qrButtons = document.querySelectorAll('[data-qr-trigger]');
+    var qrPanelIcon = document.getElementById('qrPanelIcon');
+    var qrPanelTitle = document.getElementById('qrPanelTitle');
+    var qrPreviewImage = document.getElementById('qrPreviewImage');
+    var qrCurrentUrl = document.getElementById('qrCurrentUrl');
+    var qrDownloadBtn = document.getElementById('qrDownloadBtn');
+    var qrCopyBtn = document.getElementById('qrCopyBtn');
 
-    document.getElementById('copyLinkBtn').addEventListener('click', function () {
-        var btn = this;
-        navigator.clipboard.writeText(menuUrl).then(function () {
-            var original = btn.innerHTML;
-            btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
-            btn.style.color = 'var(--admin-success)';
-            btn.style.borderColor = 'var(--admin-success)';
-            setTimeout(function () { btn.innerHTML = original; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+    function setActiveQr(key) {
+        var selectedQr = qrCodes[key];
+
+        if (! selectedQr) {
+            return;
+        }
+
+        activeQrKey = key;
+        qrPanelIcon.className = selectedQr.icon;
+        qrPanelTitle.textContent = selectedQr.label;
+        qrPreviewImage.src = selectedQr.preview;
+        qrPreviewImage.alt = selectedQr.alt;
+        qrCurrentUrl.textContent = selectedQr.url;
+        qrDownloadBtn.href = selectedQr.download;
+        qrDownloadBtn.setAttribute('download', selectedQr.filename);
+
+        qrButtons.forEach(function (button) {
+            var isActive = button.dataset.qrTrigger === key;
+            button.classList.toggle('is-active', isActive);
+            button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+    }
+
+    qrButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            setActiveQr(button.dataset.qrTrigger);
         });
     });
 
-    document.getElementById('copyFeedbackLinkBtn').addEventListener('click', function () {
+    qrCopyBtn.addEventListener('click', function () {
         var btn = this;
-        navigator.clipboard.writeText(feedbackUrl).then(function () {
+
+        navigator.clipboard.writeText(qrCodes[activeQrKey].url).then(function () {
             var original = btn.innerHTML;
             btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
             btn.style.color = 'var(--admin-success)';
             btn.style.borderColor = 'var(--admin-success)';
-            setTimeout(function () { btn.innerHTML = original; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+            setTimeout(function () {
+                btn.innerHTML = original;
+                btn.style.color = '';
+                btn.style.borderColor = '';
+            }, 2000);
         });
     });
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Models\Location;
 use App\Models\SiteSetting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,15 +22,38 @@ class DeliverySettingsControllerTest extends TestCase
     public function test_admin_can_view_delivery_settings_page(): void
     {
         $admin = User::factory()->admin()->create();
+        Location::factory()->create([
+            'name' => 'Makati Branch',
+            'latitude' => 14.5995,
+            'longitude' => 120.9842,
+            'is_active' => true,
+        ]);
 
         $response = $this->actingAs($admin)->get($this->adminUrl('/delivery'));
 
         $response->assertOk();
         $response->assertViewIs('admin.delivery.edit');
         $response->assertSee('Delivery Apps');
+        $response->assertSee('Quick QR Links');
         $response->assertSee('Uber Eats');
         $response->assertSee('DoorDash');
         $response->assertSee('SkipTheDishes');
+        $response->assertSee('Show app');
+        $response->assertSee('Home');
+        $response->assertSee('Locations');
+        $response->assertSee('Menu');
+        $response->assertSee('Reviews');
+        $response->assertSee('id="qrToggleHome"', false);
+        $response->assertSee('id="qrToggleLocations"', false);
+        $response->assertSee('id="qrToggleMenu"', false);
+        $response->assertSee('id="qrToggleFeedback"', false);
+        $response->assertSee('id="qrPreviewImage"', false);
+        $response->assertSee('data-qr-trigger="home"', false);
+        $response->assertSee('data-qr-trigger="locations"', false);
+        $response->assertSee('data-qr-trigger="menu"', false);
+        $response->assertSee('data-qr-trigger="feedback"', false);
+        $response->assertSee('google.com\\/maps\\/search\\/?api=1\\u0026query=14.5995,120.9842', false);
+        $response->assertDontSee('id="copyFeedbackLinkBtn"', false);
     }
 
     public function test_admin_can_update_delivery_settings(): void
