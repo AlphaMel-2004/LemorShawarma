@@ -117,6 +117,9 @@
             trim((string) ($contactSettings['contact_address_line1'] ?? '')),
             trim((string) ($contactSettings['contact_address_line2'] ?? '')),
         ])->filter()->implode(', '));
+        $phoneText = trim((string) ($contactSettings['contact_phone'] ?? ''));
+        $phoneHref = preg_replace('/[^0-9+]/', '', $phoneText) ?? '';
+        $hasPhoneContact = $phoneText !== '' && $phoneHref !== '';
         $heroSchedulePayload = [
             'selectedDays' => $selectedDays,
             'openMinutes' => $openMinutes,
@@ -168,12 +171,25 @@
                             <span class="hero-live-address-icon" aria-hidden="true"><i class="bi bi-geo-alt-fill"></i></span>
                             <span class="hero-live-address-text">{{ $addressText !== '' ? $addressText : 'Visit our nearest branch today.' }}</span>
                         </div>
-                        <div class="hero-live-top-row">
-                            <span class="hero-open-pill {{ $isOpenNow ? 'is-open' : 'is-closed' }}" id="heroOpenPill">
-                                <i class="bi bi-circle-fill" aria-hidden="true"></i>
-                                <span id="heroOpenStatusText">{{ $isOpenNow ? 'Open now' : 'Closed now' }}</span>
-                            </span>
-                            <span class="hero-live-closing" id="heroNextTimeLabel">{{ $nextTimeLabel }}</span>
+                        <div class="hero-live-meta-row">
+                            <div class="hero-live-top-row">
+                                <span class="hero-open-pill {{ $isOpenNow ? 'is-open' : 'is-closed' }}" id="heroOpenPill">
+                                    <i class="bi bi-circle-fill" aria-hidden="true"></i>
+                                    <span id="heroOpenStatusText">{{ $isOpenNow ? 'Open now' : 'Closed now' }}</span>
+                                </span>
+                                <span class="hero-live-closing" id="heroNextTimeLabel">{{ $nextTimeLabel }}</span>
+                            </div>
+                            @if($hasPhoneContact)
+                                <a href="tel:{{ $phoneHref }}" class="hero-live-contact" aria-label="Call us at {{ $phoneText }}">
+                                    <span class="hero-live-contact-icon" aria-hidden="true">
+                                        <i class="bi bi-telephone-fill"></i>
+                                    </span>
+                                    <span class="hero-live-contact-copy">
+                                        <span class="hero-live-contact-label">Call us</span>
+                                        <span class="hero-live-contact-value">{{ $phoneText }}</span>
+                                    </span>
+                                </a>
+                            @endif
                         </div>
                     </div>
                     

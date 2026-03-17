@@ -620,11 +620,87 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
+.hero-live-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
 .hero-live-top-row {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: nowrap;
+    flex: 1 1 190px;
+    min-width: 0;
+}
+
+.hero-live-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    background: rgba(212, 175, 55, 0.08);
+    color: var(--color-text-primary);
+    max-width: 100%;
+    cursor: pointer;
+}
+
+.hero-live-contact:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(212, 175, 55, 0.36);
+    background: rgba(212, 175, 55, 0.12);
+    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.18);
+    transform: translateY(-1px);
+}
+
+.hero-live-contact:focus-visible {
+    color: var(--color-text-primary);
+    border-color: rgba(212, 175, 55, 0.48);
+    background: rgba(212, 175, 55, 0.14);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+    outline: none;
+}
+
+.hero-live-contact-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-gold);
+    background: rgba(212, 175, 55, 0.14);
+}
+
+.hero-live-contact-copy {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.1;
     flex-wrap: wrap;
+}
+
+.hero-live-contact-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.hero-live-contact-value {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.hero-live-contact-icon i {
+    font-size: 11px;
 }
 
 .hero-open-pill {
@@ -658,6 +734,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 13px;
     color: var(--color-text-primary);
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .hero-cta {
@@ -2461,6 +2538,56 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 14px;
     }
 
+    .hero-live-meta-row {
+        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: nowrap;
+    }
+
+    .hero-live-top-row {
+        width: auto;
+        flex: 1 1 auto;
+        gap: 8px;
+    }
+
+    .hero-live-contact {
+        margin-left: auto;
+        gap: 6px;
+        padding: 5px 8px;
+    }
+
+    .hero-live-contact-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .hero-live-contact-icon i {
+        font-size: 10px;
+    }
+
+    .hero-live-contact-label {
+        font-size: 10px;
+        white-space: nowrap;
+    }
+
+    .hero-live-contact-value {
+        display: none;
+    }
+
+    .hero-open-pill {
+        gap: 6px;
+        padding: 4px 9px;
+        font-size: 11px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .hero-open-pill i {
+        font-size: 8px;
+    }
+
+    .hero-live-contact-value,
     .hero-live-closing {
         font-size: 12px;
     }

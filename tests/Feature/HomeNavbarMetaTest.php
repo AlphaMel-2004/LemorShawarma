@@ -20,6 +20,7 @@ class HomeNavbarMetaTest extends TestCase
         SiteSetting::setValue('contact_hours', 'Mon-Sun: 12AM - 11:59PM');
         SiteSetting::setValue('contact_address_line1', '789 New Avenue');
         SiteSetting::setValue('contact_address_line2', 'Uptown District, CA 90001');
+        SiteSetting::setValue('contact_phone', '+1 (639) 123-4567');
 
         $response = $this->get($this->siteUrl('/'));
 
@@ -27,10 +28,15 @@ class HomeNavbarMetaTest extends TestCase
         $response->assertSee('Open now');
         $response->assertSee('Closes 11:59 PM');
         $response->assertSee('789 New Avenue, Uptown District, CA 90001');
+        $response->assertSee('Call us');
+        $response->assertSee('+1 (639) 123-4567');
+        $response->assertSee('href="tel:+16391234567"', false);
         $response->assertSee('id="heroLiveBadge"', false);
         $response->assertSee('id="heroOpenStatusText"', false);
         $response->assertSee('id="heroNextTimeLabel"', false);
         $response->assertSee('data-hero-schedule=', false);
+        $response->assertSee('#order">Contact</a>', false);
+        $response->assertDontSee('#contact">Contact</a>', false);
     }
 
     public function test_homepage_shows_closed_state_for_current_time(): void

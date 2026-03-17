@@ -46,7 +46,7 @@
                     <a class="nav-link" href="{{ route('home') }}#testimonials">Reviews</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}#contact">Contact</a>
+                    <a class="nav-link" href="{{ route('home') }}#order">Contact</a>
                 </li>
             </ul>
             
