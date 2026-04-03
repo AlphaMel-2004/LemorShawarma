@@ -128,159 +128,60 @@
         ];
     @endphp
 
-    <!-- Background Elements -->
-    <div class="hero-bg">
-        <div class="hero-gradient"></div>
-        <div class="hero-pattern"></div>
-        <div class="hero-particles" id="heroParticles"></div>
-    </div>
-    
-    <!-- Floating Elements -->
-    <div class="hero-floating-elements">
-        <div class="floating-spice floating-spice-1"></div>
-        <div class="floating-spice floating-spice-2"></div>
-        <div class="floating-spice floating-spice-3"></div>
-    </div>
-    
-    <div class="container">
-        <div class="row align-items-center min-vh-100">
-            <div class="col-lg-6">
-                <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
-                    <!-- Badge -->
-                    <div class="hero-badge">
-                        <span class="badge-icon"><i class="bi bi-star-fill" aria-hidden="true"></i></span>
-                        <span class="badge-text">Premium Quality Since 2010</span>
-                    </div>
-                    
-                    <!-- Heading -->
-                    <h1 class="hero-title">
-                        <span class="title-line">Experience The</span>
-                        <span class="title-highlight">Royal Taste</span>
-                        <span class="title-line">of Authentic</span>
-                        <span class="title-accent">Canadian Cuisine</span>
-                    </h1>
-                    
-                    <!-- Description -->
-                    <p class="hero-description">
-                        Indulge in the finest Canadian flavors, crafted with premium ingredients 
-                        and time-honored recipes. Every bite is a journey to culinary excellence.
-                    </p>
+    <!-- Background Image + Overlay -->
+    <div class="hero-bg-image" style="background-image: url('{{ asset('images/background-image1.png') }}');"></div>
+    <div class="hero-overlay"></div>
 
-                    <div class="hero-live-badge" id="heroLiveBadge" data-hero-schedule='@json($heroSchedulePayload)' aria-live="polite" aria-atomic="true">
-                        <div class="hero-live-address-row">
-                            <span class="hero-live-address-icon" aria-hidden="true"><i class="bi bi-geo-alt-fill"></i></span>
-                            <span class="hero-live-address-text">{{ $addressText !== '' ? $addressText : 'Visit our nearest branch today.' }}</span>
-                        </div>
-                        <div class="hero-live-meta-row">
-                            <div class="hero-live-top-row">
-                                <span class="hero-open-pill {{ $isOpenNow ? 'is-open' : 'is-closed' }}" id="heroOpenPill">
-                                    <i class="bi bi-circle-fill" aria-hidden="true"></i>
-                                    <span id="heroOpenStatusText">{{ $isOpenNow ? 'Open now' : 'Closed now' }}</span>
-                                </span>
-                                <span class="hero-live-closing" id="heroNextTimeLabel">{{ $nextTimeLabel }}</span>
-                            </div>
-                            @if($hasPhoneContact)
-                                <a href="tel:{{ $phoneHref }}" class="hero-live-contact" aria-label="Call us at {{ $phoneText }}">
-                                    <span class="hero-live-contact-icon" aria-hidden="true">
-                                        <i class="bi bi-telephone-fill"></i>
-                                    </span>
-                                    <span class="hero-live-contact-copy">
-                                        <span class="hero-live-contact-label">Call us</span>
-                                        <span class="hero-live-contact-value">{{ $phoneText }}</span>
-                                    </span>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                    
-                    <!-- CTA Buttons -->
-                    <div class="hero-cta">
-                        <a href="#menu" class="btn btn-golden btn-lg">
-                            <span>Explore Menu</span>
-                            <i class="bi bi-arrow-right ms-2"></i>
-                        </a>
-                        <a href="#order" class="btn btn-outline-golden btn-lg">
-                            <i class="bi bi-play-circle me-2"></i>
-                            <span>Order Now</span>
-                        </a>
-                    </div>
-                    
-                    <!-- Stats -->
-                    <div class="hero-stats">
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="15">0</span>
-                            <span class="stat-label">Years Experience</span>
-                        </div>
-                        <div class="stat-divider"></div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="50">0</span>
-                            <span class="stat-suffix">K+</span>
-                            <span class="stat-label">Happy Customers</span>
-                        </div>
-                        <div class="stat-divider"></div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-count="30">0</span>
-                            <span class="stat-suffix">+</span>
-                            <span class="stat-label">Menu Items</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-6">
-                <div class="hero-image" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
-                    <div class="image-wrapper">
-                        <!-- Main Image -->
-                        <div class="main-image">
-                               <img src="{{ asset('images/lemorfood1.png') }}" 
-                                 alt="Delicious Mediterranean Cuisine at Pita Queen" 
-                                 class="img-fluid"
-                                 loading="eager">
-                        </div>
-                        
-                        <!-- Decorative Ring -->
-                        <div class="image-ring"></div>
-                        <div class="image-ring image-ring-2"></div>
-                        
-                        <!-- Floating Cards -->
-                        <div class="floating-card card-rating">
-                            <div class="card-icon"><i class="bi bi-star-fill" aria-hidden="true"></i></div>
-                            <div class="card-content">
-                                <span class="card-value">4.9</span>
-                                <span class="card-label">Rating</span>
-                            </div>
-                        </div>
-                        
-                        <div class="floating-card card-delivery">
-                            <div class="card-icon"><i class="bi bi-truck" aria-hidden="true"></i></div>
-                            <div class="card-content">
-                                <span class="card-value">30 Min</span>
-                                <span class="card-label">Delivery</span>
-                            </div>
-                        </div>
-                        
-                        <div class="floating-card card-fresh">
-                            <div class="card-icon"><i class="bi bi-leaf-fill" aria-hidden="true"></i></div>
-                            <div class="card-content">
-                                <span class="card-value">100%</span>
-                                <span class="card-label">Fresh</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Quick Info Bar -->
+    <div
+        class="hero-quick-info"
+        id="heroLiveBadge"
+        data-hero-schedule='@json($heroSchedulePayload)'
+        aria-live="polite"
+        aria-atomic="true"
+    >
+        <div class="quick-info-block">
+            <span class="quick-info-title">QUICK INFO</span>
+            @if($addressText !== '')
+                <span class="quick-info-line quick-info-line--icon">
+                    <i class="bi bi-geo-alt-fill quick-info-icon" aria-hidden="true"></i>
+                    <span>{{ $addressText }}</span>
+                </span>
+            @endif
+            @if($hasPhoneContact)
+                <a href="tel:{{ $phoneHref }}" class="quick-info-line quick-info-line--icon quick-info-phone">
+                    <i class="bi bi-telephone-fill quick-info-icon" aria-hidden="true"></i>
+                    <span>{{ $phoneText }}</span>
+                </a>
+            @endif
+        </div>
+
+        <div class="quick-info-block quick-info-block--right">
+            <span class="quick-info-title">HOURS</span>
+            @if($openMinutes !== null && $closeMinutes !== null)
+                <span class="quick-info-line" id="heroNextTimeLabel">
+                    {{ $openMinutes !== null ? sprintf('%d:%02d %s', ($openMinutes % 720) === 0 ? 12 : intdiv($openMinutes, 60) % 12, $openMinutes % 60, $openMinutes >= 720 ? 'PM' : 'AM') . ' - ' . sprintf('%d:%02d %s', ($closeMinutes % 720) === 0 ? 12 : intdiv($closeMinutes, 60) % 12, $closeMinutes % 60, $closeMinutes >= 720 ? 'PM' : 'AM') : 'Hours not set' }}
+                </span>
+            @endif
+            <span class="hero-open-pill {{ $isOpenNow ? 'is-open' : 'is-closed' }}" id="heroOpenPill">
+                <i class="bi bi-circle-fill" aria-hidden="true"></i>
+                <span id="heroOpenStatusText">{{ $isOpenNow ? 'Open now' : 'Closed now' }}</span>
+            </span>
         </div>
     </div>
-    
-    <!-- Scroll Indicator -->
-    <div class="scroll-indicator">
-        <a href="#about" class="scroll-link">
-            <span class="scroll-text">Scroll Down</span>
-            <span class="scroll-icon">
-                <i class="bi bi-mouse"></i>
-                <span class="scroll-dot"></span>
-            </span>
-        </a>
+
+    <!-- Hero Main Content -->
+    <div class="hero-main">
+        <!-- Glass Card -->
+        <div class="hero-glass-card" data-aos="fade-up" data-aos-duration="900">
+            <h1 class="hero-script-name">Pita Queen</h1>
+            <h2 class="hero-restaurant-label">RESTAURANT</h2>
+            <p class="hero-tagline">Freshly made, always delicious.</p>
+            <a href="{{ route('home') }}#order" class="hero-card-border-btn">
+                <i class="bi bi-cart-fill" aria-hidden="true"></i>
+                ORDER ONLINE
+            </a>
+        </div>
     </div>
 </section>
 
@@ -372,7 +273,6 @@
                     heroOpenPill.classList.toggle('is-open', isOpenNow);
                     heroOpenPill.classList.toggle('is-closed', ! isOpenNow);
                     heroOpenStatusText.textContent = isOpenNow ? 'Open now' : 'Closed now';
-                    heroNextTimeLabel.textContent = (isOpenNow ? 'Closes ' : 'Opens ') + formatMinutesToDisplay(isOpenNow ? closeMinutes : openMinutes);
                 }
 
                 updateHeroOpenStatus();

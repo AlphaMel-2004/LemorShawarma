@@ -25,463 +25,131 @@
 
 @section('content')
 
-    @php
-        $locationCount = count($locations);
-        $isSingleLocation = $locationCount === 1;
-        $locationBadgeText = $isSingleLocation ? 'Visit Us' : 'Visit Us';
-        $locationTitleWord = $isSingleLocation ? 'Location' : 'Locations';
-        $locationDescription = $isSingleLocation
-            ? 'Visit our location for premium Canadian cuisine'
-            : 'Find us at these convenient locations across the city';
-    @endphp
-
     <!-- Hero Section -->
     <x-hero :contact-settings="$contactSettings" />
 
-    <!-- About Section -->
-    <section class="about-section section-padding" id="about">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header text-center" data-aos="fade-up">
-                <span class="section-badge">Our Story</span>
-                <h2 class="section-title">About <span class="text-golden">Pita Queen</span></h2>
-                <p class="section-description">
-                    A legacy of flavor, a tradition of excellence
-                </p>
-            </div>
-            
-            <div class="row align-items-center g-5 mt-4">
-                <!-- Image Column -->
-                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
-                    <div class="about-image-wrapper">
-                        <div class="about-image about-image-main">
-                               <img src="{{ asset('images/lemorfood3.png') }}" 
-                                 alt="Our Kitchen" 
-                                 loading="lazy"
-                                 class="img-fluid">
-                        </div>
-                        <div class="about-image about-image-secondary">
-                            <img src="{{ asset('images/lemorfood4.png') }}" 
-                                 alt="Our Chef" 
-                                 loading="lazy"
-                                 class="img-fluid">
-                        </div>
-                        
-                        <!-- Experience Badge -->
-                        <div class="experience-badge">
-                            <span class="badge-number">10+</span>
-                            <span class="badge-text">Years of Excellence</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Content Column -->
-                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-                    <div class="about-content">
-                        <h3 class="about-subtitle">
-                            Crafting Authentic Canadian Flavors Since 2020
-                        </h3>
-                        
-                        <p class="about-text">
-                            At Pita Queen, we believe that exceptional food is born from passion, 
-                            quality ingredients, and time-honored recipes passed down through generations. 
-                            Our master chefs bring the authentic taste of Canadian to every dish.
-                        </p>
-                        
-                        <p class="about-text">
-                            From our signature slow-roasted meats to our freshly baked pita and 
-                            house-made sauces, every element is crafted with meticulous attention 
-                            to detail and an unwavering commitment to excellence.
-                        </p>
-                        
-                        <!-- Features -->
-                        <div class="about-features">
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="bi bi-award"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4>Premium Quality</h4>
-                                    <p>Only the finest ingredients</p>
-                                </div>
-                            </div>
-                            
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="bi bi-heart"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4>Made with Love</h4>
-                                    <p>Passion in every bite</p>
-                                </div>
-                            </div>
-                            
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="bi bi-flower1"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4>Fresh Daily</h4>
-                                    <p>Never frozen, always fresh</p>
-                                </div>
-                            </div>
-                            
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class="bi bi-star"></i>
-                                </div>
-                                <div class="feature-text">
-                                    <h4>Award Winning</h4>
-                                    <p>Recognized excellence</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <a href="#menu" class="btn btn-golden mt-4">
-                            <span>Discover Our Menu</span>
-                            <i class="bi bi-arrow-right ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- Delivery Strip (seam between hero & menu) -->
+    <div class="delivery-strip" aria-label="Available on delivery platforms">
+        <div class="delivery-strip-track">
+            <span class="delivery-strip-label">Order via</span>
+            <span class="delivery-strip-badge delivery-strip-badge--skip">
+                <img src="{{ asset('images/delivery/skipthedishes.svg') }}" alt="Skip The Dishes" class="delivery-strip-logo">
+            </span>
+            <span class="delivery-strip-sep">•</span>
+            <span class="delivery-strip-badge delivery-strip-badge--doordash">
+                <img src="{{ asset('images/delivery/doordash.svg') }}" alt="DoorDash" class="delivery-strip-logo">
+            </span>
+            <span class="delivery-strip-sep">•</span>
+            <span class="delivery-strip-badge delivery-strip-badge--ubereats">
+                <img src="{{ asset('images/delivery/ubereats.svg') }}" alt="Uber Eats" class="delivery-strip-logo delivery-strip-logo--ubereats">
+            </span>
+            {{-- duplicate for seamless loop --}}
+            <span class="delivery-strip-sep" aria-hidden="true">•</span>
+            <span class="delivery-strip-label" aria-hidden="true">Order via</span>
+            <span class="delivery-strip-badge delivery-strip-badge--skip" aria-hidden="true">
+                <img src="{{ asset('images/delivery/skipthedishes.svg') }}" alt="" class="delivery-strip-logo">
+            </span>
+            <span class="delivery-strip-sep" aria-hidden="true">•</span>
+            <span class="delivery-strip-badge delivery-strip-badge--doordash" aria-hidden="true">
+                <img src="{{ asset('images/delivery/doordash.svg') }}" alt="" class="delivery-strip-logo">
+            </span>
+            <span class="delivery-strip-sep" aria-hidden="true">•</span>
+            <span class="delivery-strip-badge delivery-strip-badge--ubereats" aria-hidden="true">
+                <img src="{{ asset('images/delivery/ubereats.svg') }}" alt="" class="delivery-strip-logo delivery-strip-logo--ubereats">
+            </span>
         </div>
-        
-        <!-- Decorative Elements -->
-        <div class="about-decoration">
-            <div class="decoration-circle"></div>
-            <div class="decoration-line"></div>
-        </div>
-    </section>
+    </div>
 
-    <!-- Menu Section -->
-    <section class="menu-section section-padding" id="menu">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header text-center" data-aos="fade-up">
-                <span class="section-badge">Explore</span>
-                <h2 class="section-title">Our <span class="text-golden">Premium Menu</span></h2>
-                <p class="section-description">
-                    Discover our carefully crafted selection of Canadian delights
-                </p>
+    <!-- Featured Menu Items -->
+    <section class="featured-section" id="menu">
+
+        <!-- Section header: title + arrow controls + view all -->
+        <div class="featured-section-header">
+            <div>
+                <h2 class="featured-section-title">Featured Menu</h2>
+                <p class="featured-section-sub">Freshly made, always delicious</p>
             </div>
-            
-            <!-- Filter Tabs -->
-            <div class="menu-filters" data-aos="fade-up" data-aos-delay="100">
-                <button class="filter-btn active" data-filter="all">
-                    <span class="filter-icon"><i class="bi bi-grid-fill" aria-hidden="true"></i></span>
-                    <span class="filter-text">All Items</span>
+            <div class="featured-header-actions">
+                <button class="carousel-arrow-sm" id="featuredPrev" aria-label="Previous">
+                    <i class="bi bi-chevron-left"></i>
                 </button>
-                @foreach($menuCategories as $menuCategory)
-                    <button class="filter-btn" data-filter="{{ \Illuminate\Support\Str::slug($menuCategory) }}">
-                        <span class="filter-text">{{ $menuCategory }}</span>
-                    </button>
-                @endforeach
+                <button class="carousel-arrow-sm" id="featuredNext" aria-label="Next">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
             </div>
-            
-            <!-- Menu Grid -->
-            <div class="menu-grid" id="menuGrid">
-                @forelse($menuItems as $item)
-                    <x-product-card :item="$item" />
-                @empty
-                    <div class="menu-empty-state" role="status" aria-live="polite">
-                        <h3>No menu items available yet.</h3>
-                        <p>Please check back soon!</p>
-                    </div>
-                @endforelse
-            </div>
-            
-            <!-- View More Button -->
-            @if($menuItems->isNotEmpty())
-                <div class="text-center mt-5" data-aos="fade-up">
-                    <a href="#" class="btn btn-outline-golden btn-lg">
-                        <span>View Full Menu</span>
-                        <i class="bi bi-arrow-right ms-2"></i>
-                    </a>
-                </div>
-            @endif
         </div>
-        
-        <!-- Background Decoration -->
-        <div class="menu-bg-decoration"></div>
-    </section>
 
-    <!-- Best Sellers Section -->
-    <section class="bestseller-section section-padding" id="bestseller">
-        <div class="container">
-            <div class="row align-items-center g-5">
-                <!-- Content Column -->
-                <div class="col-lg-5" data-aos="fade-right">
-                    <div class="bestseller-content">
-                        <span class="section-badge">Featured</span>
-                        <h2 class="section-title">Our <span class="text-golden">Best Sellers</span></h2>
-                        <p class="section-description">
-                            These crowd favorites have won the hearts of thousands. 
-                            Experience the dishes that made us famous.
-                        </p>
-                        
-                        <div class="bestseller-features">
-                            <div class="bs-feature">
-                                <i class="bi bi-check-circle-fill"></i>
-                                <span>Hand-picked premium cuts</span>
-                            </div>
-                            <div class="bs-feature">
-                                <i class="bi bi-check-circle-fill"></i>
-                                <span>Secret family spice blend</span>
-                            </div>
-                            <div class="bs-feature">
-                                <i class="bi bi-check-circle-fill"></i>
-                                <span>Slow-roasted to perfection</span>
-                            </div>
-                            <div class="bs-feature">
-                                <i class="bi bi-check-circle-fill"></i>
-                                <span>Served fresh daily</span>
-                            </div>
+        <div class="featured-carousel-wrapper">
+            <div class="featured-grid" id="featuredGrid">
+                @forelse($menuItems->take(3) as $item)
+                    @php
+                        $featuredImageUrl = $item->image_url;
+                    @endphp
+                    <article class="featured-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                        <div class="featured-card-image">
+                            <img src="{{ $featuredImageUrl }}"
+                                 alt="{{ $item->name }}"
+                                 loading="lazy"
+                                 class="img-fluid">
                         </div>
-                        
-                        <a href="#order" class="btn btn-golden btn-lg mt-4">
-                            <span>Order Best Sellers</span>
-                            <i class="bi bi-bag-check ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Cards Column -->
-                <div class="col-lg-7" data-aos="fade-left" data-aos-delay="100">
-                    <div class="bestseller-showcase">
-                        @forelse($menuItems->take(3) as $index => $item)
-                            <div class="bestseller-card {{ $index === 0 ? 'featured' : '' }}">
-                                <div class="bs-card-image">
-                                    @php
-                                        $bsImageUrl = $item->image_url;
-                                    @endphp
-                                    <img src="{{ $bsImageUrl }}"
-                                         alt="{{ $item->name }}"
-                                         loading="lazy">
-                                </div>
-                                <div class="bs-card-content">
-                                    <h4 class="bs-card-title">{{ $item->name }}</h4>
-                                    <p class="bs-card-desc">{{ Str::limit($item->description, 60) }}</p>
-                                    <div class="bs-card-footer">
-                                        <span class="bs-card-price">${{ number_format($item->price, 2) }}</span>
-                                        <div class="bs-card-rating">
-                                            <i class="bi bi-star-fill"></i>
-                                            <span>4.9</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="menu-empty-state" role="status" aria-live="polite">
-                                <h3>No menu items available yet.</h3>
-                                <p>Please check back soon!</p>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Background Elements -->
-        <div class="bestseller-bg">
-            <div class="bg-circle"></div>
-            <div class="bg-dots"></div>
-        </div>
-    </section>
-
-    <!-- Locations Section -->
-    <section class="locations-section section-padding" id="locations">
-        <div class="container">
-            <!-- Section Header -->
-            <div class="section-header text-center" data-aos="fade-up">
-                <span class="section-badge">{{ $locationBadgeText }}</span>
-                <h2 class="section-title">Our <span class="text-golden">{{ $locationTitleWord }}</span></h2>
-                <p class="section-description">
-                    {{ $locationDescription }}
-                </p>
-            </div>
-            
-            <!-- Locations Grid -->
-            <div class="locations-grid {{ $isSingleLocation ? 'is-single' : '' }}">
-                @forelse($locations as $index => $location)
-                    <x-location-card :location="$location" data-aos-delay="{{ $index * 100 }}" />
+                        <div class="featured-card-body">
+                            <h3 class="featured-card-title">{{ $item->name }}</h3>
+                            @if($item->description)
+                                <p class="featured-card-desc">{{ Str::limit($item->description, 55) }}</p>
+                            @endif
+                            @if(isset($item->price) && $item->price)
+                                <span class="featured-card-price">${{ number_format($item->price, 2) }}</span>
+                            @endif
+                            <a href="#order" class="btn btn-featured-order">Order Now</a>
+                        </div>
+                    </article>
                 @empty
-                    <div class="locations-empty-state" role="status" aria-live="polite">
-                        <h3>No locations available yet.</h3>
-                        <p>Please check back soon!</p>
+                    <div class="featured-empty" role="status" aria-live="polite">
+                        <p>Menu items coming soon.</p>
                     </div>
                 @endforelse
             </div>
         </div>
+
+        <div class="carousel-dots" id="featuredDots">
+            @forelse($menuItems->take(3) as $item)
+                <button class="carousel-dot {{ $loop->first ? 'is-active' : '' }}" data-index="{{ $loop->index }}" aria-label="Go to item {{ $loop->iteration }}"></button>
+            @empty
+            @endforelse
+        </div>
+
+        <div class="featured-view-all-wrap">
+            <a href="{{ route('mobile.menu') }}" class="btn-view-full-menu">
+                View Full Menu <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials-section section-padding" id="testimonials">
+    <!-- Delivery Partners -->
+    <section class="delivery-section" id="order">
         <div class="container">
-            <!-- Section Header -->
-            <div class="section-header text-center" data-aos="fade-up">
-                <span class="section-badge">Testimonials</span>
-                <h2 class="section-title">What Our <span class="text-golden">Guests Say</span></h2>
-                <p class="section-description">
-                    Don't just take our word for it — hear from our happy customers
-                </p>
-            </div>
-            
-            <!-- Testimonials Slider -->
-            <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="100">
-                <div class="slider-wrapper" id="testimonialsSlider">
-                    @forelse($testimonials as $testimonial)
-                        <x-testimonial-card :testimonial="$testimonial" />
-                    @empty
-                        <div class="testimonials-empty-state" role="status" aria-live="polite">
-                            <h3>No feedback yet.</h3>
-                            <p>Be the first guest to share your experience.</p>
-                        </div>
-                    @endforelse
+            <div class="delivery-partners-row">
+                <div class="delivery-partner">
+                    <img src="{{ asset('images/delivery/skipthedishes.svg') }}" alt="Skip The Dishes" loading="lazy">
                 </div>
-                
-                <!-- Slider Controls -->
-                @if(count($testimonials) > 0)
-                    <div class="slider-controls">
-                        <button class="slider-btn slider-prev" id="testimonialPrev">
-                            <i class="bi bi-arrow-left"></i>
-                        </button>
-                        <div class="slider-dots" id="testimonialDots"></div>
-                        <button class="slider-btn slider-next" id="testimonialNext">
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
-                    </div>
-                @endif
-            </div>
-        </div>
-        
-        <!-- Background Pattern -->
-        <div class="testimonials-pattern"></div>
-    </section>
-
-    <!-- Feedback Section -->
-    <section class="feedback-section section-padding" id="feedback">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="section-header text-center" data-aos="fade-up">
-                        <span class="section-badge">Feedback</span>
-                        <h2 class="section-title">Share Your <span class="text-golden">Experience</span></h2>
-                        <p class="section-description">
-                            We'd love to hear your thoughts about our food &amp; service
-                        </p>
-                    </div>
-
-                    @if(session('feedback_success'))
-                        <div class="feedback-success-banner" data-aos="fade-up" role="status">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>{{ session('feedback_success') }}</span>
-                        </div>
-                    @endif
-
-                    <div class="feedback-form-card" data-aos="fade-up" data-aos-delay="100">
-                        <form action="{{ route('home.feedback') }}" method="POST" class="feedback-form">
-                            @csrf
-
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="customer_name" class="feedback-label">Your Name</label>
-                                    <input id="customer_name" type="text" name="customer_name" class="feedback-input @error('customer_name') is-invalid @enderror" value="{{ old('customer_name') }}" placeholder="Enter your name" required>
-                                    @error('customer_name')
-                                        <p class="feedback-error">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="customer_email" class="feedback-label">Email (optional)</label>
-                                    <input id="customer_email" type="email" name="customer_email" class="feedback-input @error('customer_email') is-invalid @enderror" value="{{ old('customer_email') }}" placeholder="your@email.com">
-                                    @error('customer_email')
-                                        <p class="feedback-error">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="col-12">
-                                    <label id="rating-label" class="feedback-label">Rating</label>
-                                    <div class="feedback-stars @error('rating') is-invalid @enderror" role="radiogroup" aria-labelledby="rating-label">
-                                        @for($rating = 5; $rating >= 1; $rating--)
-                                            <input
-                                                class="feedback-star-input"
-                                                type="radio"
-                                                id="rating-{{ $rating }}"
-                                                name="rating"
-                                                value="{{ $rating }}"
-                                                @checked((int) old('rating', 5) === $rating)
-                                                required
-                                            >
-                                            <label class="feedback-star-label" for="rating-{{ $rating }}" aria-label="{{ $rating }} Star{{ $rating > 1 ? 's' : '' }}">
-                                                <i class="bi bi-star-fill"></i>
-                                            </label>
-                                        @endfor
-                                    </div>
-                                    <p class="feedback-star-hint">Tap a star to rate your experience.</p>
-                                    @error('rating')
-                                        <p class="feedback-error">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="message" class="feedback-label">Your Feedback</label>
-                                    <textarea id="message" name="message" class="feedback-input feedback-textarea @error('message') is-invalid @enderror" placeholder="Tell us about your experience..." maxlength="500" required>{{ old('message') }}</textarea>
-                                    @error('message')
-                                        <p class="feedback-error">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-golden mt-4 w-100">
-                                <i class="bi bi-send me-2"></i>
-                                <span>Submit Feedback</span>
-                            </button>
-                        </form>
-                    </div>
+                <div class="delivery-partner delivery-partner--text delivery-partner--doordash">
+                    <span class="delivery-logo-doordash">
+                        <svg viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="DoorDash" role="img" height="32">
+                            <text x="0" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="800" fill="#FF3008">DoorDash</text>
+                        </svg>
+                    </span>
+                </div>
+                <div class="delivery-partner delivery-partner--text delivery-partner--ubereats">
+                    <span class="delivery-logo-ubereats">
+                        <svg viewBox="0 0 130 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Uber Eats" role="img" height="32">
+                            <text x="0" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="800" fill="#000">Uber</text>
+                            <text x="74" y="26" font-family="Arial,sans-serif" font-size="28" font-weight="800" fill="#06C167">Eats</text>
+                        </svg>
+                    </span>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- CTA Order Section -->
-    <section class="cta-section" id="order">
-        <div class="cta-background">
-            <div class="cta-overlay"></div>
-            <div class="cta-pattern"></div>
-        </div>
-        
-        <div class="container">
-            <div class="cta-content" data-aos="zoom-in">
-                <span class="cta-badge">Ready to Order?</span>
-                <h2 class="cta-title">
-                    Visit Your Nearest <span class="text-golden">Pita Queen</span> Today
-                </h2>
-                <p class="cta-description">
-                    Discover our locations and enjoy premium Canadian cuisine 
-                    served fresh daily in-store.
-                </p>
-                
-                <div class="cta-buttons">
-                    <a href="#locations" class="btn btn-golden btn-lg">
-                        <i class="bi bi-geo-alt me-2"></i>
-                        <span>View Locations</span>
-                    </a>
-                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $contactSettings['contact_phone']) }}" class="btn btn-outline-light btn-lg">
-                        <i class="bi bi-telephone me-2"></i>
-                        <span>Call Us</span>
-                    </a>
-                </div>
-                
-                <!-- Delivery Partners -->
-                <div class="delivery-partners">
-                    <span class="partners-label">Also available on:</span>
-                    <div class="partners-logos">
-                        <span class="partner-badge">UberEats</span>
-                        <span class="partner-badge">DoorDash</span>
-                        <span class="partner-badge">Grubhub</span>
-                    </div>
-                </div>
-            </div>
+            <p class="delivery-copyright">&copy; {{ date('Y') }} Pita Queen. All Rights Reserved.</p>
         </div>
     </section>
 
@@ -543,5 +211,62 @@
             </section>
         </div>
     @endif
+
+@push('scripts')
+<script>
+(function () {
+    var grid = document.getElementById('featuredGrid');
+    var prevBtn = document.getElementById('featuredPrev');
+    var nextBtn = document.getElementById('featuredNext');
+    var dots = document.querySelectorAll('.carousel-dot');
+
+    if (!grid || !prevBtn || !nextBtn) { return; }
+
+    function getCardWidth() {
+        var card = grid.querySelector('.featured-card');
+        if (!card) { return 220; }
+        return card.offsetWidth + parseInt(getComputedStyle(grid).gap || '16');
+    }
+
+    function updateDots() {
+        var idx = Math.round(grid.scrollLeft / getCardWidth());
+        dots.forEach(function (dot, i) {
+            dot.classList.toggle('is-active', i === idx);
+        });
+    }
+
+    prevBtn.addEventListener('click', function () {
+        grid.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', function () {
+        grid.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+    });
+
+    dots.forEach(function (dot) {
+        dot.addEventListener('click', function () {
+            var idx = parseInt(dot.dataset.index);
+            grid.scrollTo({ left: idx * getCardWidth(), behavior: 'smooth' });
+        });
+    });
+
+    grid.addEventListener('scroll', updateDots);
+    updateDots();
+
+    // Auto-advance every 5 seconds
+    var totalCards = grid.querySelectorAll('.featured-card').length;
+    var autoInterval = setInterval(function () {
+        var currentIdx = Math.round(grid.scrollLeft / getCardWidth());
+        var nextIdx = (currentIdx + 1) % totalCards;
+        grid.scrollTo({ left: nextIdx * getCardWidth(), behavior: 'smooth' });
+    }, 5000);
+
+    // Pause auto-advance when user interacts
+    grid.addEventListener('touchstart', function () { clearInterval(autoInterval); }, { passive: true });
+    prevBtn.addEventListener('click', function () { clearInterval(autoInterval); });
+    nextBtn.addEventListener('click', function () { clearInterval(autoInterval); });
+})();
+</script>
+@endpush
 
 @endsection
