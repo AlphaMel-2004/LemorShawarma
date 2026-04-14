@@ -183,6 +183,41 @@
             </a>
         </div>
     </div>
+
+    <!-- Snowman -->
+    <div class="hero-snowman" aria-hidden="true">
+        <!-- Hat -->
+        <div class="snowman-hat">
+            <div class="snowman-hat-brim"></div>
+            <div class="snowman-hat-top"></div>
+        </div>
+        <!-- Head -->
+        <div class="snowman-head">
+            <div class="snowman-eye snowman-eye--left"></div>
+            <div class="snowman-eye snowman-eye--right"></div>
+            <div class="snowman-nose"></div>
+            <div class="snowman-smile">
+                <div class="snowman-tooth"></div>
+                <div class="snowman-tooth"></div>
+                <div class="snowman-tooth"></div>
+            </div>
+        </div>
+        <!-- Body -->
+        <div class="snowman-body">
+            <div class="snowman-button"></div>
+            <div class="snowman-button"></div>
+            <div class="snowman-button"></div>
+            <!-- Scarf -->
+            <div class="snowman-scarf">
+                <div class="snowman-scarf-knot"></div>
+            </div>
+            <!-- Arms -->
+            <div class="snowman-arm snowman-arm--left"></div>
+            <div class="snowman-arm snowman-arm--right"></div>
+        </div>
+        <!-- Snow base -->
+        <div class="snowman-base"></div>
+    </div>
 </section>
 
 @once

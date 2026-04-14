@@ -78,6 +78,9 @@
         </div>
     </div>
 
+    <!-- Snow Animation -->
+    <canvas id="snowCanvas" aria-hidden="true"></canvas>
+
     <!-- Main Content -->
     <div class="page-wrapper">
         @if(trim($__env->yieldContent('hide_layout_chrome')) !== '1')
@@ -102,6 +105,80 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Snow Season Animation -->
+    <script>
+    (function () {
+        var canvas = document.getElementById('snowCanvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var flakes = [];
+        var COUNT = 35;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function random(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function createFlake() {
+            return {
+                x: random(0, canvas.width),
+                y: random(-canvas.height, 0),
+                r: random(1, 2.8),
+                speed: random(0.4, 1.1),
+                drift: random(-0.2, 0.2),
+                opacity: random(0.3, 0.65),
+                swing: random(0, Math.PI * 2),
+                swingSpeed: random(0.004, 0.012)
+            };
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+
+        for (var i = 0; i < COUNT; i++) {
+            var f = createFlake();
+            f.y = random(0, canvas.height);
+            flakes.push(f);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < flakes.length; i++) {
+                var f = flakes[i];
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,255,' + f.opacity + ')';
+                ctx.fill();
+            }
+        }
+
+        function update() {
+            for (var i = 0; i < flakes.length; i++) {
+                var f = flakes[i];
+                f.swing += f.swingSpeed;
+                f.x += Math.sin(f.swing) * 0.6 + f.drift;
+                f.y += f.speed;
+                if (f.y > canvas.height + 10) {
+                    flakes[i] = createFlake();
+                    flakes[i].y = -6;
+                }
+            }
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+    })();
+    </script>
     
     <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

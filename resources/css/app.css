@@ -176,6 +176,52 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   Snow Season Animation
+   ============================================ */
+#snowCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Snow pile caps on top of key containers */
+.hero-glass-card::before,
+.hero-quick-info::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 4%;
+    right: 4%;
+    height: 22px;
+    background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(255,255,255,0.95) 0%, rgba(230,245,255,0.75) 50%, transparent 100%);
+    border-radius: 50% 52% 44% 56% / 100% 100% 0 0;
+    pointer-events: none;
+    z-index: 4;
+    filter: blur(2.5px);
+    box-shadow: 0 -4px 18px rgba(200, 230, 255, 0.45), 0 0 28px rgba(255,255,255,0.3);
+}
+
+/* Second snow layer for depth */
+.hero-glass-card::after,
+.hero-quick-info::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 12%;
+    right: 12%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 40% 60% 38% 62% / 100% 100% 0 0;
+    pointer-events: none;
+    z-index: 5;
+    filter: blur(3px);
+}
+
+/* ============================================
    Page Loader
    ============================================ */
 .page-loader {
@@ -3404,10 +3450,10 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
-    background: rgba(20, 4, 4, 0.52);
+    background: rgba(20, 4, 4, 0.14);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 16px;
     padding: 12px 20px;
 }
@@ -3481,7 +3527,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-glass-card {
-    background: rgba(20, 4, 4, 0.52);
+    background: rgba(20, 4, 4, 0.12);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -3521,6 +3567,177 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateX(-50%) translateY(-2px);
     box-shadow: 0 8px 26px rgba(212, 175, 55, 0.6);
     color: var(--color-black);
+}
+
+/* ============================================
+   Hero Snowman
+   ============================================ */
+.hero-snowman {
+    position: absolute;
+    bottom: 0;
+    right: clamp(16px, 4vw, 56px);
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: snowmanBob 5s ease-in-out infinite;
+    transform-origin: bottom center;
+    opacity: 0.92;
+}
+
+@keyframes snowmanBob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-4px); }
+}
+
+/* Hat */
+.snowman-hat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: -1px;
+}
+
+.snowman-hat-brim {
+    width: 40px;
+    height: 5px;
+    background: #1a1a1a;
+    border-radius: 3px;
+}
+
+.snowman-hat-top {
+    width: 26px;
+    height: 22px;
+    background: #1a1a1a;
+    border-radius: 3px 3px 1px 1px;
+    border-top: 2px solid var(--color-gold);
+}
+
+/* Head */
+.snowman-head {
+    width: 38px;
+    height: 38px;
+    background: radial-gradient(circle at 38% 38%, #ffffff, #dceeff);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset -3px -3px 7px rgba(180,210,240,0.4), 0 3px 8px rgba(0,0,0,0.25);
+}
+
+.snowman-eye {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    top: 12px;
+}
+
+.snowman-eye--left  { left: 8px; }
+.snowman-eye--right { right: 8px; }
+
+.snowman-nose {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 9px solid #e07020;
+    transform: translateX(-50%) rotate(180deg);
+}
+
+.snowman-smile {
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 3px;
+}
+
+.snowman-tooth {
+    width: 3px;
+    height: 3px;
+    background: #1a1a1a;
+    border-radius: 50%;
+}
+
+/* Body */
+.snowman-body {
+    width: 52px;
+    height: 52px;
+    background: radial-gradient(circle at 38% 36%, #ffffff, #dceeff);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset -3px -3px 9px rgba(180,210,240,0.4), 0 4px 12px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding-top: 12px;
+}
+
+.snowman-button {
+    width: 5px;
+    height: 5px;
+    background: #2a2a2a;
+    border-radius: 50%;
+}
+
+/* Scarf */
+.snowman-scarf {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    height: 9px;
+    background: #c0392b;
+    border-radius: 6px;
+}
+
+.snowman-scarf-knot {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 7px;
+    height: 11px;
+    background: #a93226;
+    border-radius: 3px;
+}
+
+/* Arms */
+.snowman-arm {
+    position: absolute;
+    top: 16px;
+    width: 24px;
+    height: 3px;
+    background: #5a3a1a;
+    border-radius: 3px;
+}
+
+.snowman-arm--left {
+    left: -22px;
+    transform: rotate(30deg);
+    transform-origin: right center;
+}
+
+.snowman-arm--right {
+    right: -22px;
+    transform: rotate(-30deg);
+    transform-origin: left center;
+}
+
+/* Snow base mound */
+.snowman-base {
+    width: 66px;
+    height: 12px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.8), transparent 80%);
+    border-radius: 50%;
+    margin-top: -3px;
+    filter: blur(2px);
 }
 
 .hero-script-name {
