@@ -106,6 +106,8 @@
         <div class="season-switcher" role="group" aria-label="Season theme">
             <button class="season-btn" data-season="winter" title="Winter" aria-label="Winter theme">❄️</button>
             <button class="season-btn" data-season="spring" title="Spring" aria-label="Spring theme">🌸</button>
+            <button class="season-btn" data-season="summer" title="Summer" aria-label="Summer theme">☀️</button>
+            <button class="season-btn" data-season="fall" title="Fall" aria-label="Fall theme">🍂</button>
         </div>
     @endif
 
@@ -121,10 +123,12 @@
         var particles = [];
         var WINTER_COUNT = 35;
         var SPRING_COUNT = 28;
+        var SUMMER_COUNT = 22;
+        var FALL_COUNT   = 16;
         var currentSeason = localStorage.getItem('pq_season') || 'winter';
 
         function applySeasonClass(season) {
-            document.body.classList.remove('season-winter', 'season-spring');
+            document.body.classList.remove('season-winter', 'season-spring', 'season-summer', 'season-fall');
             document.body.classList.add('season-' + season);
         }
 
@@ -187,6 +191,61 @@
                 ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(255,255,255,' + f.opacity + ')';
                 ctx.fill();
+            }
+        }
+
+        /* ---- Summer ---- */
+        var SUMMER_COLORS = [
+            'rgba(255,220,80,', 'rgba(255,180,40,', 'rgba(255,240,150,',
+            'rgba(255,200,60,', 'rgba(255,255,200,'
+        ];
+
+        function createFirefly() {
+            return {
+                x: random(0, canvas.width),
+                y: random(canvas.height * 0.5, canvas.height * 1.2),
+                r: random(1.2, 3.0),
+                speed: random(0.35, 0.9),
+                drift: random(-0.3, 0.3),
+                opacity: random(0.5, 0.92),
+                pulse: random(0, Math.PI * 2),
+                pulseSpeed: random(0.025, 0.055),
+                swing: random(0, Math.PI * 2),
+                swingSpeed: random(0.006, 0.016),
+                colorBase: SUMMER_COLORS[Math.floor(random(0, SUMMER_COLORS.length))]
+            };
+        }
+
+        function updateSummer() {
+            for (var i = 0; i < particles.length; i++) {
+                var f = particles[i];
+                f.pulse += f.pulseSpeed;
+                f.swing += f.swingSpeed;
+                f.x += Math.sin(f.swing) * 0.8 + f.drift;
+                f.y -= f.speed;
+                if (f.x < -f.r)               { f.x = canvas.width + f.r; }
+                if (f.x > canvas.width + f.r)  { f.x = -f.r; }
+                if (f.y < -10) {
+                    particles[i] = createFirefly();
+                    particles[i].y = canvas.height + 10;
+                }
+            }
+        }
+
+        function drawSummer() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < particles.length; i++) {
+                var f = particles[i];
+                var alpha = f.opacity * (0.5 + 0.5 * Math.sin(f.pulse));
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.shadowColor = f.colorBase + '1)';
+                ctx.shadowBlur = f.r * 5;
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                ctx.fillStyle = f.colorBase + '1)';
+                ctx.fill();
+                ctx.restore();
             }
         }
 
@@ -257,20 +316,97 @@
             }
         }
 
+        /* ---- Fall ---- */
+        var FALL_COLORS = [
+            '#e8622a', '#c0392b', '#e67e22', '#d4ac0d', '#b7500f',
+            '#f39c12', '#922b21', '#f0a500'
+        ];
+
+        function createLeaf() {
+            return {
+                x: random(0, canvas.width),
+                y: random(-canvas.height, 0),
+                size: random(4, 7),
+                speed: random(0.6, 1.6),
+                drift: random(-1.0, 1.0),
+                opacity: random(0.72, 0.95),
+                swing: random(0, Math.PI * 2),
+                swingSpeed: random(0.01, 0.025),
+                angle: random(0, Math.PI * 2),
+                spin: random(-0.05, 0.05),
+                color: FALL_COLORS[Math.floor(random(0, FALL_COLORS.length))]
+            };
+        }
+
+        function updateFall() {
+            for (var i = 0; i < particles.length; i++) {
+                var l = particles[i];
+                l.swing += l.swingSpeed;
+                l.x += Math.sin(l.swing) * 2.2 + l.drift;
+                l.y += l.speed;
+                l.angle += l.spin;
+                if (l.x < -l.size)               { l.x = canvas.width + l.size; }
+                if (l.x > canvas.width + l.size)  { l.x = -l.size; }
+                if (l.y > canvas.height + 16) {
+                    particles[i] = createLeaf();
+                    particles[i].y = -14;
+                }
+            }
+        }
+
+        function drawFall() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < particles.length; i++) {
+                var l = particles[i];
+                ctx.save();
+                ctx.globalAlpha = l.opacity;
+                ctx.translate(l.x, l.y);
+                ctx.rotate(l.angle);
+                var s = l.size;
+                /* Simple maple-like leaf: ellipse body + pointed tip */
+                ctx.beginPath();
+                ctx.ellipse(0, 0, s * 0.55, s, 0, 0, Math.PI * 2);
+                ctx.fillStyle = l.color;
+                ctx.fill();
+                /* Stem */
+                ctx.beginPath();
+                ctx.moveTo(0, s);
+                ctx.lineTo(0, s + s * 0.55);
+                ctx.strokeStyle = l.color;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
         /* ---- Engine ---- */
+        function getTargetCount(season) {
+            if (season === 'spring') { return SPRING_COUNT; }
+            if (season === 'summer') { return SUMMER_COUNT; }
+            if (season === 'fall')   { return FALL_COUNT; }
+            return WINTER_COUNT;
+        }
+
+        function makeParticle(season) {
+            if (season === 'spring') { return createPetal(); }
+            if (season === 'summer') { return createFirefly(); }
+            if (season === 'fall')   { return createLeaf(); }
+            return createSnowflake();
+        }
+
         function swapParticles(season) {
-            var targetCount = season === 'spring' ? SPRING_COUNT : WINTER_COUNT;
+            var targetCount = getTargetCount(season);
             /* Re-type existing particles in-place so array is never empty */
             for (var i = 0; i < particles.length; i++) {
                 var cur = particles[i];
-                var np  = season === 'spring' ? createPetal() : createSnowflake();
+                var np  = makeParticle(season);
                 np.x = cur.x;
                 np.y = cur.y;
                 particles[i] = np;
             }
             /* Add or remove to reach target count */
             while (particles.length < targetCount) {
-                var p = season === 'spring' ? createPetal() : createSnowflake();
+                var p = makeParticle(season);
                 p.y = random(0, canvas.height);
                 particles.push(p);
             }
@@ -281,9 +417,9 @@
 
         function initParticles(season) {
             particles = [];
-            var count = season === 'spring' ? SPRING_COUNT : WINTER_COUNT;
+            var count = getTargetCount(season);
             for (var i = 0; i < count; i++) {
-                var p = season === 'spring' ? createPetal() : createSnowflake();
+                var p = makeParticle(season);
                 p.y = random(0, canvas.height);
                 particles.push(p);
             }
@@ -293,6 +429,12 @@
             if (currentSeason === 'spring') {
                 updateSpring();
                 drawSpring();
+            } else if (currentSeason === 'summer') {
+                updateSummer();
+                drawSummer();
+            } else if (currentSeason === 'fall') {
+                updateFall();
+                drawFall();
             } else {
                 updateWinter();
                 drawWinter();

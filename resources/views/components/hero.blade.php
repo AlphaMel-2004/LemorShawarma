@@ -219,6 +219,57 @@
         <div class="snowman-base"></div>
     </div>
 
+    <!-- Fall Mascot -->
+    <div class="hero-fall-mascot" aria-hidden="true">
+        <div class="fall-pumpkin">
+            <div class="fall-pumpkin-stem">
+                <div class="fall-pumpkin-tendril"></div>
+            </div>
+            <div class="fall-pumpkin-body">
+                <div class="fall-pumpkin-lobe fall-pumpkin-lobe--l"></div>
+                <div class="fall-pumpkin-lobe fall-pumpkin-lobe--c"></div>
+                <div class="fall-pumpkin-lobe fall-pumpkin-lobe--r"></div>
+                <div class="fall-pumpkin-glow"></div>
+                <div class="fall-pumpkin-face">
+                    <div class="fall-pumpkin-eye fall-pumpkin-eye--l">
+                        <div class="fall-pumpkin-eye-shine"></div>
+                    </div>
+                    <div class="fall-pumpkin-eye fall-pumpkin-eye--r">
+                        <div class="fall-pumpkin-eye-shine"></div>
+                    </div>
+                    <div class="fall-pumpkin-smile"></div>
+                    <div class="fall-pumpkin-cheek fall-pumpkin-cheek--l"></div>
+                    <div class="fall-pumpkin-cheek fall-pumpkin-cheek--r"></div>
+                </div>
+            </div>
+        </div>
+        <div class="fall-pumpkin-shadow"></div>
+    </div>
+
+    <!-- Summer Mascot -->
+    <div class="hero-summer-mascot" aria-hidden="true">
+        <div class="summer-sun">
+            <div class="summer-rays">
+                <div class="summer-ray summer-ray--1"></div>
+                <div class="summer-ray summer-ray--2"></div>
+                <div class="summer-ray summer-ray--3"></div>
+                <div class="summer-ray summer-ray--4"></div>
+                <div class="summer-ray summer-ray--5"></div>
+                <div class="summer-ray summer-ray--6"></div>
+                <div class="summer-ray summer-ray--7"></div>
+                <div class="summer-ray summer-ray--8"></div>
+            </div>
+            <div class="summer-sun-core">
+                <div class="summer-sun-face">
+                    <div class="summer-sun-eye summer-sun-eye--left"></div>
+                    <div class="summer-sun-eye summer-sun-eye--right"></div>
+                    <div class="summer-sun-smile"></div>
+                </div>
+            </div>
+        </div>
+        <div class="summer-sun-glow"></div>
+    </div>
+
     <!-- Spring Mascot -->
     <div class="hero-spring-mascot" aria-hidden="true">
         <div class="spring-flower-head">

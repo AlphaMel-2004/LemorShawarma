@@ -185,7 +185,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 3;
     display: block;
     -webkit-mask-image: linear-gradient(to bottom, black 55vh, transparent 82vh);
     mask-image: linear-gradient(to bottom, black 55vh, transparent 82vh);
@@ -3744,8 +3744,17 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Season mascot visibility */
 .hero-spring-mascot { display: none; }
+.hero-summer-mascot { display: none; }
+.hero-fall-mascot   { display: none; }
 .season-spring .hero-spring-mascot { display: flex; }
 .season-spring .hero-snowman { display: none; }
+.season-summer .hero-summer-mascot { display: flex; }
+.season-summer .hero-snowman { display: none; }
+.season-summer .hero-spring-mascot { display: none; }
+.season-fall   .hero-fall-mascot { display: flex; }
+.season-fall   .hero-snowman { display: none; }
+.season-fall   .hero-spring-mascot { display: none; }
+.season-fall   .hero-summer-mascot { display: none; }
 
 /* Spring  – card atmosphere */
 .season-spring .hero-glass-card {
@@ -3780,6 +3789,369 @@ h1, h2, h3, h4, h5, h6 {
         rgba(40, 8, 20, 0.55) 80%,
         rgba(88, 16, 22, 1) 100%
     );
+}
+
+/* ============================================
+   Summer – card atmosphere, overlay, mascot
+   ============================================ */
+.season-summer .hero-glass-card {
+    background: rgba(30, 18, 2, 0.12);
+    border-color: rgba(255, 200, 60, 0.28);
+    box-shadow: 0 0 40px rgba(255, 180, 40, 0.14);
+    transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+}
+
+.season-summer .hero-quick-info {
+    background: rgba(30, 18, 2, 0.13);
+    border-color: rgba(255, 200, 60, 0.22);
+    transition: background 0.6s ease, border-color 0.6s ease;
+}
+
+/* Summer – hide snow pile caps */
+.season-summer .hero-glass-card::before,
+.season-summer .hero-quick-info::before,
+.season-summer .hero-glass-card::after,
+.season-summer .hero-quick-info::after {
+    content: none;
+}
+
+/* Summer – warm amber overlay tint */
+.season-summer .hero-overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(80, 40, 0, 0.04) 0%,
+        rgba(30, 14, 2, 0.16) 45%,
+        rgba(40, 18, 4, 0.56) 80%,
+        rgba(88, 40, 10, 1) 100%
+    );
+    transition: background 0.6s ease;
+}
+
+/* ============================================
+   Summer Mascot – CSS sun
+   ============================================ */
+.hero-summer-mascot {
+    position: absolute;
+    bottom: 12px;
+    right: clamp(16px, 4vw, 56px);
+    z-index: 8;
+    flex-direction: column;
+    align-items: center;
+    animation: summerBob 4s ease-in-out infinite;
+    contain: layout paint style;
+}
+
+@keyframes summerBob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+}
+
+.summer-sun {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.summer-rays {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    animation: sunSpin 10s linear infinite;
+}
+
+@keyframes sunSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.summer-ray {
+    position: absolute;
+    width: 5px;
+    height: 14px;
+    background: linear-gradient(to bottom, rgba(255, 230, 80, 0.92), rgba(255, 160, 20, 0.3));
+    border-radius: 3px;
+    top: 7px;
+    left: 33.5px;
+    transform-origin: 2.5px 29px;
+}
+
+.summer-ray--1 { transform: rotate(0deg); }
+.summer-ray--2 { transform: rotate(45deg); }
+.summer-ray--3 { transform: rotate(90deg); }
+.summer-ray--4 { transform: rotate(135deg); }
+.summer-ray--5 { transform: rotate(180deg); }
+.summer-ray--6 { transform: rotate(225deg); }
+.summer-ray--7 { transform: rotate(270deg); }
+.summer-ray--8 { transform: rotate(315deg); }
+
+.summer-sun-core {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 36%, #fff9c4, #ffd600 50%, #ff9800);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 16px rgba(255, 220, 0, 0.7), 0 0 28px rgba(255, 160, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.summer-sun-face {
+    position: relative;
+    width: 30px;
+    height: 20px;
+}
+
+.summer-sun-eye {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #7b3f00;
+    border-radius: 50%;
+    top: 3px;
+}
+
+.summer-sun-eye--left  { left: 4px; }
+.summer-sun-eye--right { right: 4px; }
+
+.summer-sun-smile {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 8px;
+    border: 3px solid #7b3f00;
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+}
+
+.summer-sun-glow {
+    width: 60px;
+    height: 14px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 200, 40, 0.45), transparent 80%);
+    border-radius: 50%;
+    margin-top: 4px;
+    filter: blur(3px);
+}
+
+/* ============================================
+   Fall – card atmosphere, overlay, mascot
+   ============================================ */
+.season-fall .hero-glass-card {
+    background: rgba(28, 12, 2, 0.13);
+    border-color: rgba(220, 100, 30, 0.30);
+    box-shadow: 0 0 40px rgba(200, 80, 20, 0.14);
+    transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+}
+
+.season-fall .hero-quick-info {
+    background: rgba(28, 12, 2, 0.14);
+    border-color: rgba(220, 100, 30, 0.24);
+    transition: background 0.6s ease, border-color 0.6s ease;
+}
+
+/* Fall – hide snow pile caps */
+.season-fall .hero-glass-card::before,
+.season-fall .hero-quick-info::before,
+.season-fall .hero-glass-card::after,
+.season-fall .hero-quick-info::after {
+    content: none;
+}
+
+/* Fall – warm amber-brown overlay */
+.season-fall .hero-overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(60, 20, 0, 0.05) 0%,
+        rgba(28, 10, 2, 0.18) 45%,
+        rgba(38, 14, 4, 0.56) 80%,
+        rgba(70, 28, 8, 1) 100%
+    );
+    transition: background 0.6s ease;
+}
+
+/* ============================================
+   Fall Mascot – CSS pumpkin
+   ============================================ */
+.hero-fall-mascot {
+    position: absolute;
+    bottom: 0;
+    right: clamp(16px, 4vw, 56px);
+    z-index: 8;
+    flex-direction: column;
+    align-items: center;
+    animation: fallBob 4.5s ease-in-out infinite;
+    contain: layout paint style;
+}
+
+@keyframes fallBob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+}
+
+.fall-pumpkin {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fall-pumpkin-stem {
+    width: 8px;
+    height: 16px;
+    background: linear-gradient(160deg, #7aaa28, #3d6a0a);
+    border-radius: 4px 6px 2px 2px;
+    margin-bottom: -4px;
+    position: relative;
+    z-index: 4;
+    transform: rotate(8deg);
+}
+
+.fall-pumpkin-tendril {
+    position: absolute;
+    top: 2px;
+    right: -8px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #5a9018;
+    border-color: #5a9018 transparent transparent transparent;
+    border-radius: 50%;
+    transform: rotate(20deg);
+}
+
+.fall-pumpkin-body {
+    width: 68px;
+    height: 58px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+/* Three overlapping lobes for a realistic pumpkin silhouette */
+.fall-pumpkin-lobe {
+    position: absolute;
+    background: radial-gradient(ellipse at 42% 32%, #ffb347, #e05f00 70%, #b84500);
+    border-radius: 50%;
+    box-shadow: inset -3px -4px 8px rgba(0,0,0,0.25);
+}
+
+.fall-pumpkin-lobe--l {
+    width: 42px;
+    height: 54px;
+    left: 0;
+    top: 2px;
+}
+
+.fall-pumpkin-lobe--c {
+    width: 50px;
+    height: 58px;
+    left: 9px;
+    top: 0;
+    background: radial-gradient(ellipse at 40% 30%, #ffc060, #e86010 65%, #bf5200);
+    box-shadow: inset -3px -5px 10px rgba(0,0,0,0.22);
+    z-index: 1;
+}
+
+.fall-pumpkin-lobe--r {
+    width: 42px;
+    height: 54px;
+    right: 0;
+    top: 2px;
+}
+
+/* Warm inner lantern glow */
+.fall-pumpkin-glow {
+    position: absolute;
+    width: 34px;
+    height: 28px;
+    background: radial-gradient(ellipse, rgba(255,200,80,0.55) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%);
+    z-index: 2;
+    animation: pumpkinPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pumpkinPulse {
+    0%, 100% { opacity: 0.7; }
+    50%       { opacity: 1; }
+}
+
+.fall-pumpkin-face {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%);
+    width: 40px;
+    height: 26px;
+    z-index: 3;
+}
+
+/* Round friendly eyes */
+.fall-pumpkin-eye {
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    background: rgba(255, 210, 60, 0.95);
+    border-radius: 50%;
+    top: 1px;
+    box-shadow: 0 0 5px rgba(255, 180, 0, 0.8);
+}
+
+.fall-pumpkin-eye--l { left: 4px; }
+.fall-pumpkin-eye--r { right: 4px; }
+
+.fall-pumpkin-eye-shine {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+}
+
+/* Warm curved smile */
+.fall-pumpkin-smile {
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 10px;
+    border: 2.5px solid rgba(255, 200, 60, 0.92);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 0 4px rgba(255, 180, 0, 0.55);
+}
+
+/* Rosy cheeks */
+.fall-pumpkin-cheek {
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    background: rgba(255, 120, 50, 0.45);
+    border-radius: 50%;
+    bottom: 6px;
+}
+
+.fall-pumpkin-cheek--l { left: 1px; }
+.fall-pumpkin-cheek--r { right: 1px; }
+
+.fall-pumpkin-shadow {
+    width: 58px;
+    height: 12px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(160,50,0,0.42), transparent 80%);
+    border-radius: 50%;
+    margin-top: 3px;
+    filter: blur(3px);
 }
 
 .hero-script-name {
