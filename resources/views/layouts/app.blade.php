@@ -78,8 +78,8 @@
         </div>
     </div>
 
-    <!-- Snow Animation -->
-    <canvas id="snowCanvas" aria-hidden="true"></canvas>
+    <!-- Season Animation -->
+    <canvas id="seasonCanvas" aria-hidden="true"></canvas>
 
     <!-- Main Content -->
     <div class="page-wrapper">
@@ -101,30 +101,57 @@
         <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
             <i class="bi bi-arrow-up"></i>
         </button>
+
+        <!-- Season Switcher -->
+        <div class="season-switcher" role="group" aria-label="Season theme">
+            <button class="season-btn" data-season="winter" title="Winter" aria-label="Winter theme">❄️</button>
+            <button class="season-btn" data-season="spring" title="Spring" aria-label="Spring theme">🌸</button>
+        </div>
     @endif
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Snow Season Animation -->
+    <!-- Season Animation Engine -->
     <script>
     (function () {
-        var canvas = document.getElementById('snowCanvas');
+        var canvas = document.getElementById('seasonCanvas');
         if (!canvas) return;
         var ctx = canvas.getContext('2d');
-        var flakes = [];
-        var COUNT = 35;
+        var particles = [];
+        var WINTER_COUNT = 35;
+        var SPRING_COUNT = 28;
+        var currentSeason = localStorage.getItem('pq_season') || 'winter';
+
+        function applySeasonClass(season) {
+            document.body.classList.remove('season-winter', 'season-spring');
+            document.body.classList.add('season-' + season);
+        }
 
         function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            var w = canvas.offsetWidth || window.innerWidth;
+            var h = canvas.offsetHeight || window.innerHeight;
+            canvas.width = w;
+            canvas.height = h;
+        }
+        var resizeTimer;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(resize, 150);
+        });
+        /* Defer first resize so CSS 100% has resolved */
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', resize);
+        } else {
+            resize();
         }
 
         function random(min, max) {
             return Math.random() * (max - min) + min;
         }
 
-        function createFlake() {
+        /* ---- Winter ---- */
+        function createSnowflake() {
             return {
                 x: random(0, canvas.width),
                 y: random(-canvas.height, 0),
@@ -137,19 +164,25 @@
             };
         }
 
-        resize();
-        window.addEventListener('resize', resize);
-
-        for (var i = 0; i < COUNT; i++) {
-            var f = createFlake();
-            f.y = random(0, canvas.height);
-            flakes.push(f);
+        function updateWinter() {
+            for (var i = 0; i < particles.length; i++) {
+                var f = particles[i];
+                f.swing += f.swingSpeed;
+                f.x += Math.sin(f.swing) * 0.6 + f.drift;
+                f.y += f.speed;
+                if (f.x < -f.r)               { f.x = canvas.width + f.r; }
+                if (f.x > canvas.width + f.r)  { f.x = -f.r; }
+                if (f.y > canvas.height + 10) {
+                    particles[i] = createSnowflake();
+                    particles[i].y = -6;
+                }
+            }
         }
 
-        function draw() {
+        function drawWinter() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (var i = 0; i < flakes.length; i++) {
-                var f = flakes[i];
+            for (var i = 0; i < particles.length; i++) {
+                var f = particles[i];
                 ctx.beginPath();
                 ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(255,255,255,' + f.opacity + ')';
@@ -157,26 +190,139 @@
             }
         }
 
-        function update() {
-            for (var i = 0; i < flakes.length; i++) {
-                var f = flakes[i];
-                f.swing += f.swingSpeed;
-                f.x += Math.sin(f.swing) * 0.6 + f.drift;
-                f.y += f.speed;
-                if (f.y > canvas.height + 10) {
-                    flakes[i] = createFlake();
-                    flakes[i].y = -6;
+        /* ---- Spring ---- */
+        var SPRING_COLORS = [
+            'rgba(255,182,193,', 'rgba(255,145,175,', 'rgba(255,218,225,',
+            'rgba(240,210,240,', 'rgba(255,255,255,'
+        ];
+
+        function createPetal() {
+            return {
+                x: random(0, canvas.width),
+                y: random(-canvas.height, 0),
+                size: random(3, 6),
+                speed: random(0.5, 1.5),
+                drift: random(-0.9, 0.9),
+                opacity: random(0.65, 0.95),
+                swing: random(0, Math.PI * 2),
+                swingSpeed: random(0.008, 0.02),
+                angle: random(0, Math.PI * 2),
+                spin: random(-0.035, 0.035),
+                colorBase: SPRING_COLORS[Math.floor(random(0, SPRING_COLORS.length))]
+            };
+        }
+
+        function updateSpring() {
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.swing += p.swingSpeed;
+                p.x += Math.sin(p.swing) * 1.8 + p.drift;
+                p.y += p.speed;
+                p.angle += p.spin;
+                /* Wrap horizontally so petals never breach the canvas edge */
+                if (p.x < -p.size)  { p.x = canvas.width + p.size; }
+                if (p.x > canvas.width + p.size) { p.x = -p.size; }
+                if (p.y > canvas.height + 14) {
+                    particles[i] = createPetal();
+                    particles[i].y = -12;
                 }
             }
         }
 
+        function drawSpring() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                ctx.save();
+                ctx.globalAlpha = p.opacity;
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                var s = p.size;
+                for (var k = 0; k < 5; k++) {
+                    ctx.save();
+                    ctx.rotate((k * 2 * Math.PI) / 5);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(s * 0.45, -s * 0.2, s * 0.55, -s * 0.85, 0, -s);
+                    ctx.bezierCurveTo(-s * 0.55, -s * 0.85, -s * 0.45, -s * 0.2, 0, 0);
+                    ctx.fillStyle = p.colorBase + '1)';
+                    ctx.fill();
+                    ctx.restore();
+                }
+                ctx.beginPath();
+                ctx.arc(0, 0, s * 0.22, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,230,80,0.95)';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        /* ---- Engine ---- */
+        function swapParticles(season) {
+            var targetCount = season === 'spring' ? SPRING_COUNT : WINTER_COUNT;
+            /* Re-type existing particles in-place so array is never empty */
+            for (var i = 0; i < particles.length; i++) {
+                var cur = particles[i];
+                var np  = season === 'spring' ? createPetal() : createSnowflake();
+                np.x = cur.x;
+                np.y = cur.y;
+                particles[i] = np;
+            }
+            /* Add or remove to reach target count */
+            while (particles.length < targetCount) {
+                var p = season === 'spring' ? createPetal() : createSnowflake();
+                p.y = random(0, canvas.height);
+                particles.push(p);
+            }
+            while (particles.length > targetCount) {
+                particles.pop();
+            }
+        }
+
+        function initParticles(season) {
+            particles = [];
+            var count = season === 'spring' ? SPRING_COUNT : WINTER_COUNT;
+            for (var i = 0; i < count; i++) {
+                var p = season === 'spring' ? createPetal() : createSnowflake();
+                p.y = random(0, canvas.height);
+                particles.push(p);
+            }
+        }
+
         function loop() {
-            update();
-            draw();
+            if (currentSeason === 'spring') {
+                updateSpring();
+                drawSpring();
+            } else {
+                updateWinter();
+                drawWinter();
+            }
             requestAnimationFrame(loop);
         }
 
+        function setSeason(season) {
+            currentSeason = season;
+            localStorage.setItem('pq_season', season);
+            applySeasonClass(season);
+            swapParticles(season);
+            document.querySelectorAll('.season-btn').forEach(function (btn) {
+                btn.classList.toggle('is-active', btn.dataset.season === season);
+            });
+        }
+
+        /* init */
+        applySeasonClass(currentSeason);
+        initParticles(currentSeason);
         loop();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.season-btn').forEach(function (btn) {
+                btn.classList.toggle('is-active', btn.dataset.season === currentSeason);
+                btn.addEventListener('click', function () {
+                    setSeason(btn.dataset.season);
+                });
+            });
+        });
     })();
     </script>
     

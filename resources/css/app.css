@@ -178,7 +178,7 @@ h1, h2, h3, h4, h5, h6 {
 /* ============================================
    Snow Season Animation
    ============================================ */
-#snowCanvas {
+#seasonCanvas {
     position: fixed;
     top: 0;
     left: 0;
@@ -186,6 +186,9 @@ h1, h2, h3, h4, h5, h6 {
     height: 100%;
     pointer-events: none;
     z-index: 9999;
+    display: block;
+    -webkit-mask-image: linear-gradient(to bottom, black 55vh, transparent 82vh);
+    mask-image: linear-gradient(to bottom, black 55vh, transparent 82vh);
 }
 
 /* Snow pile caps on top of key containers */
@@ -3411,8 +3414,7 @@ h1, h2, h3, h4, h5, h6 {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    overflow-x: hidden;
-    overflow-y: visible;
+    overflow: hidden;
     padding: 90px 20px 70px;
     gap: 14px;
 }
@@ -3740,6 +3742,46 @@ h1, h2, h3, h4, h5, h6 {
     filter: blur(2px);
 }
 
+/* Season mascot visibility */
+.hero-spring-mascot { display: none; }
+.season-spring .hero-spring-mascot { display: flex; }
+.season-spring .hero-snowman { display: none; }
+
+/* Spring  – card atmosphere */
+.season-spring .hero-glass-card {
+    background: rgba(30, 8, 18, 0.14);
+    border-color: rgba(255, 182, 193, 0.28);
+    box-shadow: 0 0 40px rgba(255, 145, 175, 0.12);
+    transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+}
+.season-spring .hero-quick-info {
+    background: rgba(30, 8, 18, 0.13);
+    border-color: rgba(255, 182, 193, 0.22);
+    transition: background 0.6s ease, border-color 0.6s ease;
+}
+.season-spring .hero-overlay {
+    transition: background 0.6s ease;
+}
+
+/* Spring – hide the snow pile caps; card atmosphere (border tint + glow) carries the spring feel */
+.season-spring .hero-glass-card::before,
+.season-spring .hero-quick-info::before,
+.season-spring .hero-glass-card::after,
+.season-spring .hero-quick-info::after {
+    content: none;
+}
+
+/* Spring – subtle warm overlay tint */
+.season-spring .hero-overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(80, 10, 40, 0.04) 0%,
+        rgba(30, 6, 16, 0.15) 45%,
+        rgba(40, 8, 20, 0.55) 80%,
+        rgba(88, 16, 22, 1) 100%
+    );
+}
+
 .hero-script-name {
     font-family: var(--font-script);
     font-size: clamp(36px, 6vw, 56px);
@@ -3855,6 +3897,201 @@ h1, h2, h3, h4, h5, h6 {
 
     .nav-brand-script {
         font-size: 26px;
+    }
+}
+
+/* ============================================
+   Spring Mascot
+   ============================================ */
+.hero-spring-mascot {
+    position: absolute;
+    bottom: 0;
+    right: clamp(16px, 4vw, 56px);
+    z-index: 8;
+    flex-direction: column;
+    align-items: center;
+    animation: springBob 3.5s ease-in-out infinite;
+    transform-origin: bottom center;
+    contain: layout paint style;
+}
+
+@keyframes springBob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-7px); }
+}
+
+.spring-flower-head {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.spring-petals {
+    position: absolute;
+    inset: 0;
+    animation: petalSpin 7s linear infinite;
+}
+
+@keyframes petalSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.spring-petal {
+    position: absolute;
+    width: 14px;
+    height: 24px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    top: calc(50% - 24px);
+    left: calc(50% - 7px);
+    transform-origin: 7px 24px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.18);
+}
+
+.spring-petal--1 { background: radial-gradient(ellipse at 50% 30%, #ffcbd8, #f0608a); transform: rotate(0deg); }
+.spring-petal--2 { background: radial-gradient(ellipse at 50% 30%, #ffd6e0, #ec7098); transform: rotate(45deg); }
+.spring-petal--3 { background: radial-gradient(ellipse at 50% 30%, #ffe0ea, #e8547a); transform: rotate(90deg); }
+.spring-petal--4 { background: radial-gradient(ellipse at 50% 30%, #ffcbd8, #f0608a); transform: rotate(135deg); }
+.spring-petal--5 { background: radial-gradient(ellipse at 50% 30%, #ffeef3, #f07898); transform: rotate(180deg); }
+.spring-petal--6 { background: radial-gradient(ellipse at 50% 30%, #ffd6e0, #ec7098); transform: rotate(225deg); }
+.spring-petal--7 { background: radial-gradient(ellipse at 50% 30%, #ffcbd8, #f0608a); transform: rotate(270deg); }
+.spring-petal--8 { background: radial-gradient(ellipse at 50% 30%, #ffe0ea, #e8547a); transform: rotate(315deg); }
+
+.spring-flower-center {
+    width: 22px;
+    height: 22px;
+    background: radial-gradient(circle at 38% 36%, #fff176, #ffc107);
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.22), 0 0 12px rgba(255,200,50,0.55);
+}
+
+.spring-stem {
+    width: 6px;
+    height: 42px;
+    background: linear-gradient(180deg, #81c784, #2e7d32);
+    border-radius: 3px;
+    position: relative;
+}
+
+.spring-leaf {
+    position: absolute;
+    width: 18px;
+    height: 11px;
+    background: linear-gradient(120deg, #66bb6a, #388e3c);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+.spring-leaf--left {
+    left: -15px;
+    top: 10px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-40deg);
+    animation: leafWiggleL 2.8s ease-in-out infinite;
+    transform-origin: right center;
+}
+
+.spring-leaf--right {
+    right: -15px;
+    top: 24px;
+    border-radius: 50% 50% 0 50%;
+    transform: rotate(40deg);
+    animation: leafWiggleR 2.8s ease-in-out infinite;
+    transform-origin: left center;
+}
+
+@keyframes leafWiggleL {
+    0%, 100% { transform: rotate(-40deg) scale(1); }
+    50%       { transform: rotate(-28deg) scale(1.1); }
+}
+
+@keyframes leafWiggleR {
+    0%, 100% { transform: rotate(40deg) scale(1); }
+    50%       { transform: rotate(28deg) scale(1.1); }
+}
+
+.spring-pot-rim {
+    width: 50px;
+    height: 9px;
+    background: linear-gradient(135deg, #d4773f, #b56230);
+    border-radius: 5px;
+    margin-bottom: -2px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.spring-pot {
+    width: 40px;
+    height: 28px;
+    background: linear-gradient(160deg, #c0623a, #8d4120);
+    clip-path: polygon(6% 0%, 94% 0%, 100% 100%, 0% 100%);
+    border-radius: 0 0 5px 5px;
+}
+
+.spring-base {
+    width: 72px;
+    height: 14px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(129,199,132,0.55), transparent 80%);
+    border-radius: 50%;
+    margin-top: -3px;
+    filter: blur(2.5px);
+}
+
+/* ============================================
+   Season Switcher
+   ============================================ */
+.season-switcher {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: rgba(10, 2, 2, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 50px;
+    padding: 8px 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    transform: translateZ(0);
+}
+
+.season-btn {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+    opacity: 0.45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+    transform-origin: center;
+}
+
+.season-btn.is-active {
+    opacity: 1;
+    transform: scale(1.22);
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.season-btn:hover:not(.is-active) {
+    opacity: 0.8;
+    transform: scale(1.12);
+}
+
+@media (max-width: 575.98px) {
+    .season-switcher {
+        bottom: 70px;
+        right: 14px;
     }
 }
 

@@ -218,6 +218,30 @@
         <!-- Snow base -->
         <div class="snowman-base"></div>
     </div>
+
+    <!-- Spring Mascot -->
+    <div class="hero-spring-mascot" aria-hidden="true">
+        <div class="spring-flower-head">
+            <div class="spring-petals">
+                <div class="spring-petal spring-petal--1"></div>
+                <div class="spring-petal spring-petal--2"></div>
+                <div class="spring-petal spring-petal--3"></div>
+                <div class="spring-petal spring-petal--4"></div>
+                <div class="spring-petal spring-petal--5"></div>
+                <div class="spring-petal spring-petal--6"></div>
+                <div class="spring-petal spring-petal--7"></div>
+                <div class="spring-petal spring-petal--8"></div>
+            </div>
+            <div class="spring-flower-center"></div>
+        </div>
+        <div class="spring-stem">
+            <div class="spring-leaf spring-leaf--left"></div>
+            <div class="spring-leaf spring-leaf--right"></div>
+        </div>
+        <div class="spring-pot-rim"></div>
+        <div class="spring-pot"></div>
+        <div class="spring-base"></div>
+    </div>
 </section>
 
 @once
