@@ -3457,7 +3457,58 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-backdrop-filter: none;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 16px;
-    padding: 12px 20px;
+    padding: 22px 20px 12px;
+}
+
+/* ---- Season label badge ---- */
+.season-label {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 14px 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 6;
+    transition: background 0.5s ease, border-color 0.5s ease;
+    background: rgba(10, 4, 4, 0.72);
+    border: 1px solid rgba(180, 220, 255, 0.55);
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.season-label-icon {
+    font-size: 13px;
+    line-height: 1;
+    display: none;
+}
+
+.season-label[data-season="winter"] {
+    border-color: rgba(160, 210, 255, 0.60);
+    color: #d8f0ff;
+}
+
+.season-label[data-season="spring"] {
+    border-color: rgba(255, 160, 190, 0.60);
+    color: #ffe0ee;
+}
+
+.season-label[data-season="summer"] {
+    border-color: rgba(255, 200, 60, 0.60);
+    color: #fff0b0;
+}
+
+.season-label[data-season="fall"] {
+    border-color: rgba(220, 110, 30, 0.60);
+    color: #ffe0b8;
 }
 
 .quick-info-block {
@@ -3772,9 +3823,25 @@ h1, h2, h3, h4, h5, h6 {
     transition: background 0.6s ease;
 }
 
-/* Spring – hide the snow pile caps; card atmosphere (border tint + glow) carries the spring feel */
+/* Spring – a few petals resting lightly on the top edge */
 .season-spring .hero-glass-card::before,
-.season-spring .hero-quick-info::before,
+.season-spring .hero-quick-info::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 15%;
+    width: 5px;
+    height: 5px;
+    border-radius: 55% 45% 60% 40%;
+    background: rgba(255, 175, 205, 0.45);
+    box-shadow:
+        105px  2px 0 0px rgba(240, 150, 180, 0.38),
+        210px -2px 0 0px rgba(255, 195, 218, 0.35);
+    pointer-events: none;
+    z-index: 4;
+    filter: blur(0.8px);
+}
+
 .season-spring .hero-glass-card::after,
 .season-spring .hero-quick-info::after {
     content: none;
@@ -3789,6 +3856,32 @@ h1, h2, h3, h4, h5, h6 {
         rgba(40, 8, 20, 0.55) 80%,
         rgba(88, 16, 22, 1) 100%
     );
+}
+
+/* ============================================
+   No Season – clean, no animation, no tint
+   ============================================ */
+.season-none .hero-snowman,
+.season-none .hero-spring-mascot,
+.season-none .hero-summer-mascot,
+.season-none .hero-fall-mascot {
+    display: none;
+}
+
+.season-none .hero-glass-card::before,
+.season-none .hero-quick-info::before,
+.season-none .hero-glass-card::after,
+.season-none .hero-quick-info::after {
+    content: none;
+}
+
+.season-none #seasonCanvas {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.season-none .season-label[data-season="none"] {
+    display: none;
 }
 
 /* ============================================
@@ -3955,9 +4048,25 @@ h1, h2, h3, h4, h5, h6 {
     transition: background 0.6s ease, border-color 0.6s ease;
 }
 
-/* Fall – hide snow pile caps */
+/* Fall – a few leaves resting lightly on the top edge */
 .season-fall .hero-glass-card::before,
-.season-fall .hero-quick-info::before,
+.season-fall .hero-quick-info::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 12%;
+    width: 6px;
+    height: 4px;
+    border-radius: 55% 45% 60% 40%;
+    background: rgba(210, 90, 20, 0.42);
+    box-shadow:
+        110px  2px 0 0px rgba(230, 115, 30, 0.36),
+        215px -1px 0 0px rgba(195, 75, 15, 0.32);
+    pointer-events: none;
+    z-index: 4;
+    filter: blur(0.8px);
+}
+
 .season-fall .hero-glass-card::after,
 .season-fall .hero-quick-info::after {
     content: none;
@@ -4341,6 +4450,33 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     z-index: 2;
     box-shadow: 0 2px 8px rgba(0,0,0,0.22), 0 0 12px rgba(255,200,50,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spring-flower-eye {
+    position: absolute;
+    top: 6px;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #5d3200;
+}
+
+.spring-flower-eye--left  { left: 4px; }
+.spring-flower-eye--right { right: 4px; }
+
+.spring-flower-smile {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9px;
+    height: 5px;
+    border: 2px solid #5d3200;
+    border-top: none;
+    border-radius: 0 0 9px 9px;
 }
 
 .spring-stem {

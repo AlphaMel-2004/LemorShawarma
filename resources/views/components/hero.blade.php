@@ -140,6 +140,10 @@
         aria-live="polite"
         aria-atomic="true"
     >
+        <div class="season-label" id="seasonLabel" aria-hidden="true">
+            <span class="season-label-icon"></span>
+            <span class="season-label-text"></span>
+        </div>
         <div class="quick-info-block">
             <span class="quick-info-title">QUICK INFO</span>
             @if($addressText !== '')
@@ -283,7 +287,11 @@
                 <div class="spring-petal spring-petal--7"></div>
                 <div class="spring-petal spring-petal--8"></div>
             </div>
-            <div class="spring-flower-center"></div>
+            <div class="spring-flower-center">
+                <div class="spring-flower-eye spring-flower-eye--left"></div>
+                <div class="spring-flower-eye spring-flower-eye--right"></div>
+                <div class="spring-flower-smile"></div>
+            </div>
         </div>
         <div class="spring-stem">
             <div class="spring-leaf spring-leaf--left"></div>

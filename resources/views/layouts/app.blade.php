@@ -104,10 +104,11 @@
 
         <!-- Season Switcher -->
         <div class="season-switcher" role="group" aria-label="Season theme">
+            <button class="season-btn" data-season="none"   title="No season" aria-label="No season theme">🌤️</button>
             <button class="season-btn" data-season="winter" title="Winter" aria-label="Winter theme">❄️</button>
             <button class="season-btn" data-season="spring" title="Spring" aria-label="Spring theme">🌸</button>
             <button class="season-btn" data-season="summer" title="Summer" aria-label="Summer theme">☀️</button>
-            <button class="season-btn" data-season="fall" title="Fall" aria-label="Fall theme">🍂</button>
+            <button class="season-btn" data-season="fall"   title="Fall" aria-label="Fall theme">🍂</button>
         </div>
     @endif
 
@@ -122,13 +123,13 @@
         var ctx = canvas.getContext('2d');
         var particles = [];
         var WINTER_COUNT = 35;
-        var SPRING_COUNT = 28;
+        var SPRING_COUNT = 14;
         var SUMMER_COUNT = 22;
         var FALL_COUNT   = 16;
         var currentSeason = localStorage.getItem('pq_season') || 'winter';
 
         function applySeasonClass(season) {
-            document.body.classList.remove('season-winter', 'season-spring', 'season-summer', 'season-fall');
+            document.body.classList.remove('season-winter', 'season-spring', 'season-summer', 'season-fall', 'season-none');
             document.body.classList.add('season-' + season);
         }
 
@@ -381,6 +382,7 @@
 
         /* ---- Engine ---- */
         function getTargetCount(season) {
+            if (season === 'none')   { return 0; }
             if (season === 'spring') { return SPRING_COUNT; }
             if (season === 'summer') { return SUMMER_COUNT; }
             if (season === 'fall')   { return FALL_COUNT; }
@@ -426,7 +428,9 @@
         }
 
         function loop() {
-            if (currentSeason === 'spring') {
+            if (currentSeason === 'none') {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            } else if (currentSeason === 'spring') {
                 updateSpring();
                 drawSpring();
             } else if (currentSeason === 'summer') {
@@ -442,11 +446,29 @@
             requestAnimationFrame(loop);
         }
 
+        var SEASON_META = {
+            none:   { icon: '🌤️', label: 'Normal' },
+            winter: { icon: '❄️', label: 'Winter' },
+            spring: { icon: '🌸', label: 'Spring' },
+            summer: { icon: '☀️', label: 'Summer' },
+            fall:   { icon: '🍂', label: 'Fall' }
+        };
+
+        function updateSeasonLabel(season) {
+            var label = document.getElementById('seasonLabel');
+            if (!label) { return; }
+            var meta = SEASON_META[season] || SEASON_META.none;
+            label.setAttribute('data-season', season);
+            label.querySelector('.season-label-icon').textContent = meta.icon;
+            label.querySelector('.season-label-text').textContent = meta.label;
+        }
+
         function setSeason(season) {
             currentSeason = season;
             localStorage.setItem('pq_season', season);
             applySeasonClass(season);
             swapParticles(season);
+            updateSeasonLabel(season);
             document.querySelectorAll('.season-btn').forEach(function (btn) {
                 btn.classList.toggle('is-active', btn.dataset.season === season);
             });
@@ -458,6 +480,7 @@
         loop();
 
         document.addEventListener('DOMContentLoaded', function () {
+            updateSeasonLabel(currentSeason);
             document.querySelectorAll('.season-btn').forEach(function (btn) {
                 btn.classList.toggle('is-active', btn.dataset.season === currentSeason);
                 btn.addEventListener('click', function () {
